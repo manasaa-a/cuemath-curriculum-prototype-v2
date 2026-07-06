@@ -142,9 +142,12 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 /* Bottom toolbar */
 .slide-toolbar{height:52px;background:#fff;border-top:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding:0 20px;flex-shrink:0;position:relative}
 .toolbar-tools{display:flex;gap:4px}
-.tool-btn{width:36px;height:36px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#97948E;border-radius:6px}
+.tool-btn{width:36px;height:36px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#97948E;border-radius:6px;position:relative}
 .tool-btn:hover{background:#F5F0E8;color:#1C1917}
 .tool-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+.tool-btn.tool-active{background:#FEF3E2;color:#CE7E12}
+.tool-btn.tool-locked{color:#C6C0B8}
+.tool-lock-badge{position:absolute;bottom:2px;right:2px;font-size:8px;line-height:1}
 .toolbar-counter{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;color:#97948E}
 .toolbar-nav{margin-left:auto;display:flex;gap:4px}
 .nav-btn{width:38px;height:38px;border:1px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1C1917}
@@ -200,9 +203,16 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 /* Resources tab */
 .resources-wrap{flex:1;overflow-y:auto;background:#F5F0E8;padding:24px}
 .resources-inner{max-width:680px;margin:0 auto}
-.res-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#97948E;margin-bottom:12px;margin-top:20px}
-.res-section-title:first-child{margin-top:0}
-.res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:4px}
+.res-section{background:#fff;border:1px solid rgba(0,0,0,.07);margin-bottom:14px}
+.res-section:last-of-type{margin-bottom:0}
+.res-section-title{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;padding:14px 16px;font-family:inherit;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#97948E;margin:0;cursor:pointer}
+.res-section-title:hover{color:#1C1917}
+.res-section-chevron{font-size:12px;color:#97948E;transition:transform .2s}
+.res-section-title.open .res-section-chevron{transform:rotate(180deg)}
+.res-section-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+.res-section-body.open{grid-template-rows:1fr}
+.res-section-body-inner{overflow:hidden}
+.res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 16px 16px;border-top:1px solid #F5F0E8}
 .res-card{background:#fff;border:1px solid rgba(0,0,0,.07);padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:8px;text-decoration:none}
 .res-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .res-card-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -231,6 +241,38 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .rln-num{width:22px;height:22px;border-radius:50%;background:#EDD5BE;border:1px solid #E0C9A8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#7A5C3A;flex-shrink:0}
 .rln-item.active .rln-num{background:#F4AB52;border-color:#E89040;color:#fff}
 .rln-item:last-child{border-bottom:none}
+
+/* Interstitial + idle CTAs — the real lesson content (CW/HW) is a Learnosity
+   embed we can't inject anything into, so these CTAs live around the sheets
+   instead: this modal pattern is the "around" mechanism. Proposed, pending a
+   feasibility check with engineering — see Open Questions & Decisions.md §7a. */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;width:360px;max-width:90vw;padding:0;position:relative;overflow:hidden}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#97948E;line-height:1;z-index:1}
+.modal-close:hover{color:#1C1917}
+.modal-cta-body{padding:20px}
+.modal-cta-body .rp-cta-inner{margin:-20px -20px 0;padding:24px 20px 20px}
+.modal-cta-note{padding:14px 20px;font-size:11px;color:#97948E;text-align:center;border-top:1px solid #F5F0E8}
+.idle-modal .rp-cta-inner{background:linear-gradient(135deg,#1C1917 0%,#3D3A37 100%)}
+.idle-modal .rp-cta-tag{color:rgba(255,255,255,.55)}
+.idle-modal .rp-cta-title{color:#fff}
+.idle-modal .rp-cta-sub{color:rgba(255,255,255,.7)}
+.idle-modal .rp-cta-btn{background:#F4AB52;color:#1C1917}
+.idle-modal .rp-cta-btn:hover{background:#CE7E12}
+
+/* Annotate/Hint feature-lock modal — proposed, see Open Questions doc.
+   The gif box below is a stand-in for a real capture, clearly labeled as
+   such, not a fake product screenshot. */
+.feature-modal-body{padding:20px}
+.feature-lock-icon{font-size:28px;margin-bottom:10px}
+.feature-modal-title{font-family:'Athletics';font-size:16px;font-weight:700;color:#1C1917;margin-bottom:6px}
+.feature-modal-sub{font-size:12px;color:#78716C;line-height:1.5;margin-bottom:14px}
+.gif-placeholder{background:#F5F0E8;border:1.5px dashed #C6C0B8;border-radius:6px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-bottom:16px}
+.gif-placeholder-icon{font-size:22px}
+.gif-placeholder-label{font-size:11px;color:#97948E;text-align:center;padding:0 16px}
+.feature-modal-btn{display:block;width:100%;background:#1C1917;color:#fff;border:none;padding:12px;font-family:'UntitledSans';font-size:13px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none}
+.feature-modal-btn:hover{background:#333;color:#fff}
 
 @media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
 @media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
@@ -269,7 +311,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <a href="maths-grade-3-chapter.html" id="bc-chapter">Number System</a><span>›</span>
         <span class="cur" id="bc-lesson">Read and Write 4-Digit Numbers</span>
       </div>
-      <button class="tb-btn">Book a free class</button>
     </div>
 
     <!-- Page tabs -->
@@ -471,17 +512,12 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
     <!-- Bottom toolbar -->
     <div class="slide-toolbar">
       <div class="toolbar-tools">
-        <button class="tool-btn" title="Draw">
+        <button class="tool-btn" id="tool-annotate" title="Annotate" onclick="onAnnotateClick()">
           <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </button>
-        <button class="tool-btn" title="Pointer">
-          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-7 1-4 7z"/></svg>
-        </button>
-        <button class="tool-btn" title="Notes">
-          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="tool-btn" title="Flip">
-          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        <button class="tool-btn tool-locked" id="tool-hint" title="Hint" onclick="onHintClick()">
+          <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+          <span class="tool-lock-badge">🔒</span>
         </button>
       </div>
       <span class="toolbar-counter" id="slide-counter">1 / 7</span>
@@ -523,7 +559,11 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
     <div class="tab-panel" id="tab-resources">
       <div class="resources-wrap">
         <div class="resources-inner">
-          <div class="res-section-title">Worksheets</div>
+          <div class="res-section" data-section="worksheets" onmouseenter="openResSectionExclusive('worksheets')">
+          <button class="res-section-title" id="restitle-worksheets">
+            <span>Worksheets</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-worksheets"><div class="res-section-body-inner">
           <div class="res-grid">
             <a class="res-card" href="#" onclick="return false">
               <div class="res-card-icon">📄</div>
@@ -538,8 +578,14 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
               <div class="res-card-action">Download ↓</div>
             </a>
           </div>
+          </div></div>
+          </div>
 
-          <div class="res-section-title">Games</div>
+          <div class="res-section" data-section="games" onmouseenter="openResSectionExclusive('games')">
+          <button class="res-section-title" id="restitle-games">
+            <span>Games</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-games"><div class="res-section-body-inner">
           <div class="res-grid">
             <a class="res-card" href="https://www.cuemath.com/math-games/" target="_blank" rel="noopener">
               <div class="res-card-icon">🎮</div>
@@ -554,14 +600,80 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
               <div class="res-card-action">Play →</div>
             </a>
           </div>
+          </div></div>
+          </div>
 
-          <!-- App download banner -->
+          <div class="res-section" data-section="videos" onmouseenter="openResSectionExclusive('videos')">
+          <button class="res-section-title" id="restitle-videos">
+            <span>Videos</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-videos"><div class="res-section-body-inner">
+          <div class="res-grid" style="grid-template-columns:1fr">
+            <a class="res-card" href="https://www.cuemath.com/math-concept-explanations/" target="_blank" rel="noopener">
+              <div class="res-card-icon">▶️</div>
+              <div class="res-card-name">Math Concept Explanations</div>
+              <div class="res-card-meta">Cuemath · Video library</div>
+              <div class="res-card-action">Watch →</div>
+            </a>
+          </div>
+          </div></div>
+          </div>
+
+          <div class="res-section" data-section="puzzles" onmouseenter="openResSectionExclusive('puzzles')">
+          <button class="res-section-title" id="restitle-puzzles">
+            <span>Puzzles</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-puzzles"><div class="res-section-body-inner">
+          <div class="res-grid" style="grid-template-columns:1fr">
+            <a class="res-card" href="https://www.cuemath.com/math-puzzles/" target="_blank" rel="noopener">
+              <div class="res-card-icon">🧩</div>
+              <div class="res-card-name">Cuemath Math Puzzles</div>
+              <div class="res-card-meta">Free · All grades</div>
+              <div class="res-card-action">Solve →</div>
+            </a>
+          </div>
+          </div></div>
+          </div>
+
+          <div class="res-section" data-section="calculators" onmouseenter="openResSectionExclusive('calculators')">
+          <button class="res-section-title" id="restitle-calculators">
+            <span>Calculators</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-calculators"><div class="res-section-body-inner">
+          <div class="res-grid">
+            <a class="res-card" href="https://www.cuemath.com/calculators/" target="_blank" rel="noopener">
+              <div class="res-card-icon">🧮</div>
+              <div class="res-card-name">Cuemath Calculators</div>
+              <div class="res-card-meta">Free · All topics</div>
+              <div class="res-card-action">Open →</div>
+            </a>
+          </div>
+          </div></div>
+          </div>
+
+          <div class="res-section" data-section="formulas" onmouseenter="openResSectionExclusive('formulas')">
+          <button class="res-section-title" id="restitle-formulas">
+            <span>Formulas</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-formulas"><div class="res-section-body-inner">
+          <div class="res-grid">
+            <a class="res-card" href="https://www.cuemath.com/math-formulas/" target="_blank" rel="noopener">
+              <div class="res-card-icon">📐</div>
+              <div class="res-card-name">Math Formulas</div>
+              <div class="res-card-meta">Free · All grades</div>
+              <div class="res-card-action">View →</div>
+            </a>
+          </div>
+          </div></div>
+          </div>
+
+          <!-- App download banner — below all resources -->
           <div class="app-banner">
             <div class="app-banner-left">
               <div class="app-banner-emoji">📱</div>
               <div>
                 <div class="app-banner-title">Get more on the Cuemath App</div>
-                <div class="app-banner-sub">Games, puzzles, live sessions and full curriculum — all in one place.</div>
+                <div class="app-banner-sub">Games, puzzles, and more practice, all in one place.</div>
                 <div class="app-banner-btns">
                   <a class="app-store-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -573,68 +685,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
                   </a>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div class="res-section-title">Videos</div>
-          <div class="res-grid">
-            <a class="res-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
-              <div class="res-card-icon">▶️</div>
-              <div class="res-card-name">Reading 4-Digit Numbers</div>
-              <div class="res-card-meta">Cuemath · 4 min</div>
-              <div class="res-card-action">Watch →</div>
-            </a>
-            <a class="res-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
-              <div class="res-card-icon">▶️</div>
-              <div class="res-card-name">Place Value Explained</div>
-              <div class="res-card-meta">Cuemath · 5 min</div>
-              <div class="res-card-action">Watch →</div>
-            </a>
-          </div>
-
-          <div class="res-section-title">Puzzles</div>
-          <div class="res-grid">
-            <a class="res-card" href="https://www.cuemath.com/math-puzzles/" target="_blank" rel="noopener">
-              <div class="res-card-icon">🧩</div>
-              <div class="res-card-name">Cuemath Math Puzzles</div>
-              <div class="res-card-meta">Free · All grades</div>
-              <div class="res-card-action">Solve →</div>
-            </a>
-            <div class="res-card locked-res">
-              <div class="res-card-icon">🧩</div>
-              <div class="res-card-name">Place Value Puzzle</div>
-              <div class="res-card-meta">Grade 3 · Hard</div>
-              <div class="res-card-action">🔒 Sign in to solve</div>
-            </div>
-          </div>
-
-          <div class="res-section-title">Calculators</div>
-          <div class="res-grid">
-            <a class="res-card" href="https://www.cuemath.com/calculators/" target="_blank" rel="noopener">
-              <div class="res-card-icon">🧮</div>
-              <div class="res-card-name">Cuemath Calculators</div>
-              <div class="res-card-meta">Free · All topics</div>
-              <div class="res-card-action">Open →</div>
-            </a>
-          </div>
-
-          <div class="res-section-title">Formulas</div>
-          <div class="res-grid">
-            <a class="res-card" href="https://www.cuemath.com/math-formulas/" target="_blank" rel="noopener">
-              <div class="res-card-icon">📐</div>
-              <div class="res-card-name">Math Formulas</div>
-              <div class="res-card-meta">Free · All grades</div>
-              <div class="res-card-action">View →</div>
-            </a>
-          </div>
-
-          <div class="res-section-title">Practice Test</div>
-          <div class="res-grid">
-            <div class="res-card locked-res">
-              <div class="res-card-icon">📝</div>
-              <div class="res-card-name">Chapter Practice Test</div>
-              <div class="res-card-meta">10 questions · 20 min</div>
-              <div class="res-card-action">🔒 Sign in to attempt</div>
             </div>
           </div>
         </div>
@@ -673,39 +723,69 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
 </div><!-- shell -->
 
+<!-- CW → HW interstitial: real sheets are Learnosity embeds, can't inject
+     content inside them, so this shows once between Learn and Practice.
+     Proposed, not confirmed with engineering yet — see Open Questions §7a. -->
+<div class="modal-overlay" id="cwhw-modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCwHwModal()">×</button>
+    <div class="modal-cta-body">
+      <div class="rp-cta-inner">
+        <span class="rp-cta-tag">Cuemath App</span>
+        <div class="rp-cta-title">Nice work on the lesson. Take practice further.</div>
+        <div class="rp-cta-sub">Download the Cuemath app to practice on the go and track your progress alongside this lesson.</div>
+        <div class="app-banner-btns">
+          <a class="app-store-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+        </div>
+      </div>
+    </div>
+    <div class="modal-cta-note" style="cursor:pointer" onclick="closeCwHwModal()">Continue to Practice →</div>
+  </div>
+</div>
+
+<!-- Idle-timeout CTA: fires if a user sits idle on a sheet past a threshold.
+     5s here is a placeholder for demoing the idea, not a proposed real value —
+     see Open Questions §7a, needs a feasibility + product call. -->
+<div class="modal-overlay idle-modal" id="idle-modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeIdleModal()">×</button>
+    <div class="modal-cta-body">
+      <div class="rp-cta-inner">
+        <span class="rp-cta-tag">1:1 live tutoring</span>
+        <div class="rp-cta-title">Stuck on this one?</div>
+        <div class="rp-cta-sub">A live tutor can walk through it with you, free.</div>
+        <button class="rp-cta-btn" onclick="closeIdleModal()">Book a free class</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Annotate/Hint feature-lock modal — proposed, see Open Questions doc.
+     Annotate: works once, then locks. Hint: locked outright. Both point to
+     the app instead, with a placeholder standing in for a real capture. -->
+<div class="modal-overlay" id="feature-modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeFeatureModal()">×</button>
+    <div class="feature-modal-body">
+      <div class="feature-lock-icon" id="feature-modal-icon">🔒</div>
+      <div class="feature-modal-title" id="feature-modal-title">Feature title</div>
+      <div class="feature-modal-sub" id="feature-modal-sub">Feature description.</div>
+      <div class="gif-placeholder">
+        <span class="gif-placeholder-icon">🎬</span>
+        <span class="gif-placeholder-label" id="feature-modal-gif-label">GIF placeholder — swap for a real capture</span>
+      </div>
+      <a class="feature-modal-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">Get the Cuemath App</a>
+    </div>
+  </div>
+</div>
+
+<script src="curriculum-data.js"></script>
 <script>
-const csvGradeData = {
-  'K': [
-    {name:"Counting and Cardinality", emoji:"🔢", lessons:["Count to 10","Count to 20","Count to 100 by Ones","Count to 100 by Tens","Count Forward from Any Number","Write Numbers 0 to 20","Count Objects Up to 20","Compare Groups: More, Less, Equal","One More, One Less","Understand Zero"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Understand Addition as Putting Together","Add Within 5","Add Within 10","Understand Subtraction as Taking Apart","Subtract Within 5","Subtract Within 10","Make 10","Solve Addition Word Problems","Solve Subtraction Word Problems"]},
-    {name:"Number Sense", emoji:"🧮", lessons:["Identify and Write Numbers 1–5","Identify and Write Numbers 6–10","Compare Numbers 1–10","Order Numbers 1–10","Identify Numbers 11–19","Understand Teen Numbers as Ten and Some Ones"]},
-    {name:"Measurement and Data", emoji:"📏", lessons:["Compare Lengths: Longer and Shorter","Compare Weights: Heavier and Lighter","Sort and Classify Objects by Shape","Sort and Classify Objects by Color","Count and Graph Objects"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify 2D Shapes: Circle, Square, Triangle, Rectangle","Identify 3D Shapes: Cube, Sphere, Cylinder, Cone","Describe Positions: Above, Below, Beside, In Front","Build and Draw 2D Shapes","Compose Simple Shapes"]},
-  ],
-  1: [
-    {name:"Number System", emoji:"🔢", lessons:["Count to 120 Starting from Any Number","Read and Write Numbers to 120","Understand Place Value: Tens and Ones","Write Two-Digit Numbers in Expanded Form","Compare Two-Digit Numbers","Order Numbers to 120","Ten More, Ten Less","Odd and Even Numbers"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add Within 20 Using Strategies","Subtract Within 20 Using Strategies","Apply Properties of Addition","Add Three Numbers","Relate Addition and Subtraction","Add Two-Digit Numbers Using Models","Subtract Two-Digit Numbers Using Models","Add Within 100 Without Regrouping","Estimate Sums","Solve One-Step Word Problems on Addition","Solve One-Step Word Problems on Subtraction","Solve Two-Step Word Problems"]},
-    {name:"Measurement", emoji:"📏", lessons:["Measure Length Using Non-Standard Units","Compare and Order Lengths","Tell Time to the Hour","Tell Time to the Half Hour","Identify Coins: Penny, Nickel, Dime","Find Value of Coin Collections"]},
-    {name:"Data and Graphs", emoji:"📊", lessons:["Organize Data in Tally Charts","Read and Create Picture Graphs","Read and Create Bar Graphs","Answer Questions Using Graphs"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify and Describe 2D Shapes","Identify and Describe 3D Shapes","Combine 2D Shapes to Make New Shapes","Partition Shapes into Halves and Fourths","Identify Equal and Unequal Parts"]},
-  ],
-  2: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write 3-Digit Numbers","Identify Hundreds, Tens, and Ones","Write 3-Digit Numbers in Expanded Form","Compare 3-Digit Numbers","Order 3-Digit Numbers","Count by 5s, 10s, and 100s","Round Numbers to Nearest 10 and 100","Even and Odd Numbers","Skip Count to Find Patterns"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add 2-Digit Numbers with Regrouping","Subtract 2-Digit Numbers with Regrouping","Add 3-Digit Numbers Without Regrouping","Add 3-Digit Numbers with Regrouping","Subtract 3-Digit Numbers Without Regrouping","Subtract 3-Digit Numbers with Regrouping","Use Mental Strategies for Addition","Use Mental Strategies for Subtraction","Estimate Sums and Differences","Solve One-Step Word Problems","Solve Two-Step Word Problems"]},
-    {name:"Multiplication Introduction", emoji:"✖️", lessons:["Understand Equal Groups","Write Repeated Addition as Multiplication","Build Arrays","Use Skip Counting to Multiply","Understand Multiplication as Comparison"]},
-    {name:"Fractions", emoji:"🍕", lessons:["Understand Halves","Understand Thirds and Fourths","Identify Fractions of a Whole","Identify Fractions of a Set","Compare Fractions Using Models"]},
-    {name:"Measurement", emoji:"📏", lessons:["Measure Length in Centimeters","Measure Length in Meters","Estimate Lengths","Solve Problems Involving Lengths","Tell Time to the Nearest 5 Minutes","Count Coins and Bills Up to $1","Solve Word Problems on Money"]},
-    {name:"Data and Graphs", emoji:"📊", lessons:["Read and Create Picture Graphs with Scale","Read and Create Bar Graphs","Generate Measurement Data","Analyze Line Plots"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify and Describe Polygons","Identify Quadrilaterals","Partition Rectangles into Rows and Columns","Find Equal Shares","Partition Shapes into Halves, Thirds, and Fourths"]},
-  ],
-  3: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write 4-Digit Numbers","Write 4-digit numbers in Order","Identify Places, Place Values, and Face Values in 4-Digit Numbers","Write 4-digit numbers in their expanded form and standard form","Compare 4-Digit Numbers","Order 4-Digit Numbers","Round numbers up to 4 digits to the nearest 10 using a number line","Round numbers up to 4-digits to the nearest 10 using place value","Round numbers up to 4 digits to the nearest 100","Skip Counting numbers up to 4 digits by 10, 100, and 1000"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add numbers upto 4 digits without grouping","Add numbers upto 4-digits with regrouping","Subtract numbers upto 4 digits without grouping","Subtract numbers upto 4-digits with regrouping","Use the relationship between addition and subtraction","Understand Properties of addition and subtraction","Use Mental strategies to add numbers up to 4 digits","Use Mental strategies to subtract numbers up to 4 digits","Estimate Sum of Numbers up to 4 digits","Estimate Difference of Numbers up to 4 digits","Solve 1-step word problems on addition","Solve 1-step word problems on subtraction","Solve 2-step word problems addition and subtraction"]},
-    {name:"Fractions", emoji:"🍕", lessons:["Understand Unit Fractions","Understand the Fractions of Whole","Plot Fractions on Number Line","Find the Fraction of a Collection","Compare Like Fractions","Compare Fractions with the Same Numerator","Recognise Equivalent Fractions Visually"]},
-    {name:"Multiplication", emoji:"✖️", lessons:["Multiply Single-Digit Numbers Using Equal Groups and Arrays","Multiply Single-Digit Numbers Using Number Lines","Build multiplication tables of 2, 5, and 10","Build multiplication tables of 3 and 4","Understand the zero, identity, and commutative, properties of multiplication","Understand the distributive property of multiplication","Build multiplication tables of 6 and 8","Build multiplication tables of 7 and 9","Multiply single-digit numbers by multiples of 10 using the associative property","Solve word problems on multiplication based on equal groups and arrays"]},
-    {name:"Geometry", emoji:"📐", lessons:["Understand the Properties of 2D Shapes","Identify Different Types of Quadrilaterals","Compare Types of Parallelograms"]},
-  ],
-};
+// csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data).
+// This fixes a real bug: this file previously only had K-3 embedded, so any
+// grade 4/5/6 lesson link silently rendered Grade 3's lesson content while
+// still labeling the breadcrumb/header as "Grade 4/5/6."
 
 const params = new URLSearchParams(location.search);
 const gradeParam = params.get('grade') || '3';
@@ -719,6 +799,15 @@ const lessonName = ch.lessons[Math.min(lessonIdx, ch.lessons.length - 1)];
 
 const gradeLabel = grade === 'K' ? 'Kindergarten' : 'Grade ' + grade;
 
+// Starting ANY lesson (anywhere — any grade, any chapter) uses up the one free
+// lesson: it becomes the site-wide Review lesson, and every other lesson locks
+// behind sign-in. Only the first-ever lesson started sets this — visiting more
+// lessons afterward doesn't change which one is "the" reviewed lesson.
+const GLOBAL_COMPLETE_KEY = 'cuemathGlobalCompletedLesson';
+if (sessionStorage.getItem(GLOBAL_COMPLETE_KEY) === null) {
+  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: grade, ch: chIdx, lesson: lessonIdx}));
+}
+
 // Update breadcrumbs + header
 document.getElementById('bc-grade').textContent = gradeLabel;
 document.getElementById('bc-grade').href = 'maths-grade-3.html?grade=' + grade;
@@ -728,6 +817,22 @@ document.getElementById('bc-lesson').textContent = lessonName;
 document.getElementById('rp-chapter-label').textContent = 'CHAPTER ' + (chIdx + 1) + ' · LESSON ' + (lessonIdx + 1);
 document.getElementById('rp-lesson-name').textContent = lessonName;
 document.title = lessonName + ' · ' + gradeLabel + ' — Cuemath';
+
+// If this lesson was reached by skipping the chapter page (e.g. the grade page's
+// hover dropdown), make the first "back" press land on the chapter page instead of
+// wherever the real history happens to lead. Strip the marker from this entry's own
+// URL first so a later reload of this exact entry (going back a second time, past the
+// chapter page) doesn't re-arm the guard and bounce back and forth forever.
+if (params.get('via') === 'chapterskip') {
+  const chapterBackURL = document.getElementById('bc-chapter').href;
+  const cleanUrl = location.pathname + location.search.replace(/[?&]via=chapterskip/, '').replace(/^&/, '?');
+  history.replaceState(null, '', cleanUrl);
+  history.pushState(null, '', cleanUrl);
+  window.addEventListener('popstate', function onBack(){
+    window.removeEventListener('popstate', onBack);
+    location.href = chapterBackURL;
+  });
+}
 
 // Slide navigation
 const totalSlides = document.querySelectorAll('.slide').length;
@@ -776,14 +881,131 @@ goToSlide(0);
 const tabParam = params.get('tab');
 if(tabParam) switchTab(tabParam);
 
+// ── Resources: each section collapsed by default so they all fit without
+//    scrolling. Hovering a section opens it and closes whichever one was
+//    open before — accordion style, one open at a time. ──
+function openResSectionExclusive(id){
+  document.querySelectorAll('.res-section').forEach(sec => {
+    const isTarget = sec.dataset.section === id;
+    sec.querySelector('.res-section-title').classList.toggle('open', isTarget);
+    sec.querySelector('.res-section-body').classList.toggle('open', isTarget);
+  });
+}
+
 // ── Tab switching ──
+let cameFromLearn = true; // tracks whether the last tab was Learn, for the CW→HW transition below
+let currentTab = 'learn'; // the idle CTA below is suppressed while this is 'resources'
+
 function switchTab(tab){
   document.querySelectorAll('.page-tab').forEach((t,i) => {
     t.classList.toggle('active', ['learn','practice','resources'][i] === tab);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-  if(tab === 'practice') initPractice();
+  if(tab === 'practice'){
+    initPractice();
+    // CW → HW: show the interstitial once, the first time Learn hands off to Practice
+    if(cameFromLearn) openCwHwModal();
+  }
+  cameFromLearn = (tab === 'learn');
+  currentTab = tab;
+}
+
+// ── CW → HW interstitial (proposed — see Open Questions §7a) ──
+let cwHwModalShown = false;
+function openCwHwModal(){
+  if(cwHwModalShown || anyModalOpen()) return;
+  cwHwModalShown = true;
+  document.getElementById('cwhw-modal-overlay').classList.add('open');
+}
+function closeCwHwModal(){
+  document.getElementById('cwhw-modal-overlay').classList.remove('open');
+}
+document.getElementById('cwhw-modal-overlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeCwHwModal();
+});
+
+// ── Idle-timeout CTA (proposed — see Open Questions §7a) ──
+// 5s is a placeholder to demo the idea, not a proposed real threshold.
+// Re-arms every time — any activity (including closing the modal) resets the
+// clock, so going idle again later (on this tab or any other) nudges again.
+const IDLE_TIMEOUT_MS = 5000;
+let idleTimer = null;
+function anyModalOpen(){
+  return !!document.querySelector('.modal-overlay.open');
+}
+function openIdleModal(){
+  if(anyModalOpen() || currentTab !== 'practice') return; // idle CTA only applies on Practice now
+  document.getElementById('idle-modal-overlay').classList.add('open');
+}
+function closeIdleModal(){
+  document.getElementById('idle-modal-overlay').classList.remove('open');
+}
+document.getElementById('idle-modal-overlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeIdleModal();
+});
+function resetIdleTimer(){
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(openIdleModal, IDLE_TIMEOUT_MS);
+}
+['mousemove','keydown','scroll','click','touchstart'].forEach(evt =>
+  document.addEventListener(evt, resetIdleTimer, {passive: true})
+);
+resetIdleTimer();
+
+// ── Annotate / Hint gating (proposed — see Open Questions doc) ──
+// Annotate works once for free (persisted so it stays "used" across
+// reloads), then locks. Hint is locked outright. Both point to the app.
+function openFeatureModal(kind){
+  if(anyModalOpen()) return;
+  const copy = {
+    annotate: {
+      icon: '🔒',
+      title: "You've used your free annotation",
+      sub: 'Annotations save and stay with your lesson in the Cuemath app.',
+      gif: 'GIF placeholder — annotation saving in the app'
+    },
+    hint: {
+      icon: '💡',
+      title: 'Hints are available in the app',
+      sub: 'Get a nudge in the right direction without giving away the answer, in the Cuemath app.',
+      gif: 'GIF placeholder — hint flow in the app'
+    }
+  }[kind];
+  document.getElementById('feature-modal-icon').textContent = copy.icon;
+  document.getElementById('feature-modal-title').textContent = copy.title;
+  document.getElementById('feature-modal-sub').textContent = copy.sub;
+  document.getElementById('feature-modal-gif-label').textContent = copy.gif;
+  document.getElementById('feature-modal-overlay').classList.add('open');
+}
+function closeFeatureModal(){
+  document.getElementById('feature-modal-overlay').classList.remove('open');
+}
+document.getElementById('feature-modal-overlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeFeatureModal();
+});
+
+const ANNOTATE_USED_KEY = 'cuemathAnnotateUsedOnce';
+// Reflect an already-used-up annotation visually on load, same lock treatment as Hint
+if(sessionStorage.getItem(ANNOTATE_USED_KEY)){
+  const annotateBtn = document.getElementById('tool-annotate');
+  annotateBtn.classList.add('tool-locked');
+  annotateBtn.insertAdjacentHTML('beforeend', '<span class="tool-lock-badge">🔒</span>');
+}
+function onAnnotateClick(){
+  if(sessionStorage.getItem(ANNOTATE_USED_KEY)){
+    openFeatureModal('annotate');
+    return;
+  }
+  // First use: let it "work" (just a visual toggle here — no real drawing
+  // canvas in this mockup) and use up the one free annotation.
+  sessionStorage.setItem(ANNOTATE_USED_KEY, '1');
+  const btn = document.getElementById('tool-annotate');
+  btn.classList.add('tool-active');
+  setTimeout(() => btn.classList.remove('tool-active'), 600);
+}
+function onHintClick(){
+  openFeatureModal('hint'); // locked outright, no free use
 }
 
 // ── Practice questions ──

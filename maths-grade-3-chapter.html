@@ -121,6 +121,21 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
+.rp-cta-appbtns{display:flex;flex-direction:column;gap:6px}
+.rp-cta-appbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
+.rp-cta-appbtn:hover{background:#333;color:#fff}
+.rp-divider{height:1px;background:rgba(0,0,0,.07)}
+
+/* Chapter nav in right panel */
+.rp-chapter-nav{background:#fff;border:1px solid rgba(0,0,0,.07)}
+.rcn-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#97948E;padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.07)}
+.rcn-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(0,0,0,.05);font-size:12px;color:#97948E;cursor:pointer;text-decoration:none}
+.rcn-item:hover{background:#FAFAF8;color:#1C1917}
+.rcn-item.active{color:#1C1917;font-weight:500}
+.rcn-num{width:22px;height:22px;border-radius:50%;background:#EDD5BE;border:1px solid #E0C9A8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#7A5C3A;flex-shrink:0}
+.rcn-item.active .rcn-num{background:#F4AB52;border-color:#E89040;color:#fff}
+.rcn-item:last-child{border-bottom:none}
+.rcn-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* LESSON MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center}
@@ -202,7 +217,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <a href="maths-grade-3.html" id="bc-grade">Grade 3</a><span>›</span>
         <span class="cur" id="bc-chapter">Number System</span>
       </div>
-      <button class="tb-btn">Book a free class</button>
     </div>
     <div class="chapter-wrap">
       <div class="ch-header">
@@ -234,11 +248,20 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
   <div class="rightpanel">
     <div class="rp-inner">
+      <!-- Chapter navigator within grade -->
+      <div class="rp-chapter-nav" id="rp-chapter-nav">
+        <div class="rcn-title" id="rcn-title">Grade 3 Chapters</div>
+        <!-- populated by JS -->
+      </div>
+      <div class="rp-divider"></div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">1:1 live tutoring</span>
-        <div class="rp-cta-title">Learn faster with a personal tutor</div>
-        <div class="rp-cta-sub">Live sessions, personalised to your grade. Same curriculum, expert-led.</div>
-        <button class="rp-cta-btn">Book a free class</button>
+        <span class="rp-cta-tag">Cuemath App</span>
+        <div class="rp-cta-title">Save your progress. Get a personalised plan.</div>
+        <div class="rp-cta-sub">Download the Cuemath app to pick up right where you left off, track your mastery, and get a plan built for your grade.</div>
+        <div class="rp-cta-appbtns">
+          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+        </div>
       </div>
     </div>
   </div>
@@ -326,57 +349,9 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
   </div>
 </div>
 
+<script src="curriculum-data.js"></script>
 <script>
-const csvGradeData = {
-  'K': [
-    {name:"Counting and Cardinality", emoji:"🔢", lessons:["Count to 10", "Count to 20", "Count to 100 by Ones", "Count to 100 by Tens", "Count Forward from Any Number", "Write Numbers 0 to 20", "Count Objects Up to 20", "Compare Groups: More, Less, Equal", "One More, One Less", "Understand Zero"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Understand Addition as Putting Together", "Add Within 5", "Add Within 10", "Understand Subtraction as Taking Apart", "Subtract Within 5", "Subtract Within 10", "Make 10", "Solve Addition Word Problems", "Solve Subtraction Word Problems"]},
-    {name:"Number Sense", emoji:"🧮", lessons:["Identify and Write Numbers 1–5", "Identify and Write Numbers 6–10", "Compare Numbers 1–10", "Order Numbers 1–10", "Identify Numbers 11–19", "Understand Teen Numbers as Ten and Some Ones"]},
-    {name:"Measurement and Data", emoji:"📏", lessons:["Compare Lengths: Longer and Shorter", "Compare Weights: Heavier and Lighter", "Sort and Classify Objects by Shape", "Sort and Classify Objects by Color", "Count and Graph Objects"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify 2D Shapes: Circle, Square, Triangle, Rectangle", "Identify 3D Shapes: Cube, Sphere, Cylinder, Cone", "Describe Positions: Above, Below, Beside, In Front", "Build and Draw 2D Shapes", "Compose Simple Shapes"]},
-  ],
-  1: [
-    {name:"Number System", emoji:"🔢", lessons:["Count to 120 Starting from Any Number", "Read and Write Numbers to 120", "Understand Place Value: Tens and Ones", "Write Two-Digit Numbers in Expanded Form", "Compare Two-Digit Numbers", "Order Numbers to 120", "Ten More, Ten Less", "Odd and Even Numbers"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add Within 20 Using Strategies", "Subtract Within 20 Using Strategies", "Apply Properties of Addition", "Add Three Numbers", "Relate Addition and Subtraction", "Add Two-Digit Numbers Using Models", "Subtract Two-Digit Numbers Using Models", "Add Within 100 Without Regrouping", "Estimate Sums", "Solve One-Step Word Problems on Addition", "Solve One-Step Word Problems on Subtraction", "Solve Two-Step Word Problems"]},
-    {name:"Measurement", emoji:"📏", lessons:["Measure Length Using Non-Standard Units", "Compare and Order Lengths", "Tell Time to the Hour", "Tell Time to the Half Hour", "Identify Coins: Penny, Nickel, Dime", "Find Value of Coin Collections"]},
-    {name:"Data and Graphs", emoji:"📊", lessons:["Organize Data in Tally Charts", "Read and Create Picture Graphs", "Read and Create Bar Graphs", "Answer Questions Using Graphs"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify and Describe 2D Shapes", "Identify and Describe 3D Shapes", "Combine 2D Shapes to Make New Shapes", "Partition Shapes into Halves and Fourths", "Identify Equal and Unequal Parts"]},
-  ],
-  2: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write 3-Digit Numbers", "Identify Hundreds, Tens, and Ones", "Write 3-Digit Numbers in Expanded Form", "Compare 3-Digit Numbers", "Order 3-Digit Numbers", "Count by 5s, 10s, and 100s", "Round Numbers to Nearest 10 and 100", "Even and Odd Numbers", "Skip Count to Find Patterns"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add 2-Digit Numbers with Regrouping", "Subtract 2-Digit Numbers with Regrouping", "Add 3-Digit Numbers Without Regrouping", "Add 3-Digit Numbers with Regrouping", "Subtract 3-Digit Numbers Without Regrouping", "Subtract 3-Digit Numbers with Regrouping", "Use Mental Strategies for Addition", "Use Mental Strategies for Subtraction", "Estimate Sums and Differences", "Solve One-Step Word Problems", "Solve Two-Step Word Problems"]},
-    {name:"Multiplication Introduction", emoji:"✖️", lessons:["Understand Equal Groups", "Write Repeated Addition as Multiplication", "Build Arrays", "Use Skip Counting to Multiply", "Understand Multiplication as Comparison"]},
-    {name:"Fractions", emoji:"🍕", lessons:["Understand Halves", "Understand Thirds and Fourths", "Identify Fractions of a Whole", "Identify Fractions of a Set", "Compare Fractions Using Models"]},
-    {name:"Measurement", emoji:"📏", lessons:["Measure Length in Centimeters", "Measure Length in Meters", "Estimate Lengths", "Solve Problems Involving Lengths", "Tell Time to the Nearest 5 Minutes", "Count Coins and Bills Up to $1", "Solve Word Problems on Money"]},
-    {name:"Data and Graphs", emoji:"📊", lessons:["Read and Create Picture Graphs with Scale", "Read and Create Bar Graphs", "Generate Measurement Data", "Analyze Line Plots"]},
-    {name:"Geometry", emoji:"🔺", lessons:["Identify and Describe Polygons", "Identify Quadrilaterals", "Partition Rectangles into Rows and Columns", "Find Equal Shares", "Partition Shapes into Halves, Thirds, and Fourths"]},
-  ],
-  3: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write 4-Digit Numbers", "Write 4-digit numbers in Order", "Identify Places, Place Values, and Face Values in 4-Digit Numbers", "Write 4-digit numbers in their expanded form and standard form", "Compare 4-Digit Numbers", "Order 4-Digit Numbers", "Round numbers up to 4 digits to the nearest 10 using a number line", "Round numbers up to 4-digits to the nearest 10 using place value", "Round numbers up to 4 digits to the nearest 100", "Skip Counting numbers up to 4 digits by 10, 100, and 1000"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add numbers upto 4 digits without grouping", "Add numbers upto 4-digits with regrouping", "Subtract numbers upto 4 digits without grouping", "Subtract numbers upto 4-digits with regrouping", "Use the relationship between addition and subtraction", "Understand Properties of addition and subtraction", "Use Mental strategies to add numbers up to 4 digits", "Use Mental strategies to subtract numbers up to 4 digits", "Estimate Sum of Numbers up to 4 digits", "Estimate Difference of Numbers up to 4 digits", "Solve 1-step word problems on addition", "Solve 1-step word problems on subtraction", "Solve 2-step word problems addition and subtraction"]},
-    {name:"Fractions", emoji:"🍕", lessons:["Understand Unit Fractions", "Understand the Fractions of Whole", "Plot Fractions on Number Line", "Find the Fraction of a Collection", "Compare Like Fractions", "Compare Fractions with the Same Numerator", "Recognise Equivalent Fractions Visually"]},
-    {name:"Multiplication", emoji:"✖️", lessons:["Multiply Single-Digit Numbers Using Equal Groups and Arrays", "Multiply Single-Digit Numbers Using Number Lines", "Build multiplication tables of 2, 5, and 10", "Build multiplication tables of 3 and 4", "Understand the zero, identity, and commutative, properties of multiplication", "Understand the distributive property of multiplication", "Build multiplication tables of 6 and 8", "Build multiplication tables of 7 and 9", "Multiply single-digit numbers by multiples of 10 using the associative property", "Solve word problems on multiplication based on equal groups and arrays"]},
-    {name:"Geometry", emoji:"📐", lessons:["Understand the Properties of 2D Shapes", "Identify Different Types of Quadrilaterals", "Compare Types of Parallelograms"]},
-  ],
-  4: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write 5-Digit Numbers", "Read and Write 6-Digit Numbers", "Identify the Place Values in 5 and 6-digit Numbers", "Write Numbers in Expanded Form and Standard Form", "Compare Numbers up to 6 Digits", "Order Numbers up to 6 Digits", "Round Multi Digit Numbers"]},
-    {name:"Factors and Multiples", emoji:"🔷", lessons:["Interpret Rules of Divisibility of 2, 5 and 10"]},
-    {name:"Addition and Subtraction", emoji:"➕", lessons:["Add Multi-Digit Numbers Using Standard Algorithm", "Subtract Multi-Digit Numbers Using Standard Algorithm", "Add and Subtract Multi-Digit Numbers with Strategies", "Find Missing Addends Operators and Digits", "Estimate Sum of Multi-Digit Numbers by Rounding", "Estimate Difference of Multi-Digit Numbers by Rounding", "Solve One Step Word Problems on Addition", "Solve One Step Word Problems on Subtraction", "Solve Multi-Step Word Problems on Addition and Subtraction of multi-digit numbers"]},
-    {name:"Decimals", emoji:"🔢", lessons:["Express Tenths as Decimals", "Express Hundredths as Decimals", "Convert Decimals to Fractions", "Represent Decimals on a Number Line", "Understand Basic Comparison of Decimals", "Compare and Order Decimals", "Add Tenths and Hundredths", "Subtract Tenths and Hundredths", "Solve Contextual Problems on Addition and Subtraction of Decimals"]},
-  ],
-  5: [
-    {name:"Number System", emoji:"🔢", lessons:["Read and Write Numbers Upto 9-Digits", "Identify the place value in Numbers up to 9-digits", "Relate Place Value Positions", "Write the Standard and Expanded Form of Numbers Up To 9 Digits", "Use exponents to show powers of 10", "Expand Numbers in Powers of 10"]},
-    {name:"Number Operations", emoji:"🔣", lessons:["Understand Commutative Property and Properties of Zero and One", "Apply Associative and Distributive Properties", "Multiply by Multiples of 10", "Estimate the Products", "Multiply Multi-Digit Numbers by Single Digits", "Multiply Multi-Digit Numbers by Two and Three-digit Numbers", "Relate Multiplication and Division to find Quotients", "Divide 4-digit numbers by 2-digit numbers", "Estimate Quotients of Division", "Solve Word Problems Involving all 4 Operations"]},
-    {name:"Order of Operations", emoji:"📋", lessons:["Simplify Expressions with Nested Parentheses"]},
-  ],
-  6: [
-    {name:"Number and Operations", emoji:"🔢", lessons:["Use Standard Algorithm for Multidigit Division", "Understand the Meaning of Exponents", "Find Perfect Squares of Numbers upto 20"]},
-    {name:"Integers", emoji:"📉", lessons:["Understand Integers and Plot them on a Number Line", "Understand Opposites and Absolute Values of Integers", "Compare Integers", "Order Integers"]},
-    {name:"Rational Numbers", emoji:"🔀", lessons:["Understand Rational Numbers", "Plot Rational Numbers on a Number Line", "Understand Opposites and Absolute Values of Rational Numbers", "Compare Rational Numbers", "Order rational numbers"]},
-    {name:"Algebraic Equations", emoji:"🔣", lessons:["Write Equations in One Variable", "Solve Equations Using Addition and Subtraction", "Solving Equations Using Multiplication", "Solve Equations Using Division", "Interpret the Relationship between Dependent and Independent Variables Using Tables", "Graph the Relation Between Dependent and Independent Variables"]},
-    {name:"Algebraic Expressions", emoji:"🔣", lessons:["Understand Algebraic Expressions", "Write Algebraic Expressions", "Properties of Addition and Multiplication", "Simplify Expressions using Distributive Property", "Factor Algebraic Expressions"]},
-  ],
-};
+// csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data)
 
 const params = new URLSearchParams(location.search);
 const gradeParam = params.get('grade') || '3';
@@ -399,36 +374,50 @@ document.getElementById('ch-back').href = 'maths-grade-3.html?grade=' + grade;
 document.getElementById('bc-chapter').textContent = ch.name;
 document.title = ch.name + ' · ' + gradeLabel + ' — Cuemath';
 
-// Sequential progress — only the next lesson after last completed unlocks
-const FREE_LESSONS = 2; // first 2 lessons free without sign-in
+// Chapter navigator in right panel — every other chapter in this grade
+document.getElementById('rcn-title').textContent = gradeLabel + ' Chapters';
+const rcnEl = document.getElementById('rp-chapter-nav');
+chapters.forEach((c, i) => {
+  const item = document.createElement('a');
+  item.className = 'rcn-item' + (i === chIdx ? ' active' : '');
+  item.href = 'maths-grade-3-chapter.html?grade=' + grade + '&ch=' + (i + 1);
+  item.innerHTML = '<span class="rcn-num">' + (i + 1) + '</span><span class="rcn-name">' + c.name + '</span>';
+  rcnEl.appendChild(item);
+});
+
+// Everything starts open, everywhere. The first lesson a free user starts
+// (goes to the learning sheet for — whether via CONTINUE here or directly
+// from the grade page's hover dropdown) or explicitly marks complete becomes
+// the one Review lesson, site-wide, and every other lesson — in every
+// chapter, every grade — locks behind sign-in from then on.
+const GLOBAL_COMPLETE_KEY = 'cuemathGlobalCompletedLesson';
+
+function getGlobalCompleted(){
+  const raw = sessionStorage.getItem(GLOBAL_COMPLETE_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+function setGlobalCompleted(g, c, l){
+  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: g, ch: c, lesson: l}));
+}
+
+const globalCompleted = getGlobalCompleted();
 let completedLessons = new Array(ch.lessons.length).fill(false);
-completedLessons[0] = true; // demo: lesson 1 done
-let inProgressLesson = 1;   // demo: lesson 2 in progress (35%)
-
-function getNextUnlocked(){
-  const idx = completedLessons.findIndex(d => !d);
-  return idx === -1 ? ch.lessons.length : idx; // -1 means all done
+if (globalCompleted && globalCompleted.grade === grade && globalCompleted.ch === chIdx) {
+  completedLessons[globalCompleted.lesson] = true;
 }
-
-function isChapterComplete(){
-  return completedLessons.every(d => d);
-}
+let inProgressLesson = 1;
 
 function getState(i){
-  if(completedLessons[i] || isChapterComplete()) return 'done';
-  const next = getNextUnlocked();
-  if(i < next) return 'done';
-  if(i === next){
-    if(!isSignedIn && i >= FREE_LESSONS) return 'locked';
-    return 'start';
-  }
-  // Beyond next — locked regardless of sign-in status
-  return 'locked';
+  if(completedLessons[i]) return 'done';
+  if(isSignedIn) return 'start';
+  if(globalCompleted === null) return 'start'; // nobody's started a lesson anywhere yet — all open
+  return 'locked'; // the one free lesson's been used, here or elsewhere — lock the rest
 }
 
 function markComplete(i, e){
   if(e) e.stopPropagation();
   completedLessons[i] = true;
+  setGlobalCompleted(grade, chIdx, i);
   if(inProgressLesson === i) inProgressLesson = i + 1;
   buildList();
   updateHeaderProgress();
@@ -499,7 +488,9 @@ function goToReview(num, e){
   location.href = 'maths-grade-3-lesson.html?grade=' + grade + '&ch=' + (chIdx + 1) + '&lesson=' + num + '&tab=practice';
 }
 
-let isSignedIn = false;
+// Persisted so signing in once unlocks everything for the rest of the session —
+// no repeat sign-in prompts on other chapters/pages.
+let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
 
 function updateHeaderProgress(){
   const total = ch.lessons.length;
@@ -530,6 +521,7 @@ function handleAuth(){
   document.getElementById('auth-form-wrap').style.display = 'none';
   document.getElementById('auth-success').style.display = 'block';
   isSignedIn = true;
+  sessionStorage.setItem('cuemathSignedIn', '1');
   // After 1.5s close modal and rebuild list with all lessons unlocked
   setTimeout(() => {
     closeAuth();
