@@ -70,6 +70,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 
 /* Grade grid — By Grade view */
 #view-grade{scroll-margin-top:52px}
+#main-content{scroll-margin-top:52px}
 .grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:1000px){.grade-grid{grid-template-columns:repeat(2,1fr)}}
 
@@ -83,8 +84,8 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .gc-head{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:inherit}
 .gc-topics{font-size:12px;color:#78716C;line-height:1.5;margin-top:2px}
 .gc-chapters{font-size:12px;color:#78716C;line-height:1.7;margin-top:2px}
-.gc-chapters a{color:#78716C;text-decoration:none;border-bottom:1px dotted #C6C0B8}
-.gc-chapters a:hover{color:#1C1917;border-bottom-color:#F4AB52}
+.gc-chapters a{color:#1C1917;text-decoration:none;border-bottom:1px dotted #C6C0B8}
+.gc-chapters a:hover{color:#CE7E12;border-bottom-color:#CE7E12}
 .gc-sep{color:#D6D1C9;margin:0 4px}
 .gc-seeall{display:inline-block;margin-top:2px;font-size:11px;font-weight:600;color:#CE7E12;text-decoration:none}
 .gc-seeall:hover{color:#1C1917;text-decoration:underline}
@@ -302,7 +303,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
     </div>
 
     <!-- Content -->
-    <div class="main-content">
+    <div class="main-content" id="main-content">
 
       <!-- BY GRADE VIEW -->
       <div id="view-grade">
@@ -498,41 +499,23 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 
         <div class="exam-section-label">Competition Math</div>
         <div class="exam-grid">
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=kangaroo" class="exam-card">
             <div class="exam-badge badge-competition">🏆 Competition</div>
             <div class="exam-name">Math Kangaroo</div>
             <div class="exam-desc">Multiple-choice contest with playful problem styles. Great for developing lateral thinking.</div>
-            <div class="exam-meta">Grades 1–12 · 24 questions · 75 min</div>
+            <div class="exam-meta">Grades 1–8 · 56 chapters · 56 practice goals</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=amc-8" class="exam-card">
             <div class="exam-badge badge-competition">🏆 Competition</div>
             <div class="exam-name">AMC 8</div>
             <div class="exam-desc">AMC's entry-level contest. Builds problem-solving skills before AMC 10/12.</div>
-            <div class="exam-meta">Middle school · 25 questions · 40 min</div>
+            <div class="exam-meta">Grade 8 · 8 chapters · 21 practice goals</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=moems" class="exam-card">
             <div class="exam-badge badge-competition">🏆 Competition</div>
-            <div class="exam-name">AMC 10 / AMC 12</div>
-            <div class="exam-desc">Pathway to AIME and USAMO. Covers algebra, geometry, number theory, and combinatorics.</div>
-            <div class="exam-meta">High school · 30 questions · 75 min</div>
-          </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
-            <div class="exam-badge badge-competition">🏆 Competition</div>
-            <div class="exam-name">MATHCOUNTS</div>
-            <div class="exam-desc">US middle-school competition with Sprint, Target, Team, and Countdown rounds.</div>
-            <div class="exam-meta">Grades 6–8 · State + national levels</div>
-          </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
-            <div class="exam-badge badge-competition">🏆 Competition</div>
-            <div class="exam-name">IMO / RMO</div>
-            <div class="exam-desc">Olympiad-level proof-based problems. For advanced students aiming at national teams.</div>
-            <div class="exam-meta">Grades 9–12 · Proof-based</div>
-          </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
-            <div class="exam-badge badge-competition">🏆 Competition</div>
-            <div class="exam-name">Math League</div>
-            <div class="exam-desc">School-based contest focusing on speed and accuracy across grade-level topics.</div>
-            <div class="exam-meta">Grades 4–12 · Monthly rounds</div>
+            <div class="exam-name">MOEMS</div>
+            <div class="exam-desc">Math Olympiad-style mock tests for elementary problem solvers.</div>
+            <div class="exam-meta">Elementary · 2 chapters · 2 mock tests</div>
           </a>
         </div>
 
@@ -544,29 +527,59 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
             <div class="exam-desc">Digital SAT math section — algebra, advanced math, problem-solving, and data analysis.</div>
             <div class="exam-meta">Grades 10–12 · 44 questions · 70 min</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=map" class="exam-card">
             <div class="exam-badge badge-test">📝 Standardized</div>
-            <div class="exam-name">ACT Math</div>
-            <div class="exam-desc">60 questions covering pre-algebra through trigonometry. Calculator permitted.</div>
-            <div class="exam-meta">Grades 10–12 · 60 questions · 60 min</div>
+            <div class="exam-name">MAP</div>
+            <div class="exam-desc">NWEA MAP Growth math assessment, used by schools nationwide to track growth.</div>
+            <div class="exam-meta">Elementary &amp; Middle · 20 chapters · 38 practice goals</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=iar" class="exam-card">
             <div class="exam-badge badge-test">📝 Standardized</div>
-            <div class="exam-name">JEE Main / Advanced</div>
-            <div class="exam-desc">India's engineering entrance. Heavy on calculus, algebra, and co-ordinate geometry.</div>
-            <div class="exam-meta">Grades 11–12 · Highly competitive</div>
+            <div class="exam-name">IAR</div>
+            <div class="exam-desc">Illinois Assessment of Readiness — state math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 48 chapters · 77 practice goals</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=aasa" class="exam-card">
             <div class="exam-badge badge-test">📝 Standardized</div>
-            <div class="exam-name">GMAT Quant</div>
-            <div class="exam-desc">Problem Solving and Data Sufficiency — arithmetic, algebra, and word problems.</div>
-            <div class="exam-meta">Graduate level · 31 questions · 62 min</div>
+            <div class="exam-name">AASA</div>
+            <div class="exam-desc">Arizona's Academic Standards Assessment — state math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 48 chapters · 77 practice goals</div>
           </a>
-          <a href="#" class="exam-card" onclick="event.preventDefault()">
+          <a href="maths-testprep-exam.html?exam=ssat" class="exam-card">
             <div class="exam-badge badge-test">📝 Standardized</div>
-            <div class="exam-name">GRE Quantitative</div>
-            <div class="exam-desc">Arithmetic, algebra, geometry, and data analysis. Two 35-minute sections.</div>
-            <div class="exam-meta">Graduate level · 40 questions · 70 min</div>
+            <div class="exam-name">SSAT</div>
+            <div class="exam-desc">Secondary School Admission Test — math section for independent school admissions.</div>
+            <div class="exam-meta">Elementary &amp; Middle · 21 chapters · 41 practice goals</div>
+          </a>
+          <a href="maths-testprep-exam.html?exam=gmas" class="exam-card">
+            <div class="exam-badge badge-test">📝 Standardized</div>
+            <div class="exam-name">GMAS</div>
+            <div class="exam-desc">Georgia Milestones Assessment System — state math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 48 chapters · 77 practice goals</div>
+          </a>
+          <a href="maths-testprep-exam.html?exam=sba" class="exam-card">
+            <div class="exam-badge badge-test">📝 Standardized</div>
+            <div class="exam-name">SBA</div>
+            <div class="exam-desc">Smarter Balanced Assessment — state consortium math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 48 chapters · 76 practice goals</div>
+          </a>
+          <a href="maths-testprep-exam.html?exam=staar" class="exam-card">
+            <div class="exam-badge badge-test">📝 Standardized</div>
+            <div class="exam-name">STAAR</div>
+            <div class="exam-desc">Texas state math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 51 chapters · 80 practice goals</div>
+          </a>
+          <a href="maths-testprep-exam.html?exam=njsla" class="exam-card">
+            <div class="exam-badge badge-test">📝 Standardized</div>
+            <div class="exam-name">NJSLA</div>
+            <div class="exam-desc">New Jersey Student Learning Assessment — state math assessment.</div>
+            <div class="exam-meta">Grades 3–7 · 48 chapters · 77 practice goals</div>
+          </a>
+          <a href="maths-testprep-exam.html?exam=cogat" class="exam-card">
+            <div class="exam-badge badge-test">📝 Standardized</div>
+            <div class="exam-name">CogAT</div>
+            <div class="exam-desc">Cognitive Abilities Test — used for gifted/talented program screening, math battery.</div>
+            <div class="exam-meta">Grades 1–7 · 50 chapters · 86 practice goals</div>
           </a>
         </div>
 
@@ -678,9 +691,12 @@ function setView(v) {
   document.getElementById('view-exam').style.display = v==='exam' ? 'block' : 'none';
 }
 
-// Scroll hero "Explore Curriculum" button down to the grade grid
+// Scroll hero "Explore Curriculum" button down to the grade grid — forces the
+// By Grade tab active first, so this works even if a different view (e.g. By
+// Exam, via ?view=exam) was showing when the button was clicked.
 function scrollToGrades() {
-  document.getElementById('view-grade').scrollIntoView({behavior:'smooth', block:'start'});
+  setView('grade');
+  document.getElementById('main-content').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // "See how Cuemath works" video modal
@@ -698,6 +714,16 @@ document.getElementById('video-modal-overlay').addEventListener('click', functio
 
 // Init
 renderCurriculum('us');
+
+// Deep-link support — e.g. maths.html?view=exam opens straight to the By Exam
+// tab. This is standing in for a real /maths/test-prep/ hub page for now.
+// Scrolls straight to the content, skipping past the hero — landing here from
+// elsewhere should show the tab's content, not the top of the homepage.
+const _initView = new URLSearchParams(location.search).get('view');
+if (_initView === 'exam' || _initView === 'topic' || _initView === 'grade') {
+  setView(_initView);
+  document.getElementById('main-content').scrollIntoView({behavior:'smooth', block:'start'});
+}
 </script>
 </body>
 </html>

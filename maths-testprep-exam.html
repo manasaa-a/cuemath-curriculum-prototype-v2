@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<!--
+  cuemath.com/maths/test-prep/{exam}/[{band}/]
+  Test-prep exam landing page — chapter list (chapter -> block -> worksheet)
+  Same visual pattern as maths-grade-3.html's hover-expand chapter rows.
+  Data + URLs are a PROPOSAL — see testprep-data.js and the
+  "Test Prep URL Structure — DRAFT for DK discussion" Google Sheet.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Prep — Cuemath</title>
+<style>
+@font-face{font-family:'Athletics';src:url('fonts/Athletics-Bold.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Athletics';src:url('fonts/Athletics-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'UntitledSans';src:url('fonts/UntitledSans-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'UntitledSans';src:url('fonts/UntitledSans-Medium.woff2') format('woff2');font-weight:500}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:400;font-size:15px;line-height:1.5;color:#1C1917;background:#F5F0E8}
+.shell{display:grid;grid-template-columns:64px 1fr 260px;height:100vh;overflow:hidden}
+/* LEFT NAV */
+.leftnav{background:#1C1917;display:flex;flex-direction:column;align-items:center;padding:12px 0;z-index:10}
+.ln-avatar{width:40px;height:40px;border-radius:50%;background:#E8995A;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:24px;flex-shrink:0}
+.ln-items{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.ln-item{width:48px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;cursor:pointer;border-radius:10px}
+.ln-item:hover{background:rgba(255,255,255,.08)}
+.ln-item.active{background:rgba(255,255,255,.1)}
+.ln-icon svg{width:22px;height:22px;opacity:.45}
+.ln-item.active .ln-icon svg,.ln-item:hover .ln-icon svg{opacity:.9}
+.ln-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.4)}
+.ln-item.active .ln-label,.ln-item:hover .ln-label{color:rgba(255,255,255,.8)}
+.ln-logo{margin-top:auto;margin-bottom:8px;font-family:'Athletics';font-size:8px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase}
+/* MAIN */
+.main{overflow-y:auto;display:flex;flex-direction:column;min-height:0;background:#F5F0E8}
+.topbar{background:#F5F0E8;border-bottom:1px solid rgba(0,0,0,.08);padding:0 24px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:5}
+.topbar-bc{font-size:13px;color:#97948E;display:flex;align-items:center;gap:6px}
+.topbar-bc a{color:#97948E;text-decoration:none}
+.topbar-bc a:hover{color:#1C1917}
+.topbar-bc .cur{color:#1C1917;font-weight:500}
+.grade-wrap{padding:20px 24px;flex:1}
+/* Band switcher — same visual as grade-switcher on maths-grade-3.html */
+.grade-switcher{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.grade-switcher::-webkit-scrollbar{display:none}
+.gs-pill{padding:5px 14px;border:1px solid rgba(0,0,0,.12);background:none;font-family:'UntitledSans';font-size:12px;font-weight:500;color:#97948E;cursor:pointer;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.gs-pill:hover{border-color:#1C1917;color:#1C1917}
+.gs-pill.active{background:#1C1917;color:#fff;border-color:#1C1917}
+/* Exam header */
+.grade-section-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.grade-section-title{font-family:'Athletics';font-size:17px;font-weight:700;color:#1C1917}
+.grade-section-pct{font-size:12px;color:#97948E;margin-left:auto}
+.mastery-track{height:3px;background:#E5DDD4;margin-bottom:20px}
+.mastery-fill{height:100%;background:#1C1917;width:0}
+
+/* Chapter list — full-width rows, hover-expand in normal flow (same pattern as maths-grade-3.html) */
+.chapter-list{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.ch-row{background:#fff;border:1px solid rgba(0,0,0,.07);transition:box-shadow .12s}
+.ch-row:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.ch-row-header{display:flex;align-items:center;gap:14px;padding:13px 16px}
+.ch-row-num{font-size:12px;font-weight:600;color:#97948E;width:18px;flex-shrink:0}
+.ch-row-icon{width:38px;height:38px;border-radius:9px;background:#F5F0E8;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.ch-row-name{font-family:'Athletics';font-size:14px;font-weight:700;color:#1C1917;flex:1;min-width:0;display:flex;align-items:center;gap:6px}
+.ch-row-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ch-row-count{font-size:11px;color:#97948E;white-space:nowrap}
+.ch-row-chevron{font-size:11px;color:#97948E;transition:transform .15s ease;flex-shrink:0}
+.ch-row:hover .ch-row-chevron{transform:rotate(180deg);color:#1C1917}
+.ch-row-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+.ch-row:hover .ch-row-body{grid-template-rows:1fr}
+.ch-row-body-inner{overflow:hidden}
+.ch-row-lessons{display:grid;grid-template-columns:1fr;gap:2px 12px;padding:2px 16px 14px 68px;border-top:1px solid #F5F0E8;margin-top:2px}
+.ch-row-lessons a{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 8px;font-size:12px;color:#1C1917;text-decoration:none;border-radius:4px;line-height:1.35}
+.ch-row-lessons a:hover{background:#FAF1E6;color:#CE7E12}
+.ch-row-lessons a .block-tag{font-size:10px;color:#B0AAA5;flex-shrink:0;text-transform:uppercase;letter-spacing:.04em}
+.ch-row-lessons a:hover .block-tag{color:#CE7E12}
+.ch-row-lessons .block-locked{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 8px;font-size:12px;color:#B0AAA5;line-height:1.35}
+.ch-row-lessons .block-signin-btn{background:none;border:1px solid #F4AB52;color:#CE7E12;font-family:'UntitledSans';font-size:10px;font-weight:600;padding:3px 8px;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.ch-row-lessons .block-signin-btn:hover{background:#F4AB52;color:#1C1917}
+
+/* SIGN-IN MODAL — ported from maths-grade-3-chapter.html for consistency */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
+.auth-overlay.open{display:flex}
+.auth-box{background:#fff;width:420px;max-width:92vw;padding:32px 32px 28px;position:relative}
+.auth-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#97948E}
+.auth-close:hover{color:#1C1917}
+.auth-logo{font-family:'Athletics';font-size:16px;font-weight:700;letter-spacing:.06em;color:#1C1917;margin-bottom:20px}
+.auth-logo span{color:#F4AB52}
+.auth-tabs{display:flex;border-bottom:2px solid #F5F0E8;margin-bottom:24px}
+.auth-tab{flex:1;background:none;border:none;padding:10px 0;font-family:'UntitledSans';font-size:13px;font-weight:500;color:#97948E;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.auth-tab.active{color:#1C1917;border-bottom-color:#F4AB52;font-weight:600}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+.auth-field{margin-bottom:14px}
+.auth-label{font-size:11px;font-weight:600;color:#97948E;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
+.auth-input{width:100%;border:1.5px solid #E5DDD4;padding:10px 12px;font-family:'UntitledSans';font-size:14px;color:#1C1917;outline:none;background:#fff}
+.auth-input:focus{border-color:#F4AB52}
+.auth-btn{width:100%;background:#F4AB52;color:#1C1917;border:none;padding:13px;font-family:'UntitledSans';font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.04em}
+.auth-btn:hover{background:#CE7E12}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#C6C0B8;font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#F5F0E8}
+.auth-google{width:100%;background:#fff;border:1.5px solid #E5DDD4;padding:11px;font-family:'UntitledSans';font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#1C1917}
+.auth-google:hover{border-color:#1C1917;background:#FAFAF8}
+.auth-google svg{width:18px;height:18px;flex-shrink:0}
+.auth-forgot{font-size:12px;color:#97948E;text-align:right;display:block;margin-top:6px;cursor:pointer}
+.auth-forgot:hover{color:#1C1917}
+.auth-success{text-align:center;padding:20px 0}
+.auth-success-icon{font-size:44px;margin-bottom:12px}
+.auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
+.auth-success p{font-size:13px;color:#97948E;line-height:1.5}
+
+/* App download CTA — same component as maths.html */
+.app-download-strip{background:#1C1917;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.app-dl-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.app-dl-icon{font-size:24px;flex-shrink:0}
+.app-dl-title{font-family:'Athletics';font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.app-dl-sub{font-size:11px;color:rgba(255,255,255,.55);line-height:1.4}
+.app-dl-btns{display:flex;gap:8px;flex-shrink:0}
+.app-dl-btn{display:flex;align-items:center;gap:5px;background:#F4AB52;color:#1C1917;padding:7px 14px;font-family:'UntitledSans';font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+.app-dl-btn:hover{background:#CE7E12;color:#fff}
+
+/* RIGHT PANEL */
+.rightpanel{background:#F5F0E8;border-left:1px solid rgba(0,0,0,.08);overflow-y:auto}
+.rp-inner{padding:14px;display:flex;flex-direction:column;gap:10px}
+.rp-stats-row{display:flex;background:#fff;border:1px solid rgba(0,0,0,.07)}
+.rp-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;border-right:1px solid rgba(0,0,0,.06)}
+.rp-stat:last-child{border-right:none}
+.rp-stat-icon{width:30px;height:30px;border-radius:50%;background:#F5F0E8;display:flex;align-items:center;justify-content:center}
+.rp-stat-icon svg{width:15px;height:15px}
+.rp-stat-points{color:#7C3AED}
+.rp-stat-streak{color:#16A34A}
+.rp-stat-sparks{color:#E89040}
+.rp-stat-label{font-size:9px;color:#97948E;text-transform:uppercase;letter-spacing:.05em}
+.rp-stat-value{font-family:'Athletics';font-size:14px;font-weight:700;color:#1C1917}
+.rp-divider{height:1px;background:rgba(0,0,0,.07)}
+.rp-exam-nav{background:#fff;border:1px solid rgba(0,0,0,.07)}
+.ren-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#97948E;padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.07)}
+.ren-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid rgba(0,0,0,.05);font-size:12px;color:#97948E;cursor:pointer;text-decoration:none}
+.ren-item:hover{background:#FAF1E6;color:#1C1917}
+.ren-item.active{color:#1C1917;font-weight:500;background:#FEF3E2}
+.ren-item:last-child{border-bottom:none}
+.rp-cta-inner{background:linear-gradient(135deg,#EC9A32 0%,#F6BE7C 50%,#D994F8 100%);padding:16px}
+.rp-cta-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#7E4800;margin-bottom:5px;display:block}
+.rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
+.rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
+.rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
+@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
+@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="leftnav">
+    <div class="ln-avatar">😊</div>
+    <div class="ln-items">
+      <div class="ln-item">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <span class="ln-label">School</span>
+      </div>
+      <div class="ln-item active">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <span class="ln-label">Test</span>
+      </div>
+      <div class="ln-item">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <span class="ln-label">Enrich</span>
+      </div>
+    </div>
+    <div class="ln-logo">Cuemath</div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-bc">
+        <a href="maths.html">Maths</a><span>›</span>
+        <a href="maths.html?view=exam">Test Prep</a><span>›</span>
+        <span class="cur" id="bc-exam-label">Exam</span>
+      </div>
+    </div>
+    <div class="grade-wrap">
+      <div class="grade-switcher" id="band-switcher" style="display:none"></div>
+      <div class="grade-section-header">
+        <span style="font-size:18px" id="exam-emoji">📝</span>
+        <span class="grade-section-title" id="exam-title">Exam</span>
+        <span class="grade-section-pct" id="exam-count"></span>
+      </div>
+      <div class="mastery-track"><div class="mastery-fill"></div></div>
+      <div class="chapter-list" id="chapter-list"></div>
+
+      <!-- App download CTA — same component as maths.html / maths-grade-3.html -->
+      <div class="app-download-strip">
+        <div class="app-dl-left">
+          <span class="app-dl-icon">📱</span>
+          <div>
+            <div class="app-dl-title">Take learning further with the Cuemath app</div>
+            <div class="app-dl-sub">Practice, games &amp; progress tracking, all in one place.</div>
+          </div>
+        </div>
+        <div class="app-dl-btns">
+          <a class="app-dl-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="app-dl-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rightpanel">
+    <div class="rp-inner">
+      <div class="rp-stats-row">
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <div class="rp-stat-label">Points</div>
+          <div class="rp-stat-value">1230</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
+          <div class="rp-stat-label">Streak</div>
+          <div class="rp-stat-value">13</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <div class="rp-stat-label">Sparks</div>
+          <div class="rp-stat-value">3</div>
+        </div>
+      </div>
+      <div class="rp-divider"></div>
+      <div class="rp-exam-nav" id="rp-exam-nav">
+        <div class="ren-title">Other Exams</div>
+        <!-- populated by JS -->
+      </div>
+      <div class="rp-divider"></div>
+      <div class="rp-cta-inner">
+        <span class="rp-cta-tag">1:1 live tutoring</span>
+        <div class="rp-cta-title">Get exam-ready with a personal tutor</div>
+        <div class="rp-cta-sub" id="rp-cta-sub">Live sessions, personalised to your exam prep. Expert-led.</div>
+        <button class="rp-cta-btn">Book a free class</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN-IN MODAL — ported from maths-grade-3-chapter.html -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">×</button>
+    <div class="auth-logo">Cue<span>math</span></div>
+
+    <div id="auth-success" class="auth-success" style="display:none">
+      <div class="auth-success-icon">🎉</div>
+      <h3>You're in!</h3>
+      <p>All worksheets are now unlocked.<br>Keep practicing!</p>
+    </div>
+
+    <div id="auth-form-wrap">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign in</button>
+        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign up free</button>
+      </div>
+
+      <div class="auth-panel active" id="auth-signin">
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" type="email" placeholder="you@email.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" placeholder="••••••••">
+          <span class="auth-forgot">Forgot password?</span>
+        </div>
+        <button class="auth-btn" onclick="handleAuth()">Sign in</button>
+        <div class="auth-divider">or</div>
+        <button class="auth-google" onclick="handleAuth()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <div class="auth-panel" id="auth-signup">
+        <div class="auth-field">
+          <label class="auth-label">Full name</label>
+          <input class="auth-input" type="text" placeholder="Your name">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" type="email" placeholder="you@email.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" placeholder="Create a password">
+        </div>
+        <button class="auth-btn" onclick="handleAuth()">Create free account</button>
+        <div class="auth-divider">or</div>
+        <button class="auth-google" onclick="handleAuth()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="testprep-data.js"></script>
+<script>
+// testPrepData comes from testprep-data.js (proposal — see the DRAFT sheet linked there)
+
+const params = new URLSearchParams(location.search);
+const examSlug = params.get('exam') || 'kangaroo';
+const exam = testPrepData[examSlug];
+
+let currentBandIdx = 0;
+const initBandSlug = params.get('band');
+if (exam && initBandSlug) {
+  const idx = exam.bands.findIndex(b => b.slug === initBandSlug);
+  if (idx !== -1) currentBandIdx = idx;
+}
+
+// Right panel — jump to any other exam
+const renEl = document.getElementById('rp-exam-nav');
+Object.keys(testPrepData).forEach(slug => {
+  const item = document.createElement('a');
+  item.className = 'ren-item' + (slug === examSlug ? ' active' : '');
+  item.href = 'maths-testprep-exam.html?exam=' + slug;
+  item.textContent = testPrepData[slug].name;
+  renEl.appendChild(item);
+});
+
+function chapterIcon(chapter) {
+  const hasTest = chapter.blocks.some(b => b.type === 'TESTS');
+  return hasTest ? '🧪' : '📄';
+}
+
+// ── One-free-then-sign-in gating (test-prep pool — separate from curriculum's
+// cuemathGlobalCompletedLesson; same mechanic, different counter — see report).
+// Everything starts open, everywhere. The first worksheet a free user opens
+// (any exam, any block — recorded by maths-testprep-worksheet.html on load)
+// becomes the one open/reviewable block site-wide; every other block, in
+// every exam, then locks behind sign-in — exactly like the curriculum chapter
+// page's getState().
+const TESTPREP_GLOBAL_KEY = 'cuemathGlobalCompletedTestPrepWorksheet';
+// Shared with curriculum — signing in anywhere unlocks both areas at once.
+let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
+
+function getGlobalTestPrepCompleted() {
+  const raw = sessionStorage.getItem(TESTPREP_GLOBAL_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+
+function getBlockState(chapterName, blockName) {
+  const claim = getGlobalTestPrepCompleted();
+  if (claim && claim.exam === examSlug && claim.chapter === chapterName && claim.block === blockName) return 'done';
+  if (isSignedIn) return 'open';
+  if (claim === null) return 'open'; // nobody's opened a worksheet anywhere yet
+  return 'locked';
+}
+
+function loadBand(idx) {
+  currentBandIdx = idx;
+  const band = exam.bands[idx];
+  document.querySelectorAll('.gs-pill').forEach(p => p.classList.toggle('active', +p.dataset.idx === idx));
+
+  const chapters = band.chapters;
+  const totalBlocks = chapters.reduce((sum, c) => sum + c.blocks.length, 0);
+  document.getElementById('exam-count').textContent = `${chapters.length} chapters · ${totalBlocks} practice goals`;
+
+  const list = document.getElementById('chapter-list');
+  list.innerHTML = chapters.map((ch, i) => {
+    const blockLinks = ch.blocks.map(block => {
+      const wsCount = block.worksheets.length;
+      const tag = block.type === 'TESTS' ? 'Mock test' : (wsCount > 1 ? wsCount + ' parts' : 'Practice');
+      const state = getBlockState(ch.name, block.name);
+      if (state === 'locked') {
+        return `<div class="block-locked">${block.name}<button class="block-signin-btn" onclick="event.stopPropagation();openSignInPrompt()">Sign in free</button></div>`;
+      }
+      const doneTag = state === 'done' ? 'Reviewed' : tag;
+      const href = `maths-testprep-worksheet.html?exam=${examSlug}&chapter=${encodeURIComponent(ch.name)}&block=${encodeURIComponent(block.name)}`;
+      return `<a href="${href}" onclick="event.stopPropagation()">${block.name}<span class="block-tag">${doneTag}</span></a>`;
+    }).join('');
+    return `
+    <div class="ch-row" id="ch-${i+1}">
+      <div class="ch-row-header">
+        <span class="ch-row-num">${i+1}</span>
+        <span class="ch-row-icon">${chapterIcon(ch)}</span>
+        <span class="ch-row-name">${ch.name}</span>
+        <span class="ch-row-meta">
+          <span class="ch-row-count">${ch.blocks.length} goal${ch.blocks.length===1?'':'s'}</span>
+        </span>
+        <span class="ch-row-chevron">⌄</span>
+      </div>
+      <div class="ch-row-body">
+        <div class="ch-row-body-inner">
+          <div class="ch-row-lessons">${blockLinks}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openSignInPrompt(){
+  document.getElementById('auth-overlay').classList.add('open');
+}
+function closeAuth(){
+  document.getElementById('auth-overlay').classList.remove('open');
+}
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
+  document.getElementById('auth-signin').classList.toggle('active', tab==='signin');
+  document.getElementById('auth-signup').classList.toggle('active', tab==='signup');
+}
+function handleAuth(){
+  document.getElementById('auth-form-wrap').style.display = 'none';
+  document.getElementById('auth-success').style.display = 'block';
+  isSignedIn = true;
+  sessionStorage.setItem('cuemathSignedIn', '1');
+  // After 1.5s close modal and rebuild the list with everything unlocked —
+  // same timing/behaviour as maths-grade-3-chapter.html.
+  setTimeout(() => {
+    closeAuth();
+    document.getElementById('auth-form-wrap').style.display = 'block';
+    document.getElementById('auth-success').style.display = 'none';
+    loadBand(currentBandIdx);
+  }, 1500);
+}
+document.getElementById('auth-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeAuth();
+});
+
+function init() {
+  if (!exam) {
+    document.getElementById('exam-title').textContent = 'Exam not found';
+    document.getElementById('chapter-list').innerHTML = '';
+    return;
+  }
+  document.getElementById('bc-exam-label').textContent = exam.name;
+  document.getElementById('exam-title').textContent = exam.name;
+  document.title = exam.name + ' Test Prep — Cuemath';
+  document.getElementById('rp-cta-sub').textContent = `Live sessions, personalised to your ${exam.name} prep. Expert-led.`;
+
+  const switcher = document.getElementById('band-switcher');
+  if (exam.hasBands && exam.bands.length > 1) {
+    switcher.style.display = 'flex';
+    switcher.innerHTML = exam.bands.map((b, i) =>
+      `<button class="gs-pill${i===currentBandIdx?' active':''}" data-idx="${i}" onclick="loadBand(${i})">${b.label}</button>`
+    ).join('');
+  } else {
+    switcher.style.display = 'none';
+  }
+
+  loadBand(currentBandIdx);
+}
+
+init();
+</script>
+</body>
+</html>

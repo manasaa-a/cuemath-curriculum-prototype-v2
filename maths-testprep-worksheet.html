@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--
+  Static visual reference for a Learnosity-rendered test-prep worksheet.
+  Not wired to real Learnosity — one representative sheet (5 sample
+  questions) reused regardless of which chapter/block link brought you
+  here, to demonstrate the visual pattern only. Based on 5 real
+  screenshots Manasa shared; content/wording below is taken verbatim
+  from those samples, not invented.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worksheet Preview — Cuemath</title>
+<style>
+@font-face{font-family:'Athletics';src:url('fonts/Athletics-Bold.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Athletics';src:url('fonts/Athletics-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'UntitledSans';src:url('fonts/UntitledSans-Regular.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'UntitledSans';src:url('fonts/UntitledSans-Medium.woff2') format('woff2');font-weight:500}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:400;font-size:15px;line-height:1.5;color:#1C1917;background:#F5F0E8}
+.shell{display:grid;grid-template-columns:64px 1fr 260px;height:100vh;overflow:hidden}
+/* LEFT NAV */
+.leftnav{background:#1C1917;display:flex;flex-direction:column;align-items:center;padding:12px 0;z-index:10}
+.ln-avatar{width:40px;height:40px;border-radius:50%;background:#E8995A;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:24px;flex-shrink:0}
+.ln-items{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.ln-item{width:48px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;cursor:pointer;border-radius:10px}
+.ln-item.active{background:rgba(255,255,255,.1)}
+.ln-icon svg{width:22px;height:22px;opacity:.45}
+.ln-item.active .ln-icon svg{opacity:.9}
+.ln-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.4)}
+.ln-item.active .ln-label{color:rgba(255,255,255,.8)}
+.ln-logo{margin-top:auto;margin-bottom:8px;font-family:'Athletics';font-size:8px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase}
+/* MAIN */
+.main{overflow-y:auto;display:flex;flex-direction:column;min-height:0;background:#F5F0E8}
+.topbar{background:#F5F0E8;border-bottom:1px solid rgba(0,0,0,.08);padding:0 24px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:5}
+.topbar-bc{font-size:13px;color:#97948E;display:flex;align-items:center;gap:6px}
+.topbar-bc a{color:#97948E;text-decoration:none}
+.topbar-bc a:hover{color:#1C1917}
+.topbar-bc .cur{color:#1C1917;font-weight:500}
+
+.worksheet-wrap{padding:20px 24px;flex:1;max-width:620px;margin:0 auto;width:100%}
+
+/* Question number pill nav — cream/gold, black top border */
+.q-nav{background:#F5F0E8;border-top:2px solid #1C1917;border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;gap:8px;padding:12px 4px;margin:0 -24px 24px;padding-left:24px;padding-right:24px}
+.q-badge{width:32px;height:32px;border-radius:50%;background:#E8E2D8;color:#97948E;display:flex;align-items:center;justify-content:center;font-family:'Athletics';font-size:13px;font-weight:700;cursor:pointer;border:none;flex-shrink:0;transition:background .12s,color .12s}
+.q-badge:hover{background:#EDD5BE}
+.q-badge.active{background:#F4AB52;color:#1C1917}
+
+/* Question card */
+.q-card{background:#F5F0E8;border:1.5px solid #EDD5BE;padding:24px;margin-bottom:20px}
+.q-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.q-num-badge{width:28px;height:28px;border-radius:7px;background:#F4AB52;color:#1C1917;display:flex;align-items:center;justify-content:center;font-family:'Athletics';font-size:13px;font-weight:700;flex-shrink:0}
+.q-text{font-size:15px;color:#1C1917;line-height:1.55;padding-top:2px}
+
+/* MCQ options */
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-option{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid rgba(0,0,0,.1);padding:11px 14px}
+.q-option-letter{width:26px;height:26px;border-radius:5px;border:1.5px solid #C6C0B8;display:flex;align-items:center;justify-content:center;font-family:'Athletics';font-size:12px;font-weight:700;color:#78716C;flex-shrink:0}
+.q-option-text{font-size:14px;color:#1C1917;flex:1}
+.q-option{cursor:pointer;transition:background .1s,border-color .1s}
+.q-option:hover{border-color:#C6C0B8}
+.q-option.selected{background:#FAF1E6;border-color:#F4AB52}
+.q-option.selected .q-option-letter{background:#F4AB52;border-color:#F4AB52;color:#1C1917}
+.q-option.correct{background:#FEF9E7;border-color:#F4D35E;cursor:default}
+.q-option.correct .q-option-letter{background:#F4AB52;border-color:#F4AB52;color:#1C1917}
+.q-option.incorrect{background:#FBEAEA;border-color:#E39A9A;cursor:default}
+.q-option.incorrect .q-option-letter{background:#D94F4F;border-color:#D94F4F;color:#fff}
+.q-option.submitted{cursor:default}
+.q-option-check{width:18px;height:18px;border-radius:50%;background:#3B9E6B;display:none;align-items:center;justify-content:center;flex-shrink:0}
+.q-option.correct .q-option-check{display:flex}
+.q-option-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.q-option-x{width:18px;height:18px;border-radius:50%;background:#D94F4F;display:none;align-items:center;justify-content:center;flex-shrink:0}
+.q-option.incorrect .q-option-x{display:flex}
+.q-option-x svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round}
+
+/* Fill-in-the-blank */
+.q-blanks{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.q-blank-group{display:flex;align-items:center;gap:6px}
+.q-input{width:90px;height:42px;border:1.5px solid #C6C0B8;background:#fff;border-radius:4px;font-family:'UntitledSans';font-size:14px;color:#1C1917;padding:0 10px}
+.q-input:focus{outline:none;border-color:#F4AB52}
+.q-blank-suffix{font-size:13px;color:#78716C;font-weight:500}
+.q-answers-box{background:#fff;border:1px solid rgba(0,0,0,.08);padding:12px 14px;margin-top:14px}
+.q-answers-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#97948E;margin-bottom:8px}
+.q-answers-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.q-answer-chip{display:flex;align-items:center;gap:6px}
+.q-answer-num{width:26px;height:26px;border-radius:5px;background:#EDF7F2;border:1.5px solid #A0CEBB;color:#2D6B4F;display:flex;align-items:center;justify-content:center;font-family:'Athletics';font-size:12px;font-weight:700}
+.q-answer-suffix{font-size:12px;color:#78716C}
+
+/* Check Answer / Submit */
+.q-check-btn{background:#1C1917;color:#fff;border:none;padding:10px 20px;font-family:'UntitledSans';font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;margin-top:4px}
+.q-check-btn:hover{background:#333}
+.q-check-btn:disabled{background:#E5DDD4;color:#B0AAA5;cursor:not-allowed}
+.q-submitted-tag{font-size:11px;color:#97948E;margin-top:4px;display:inline-block}
+
+.disclaimer{font-size:11px;color:#B0AAA5;text-align:center;margin-top:12px;line-height:1.5}
+
+/* RIGHT PANEL */
+.rightpanel{background:#F5F0E8;border-left:1px solid rgba(0,0,0,.08);overflow-y:auto}
+.rp-inner{padding:14px;display:flex;flex-direction:column;gap:10px}
+.rp-cta-inner{background:linear-gradient(135deg,#EC9A32 0%,#F6BE7C 50%,#D994F8 100%);padding:16px}
+.rp-cta-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#7E4800;margin-bottom:5px;display:block}
+.rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
+.rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
+.rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
+@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
+@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="leftnav">
+    <div class="ln-avatar">😊</div>
+    <div class="ln-items">
+      <div class="ln-item">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <span class="ln-label">School</span>
+      </div>
+      <div class="ln-item active">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <span class="ln-label">Test</span>
+      </div>
+      <div class="ln-item">
+        <div class="ln-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <span class="ln-label">Enrich</span>
+      </div>
+    </div>
+    <div class="ln-logo">Cuemath</div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-bc">
+        <a href="maths.html">Maths</a><span>›</span>
+        <a href="maths.html">Test Prep</a><span>›</span>
+        <a href="#" id="bc-exam" onclick="history.back();return false">Exam</a><span>›</span>
+        <span class="cur" id="bc-block">Worksheet</span>
+      </div>
+    </div>
+
+    <div class="worksheet-wrap">
+      <div class="q-nav" id="q-nav"></div>
+      <div id="q-body"></div>
+      <div class="disclaimer">Static preview — one representative worksheet shown for every block right now, not the real Learnosity-rendered sheet for this specific topic.</div>
+    </div>
+  </div>
+
+  <div class="rightpanel">
+    <div class="rp-inner">
+      <div class="rp-cta-inner">
+        <span class="rp-cta-tag">1:1 live tutoring</span>
+        <div class="rp-cta-title">Stuck on a question?</div>
+        <div class="rp-cta-sub">A live tutor can walk through it with you, free.</div>
+        <button class="rp-cta-btn">Book a free class</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Static sample questions — verbatim from the 5 real screenshots Manasa shared.
+const questions = [
+  {
+    type: 'mcq',
+    text: 'A library received a shipment of new books on a Tuesday. On what day of the week will the 100th day after that Tuesday fall?',
+    options: [
+      { letter: 'A', text: 'Monday' },
+      { letter: 'B', text: 'Tuesday' },
+      { letter: 'C', text: 'Wednesday' },
+      { letter: 'D', text: 'Thursday', correct: true },
+      { letter: 'E', text: 'Friday' },
+    ],
+  },
+  {
+    type: 'fill',
+    text: 'Olivia has four red beads worth 3 points each and three blue beads worth 5 points each. By using one or more beads, how many different total point values can she make?',
+    blanks: [{ answer: '19' }],
+  },
+  {
+    type: 'fill',
+    text: 'Find the sum of the counting numbers from 1 to 30 inclusive. If this sum is S, find the value of S.',
+    blanks: [{ answer: '465' }],
+  },
+  {
+    type: 'fill',
+    text: 'At a fruit market, apples and bananas are sold by the piece. Two apples and three bananas cost 78¢. But three apples and two bananas cost 72¢. How much does one apple cost?',
+    blanks: [{ answer: '12', suffix: '¢' }],
+  },
+  {
+    type: 'fill',
+    text: 'A volunteer plans to finish a project by working on it for a fixed number of hours each day. Working this way, the project will take ___ weeks and ___ days to complete.',
+    blanks: [{ answer: '2', suffix: 'weeks' }, { answer: '3', suffix: 'days' }],
+  },
+];
+
+// Per-question runtime state — independent per question, not gated on one
+// global submit. Nothing is revealed until that specific question is submitted.
+questions.forEach(q => { q.selected = null; q.submitted = false; });
+
+let active = 0;
+
+function renderNav() {
+  document.getElementById('q-nav').innerHTML = questions.map((q, i) =>
+    `<button class="q-badge${i===active?' active':''}" onclick="setActive(${i})">${i+1}</button>`
+  ).join('');
+}
+
+function selectOption(qIdx, letter) {
+  const q = questions[qIdx];
+  if (q.submitted) return; // locked in after submit
+  q.selected = letter;
+  renderQuestion();
+}
+
+function submitAnswer(qIdx) {
+  const q = questions[qIdx];
+  if (q.type === 'mcq' && !q.selected) return; // must pick one first
+  q.submitted = true;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[active];
+  let inner = `
+    <div class="q-head">
+      <span class="q-num-badge">${active+1}</span>
+      <div class="q-text">${q.text}</div>
+    </div>`;
+
+  if (q.type === 'mcq') {
+    inner += `<div class="q-options">${q.options.map(o => {
+      let cls = '';
+      if (q.submitted) {
+        cls = 'submitted';
+        if (o.correct) cls += ' correct';
+        else if (o.letter === q.selected) cls += ' incorrect';
+      } else if (o.letter === q.selected) {
+        cls = 'selected';
+      }
+      const clickable = q.submitted ? '' : ` onclick="selectOption(${active},'${o.letter}')"`;
+      return `
+      <div class="q-option${cls?' '+cls:''}"${clickable}>
+        <span class="q-option-letter">${o.letter}</span>
+        <span class="q-option-text">${o.text}</span>
+        <span class="q-option-check"><svg viewBox="0 0 16 16"><polyline points="2,9 6,13 14,4"/></svg></span>
+        <span class="q-option-x"><svg viewBox="0 0 16 16"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg></span>
+      </div>`;
+    }).join('')}</div>`;
+    inner += q.submitted
+      ? `<span class="q-submitted-tag">${q.selected === questions[active].options.find(o=>o.correct).letter ? '✓ Correct!' : 'Answer submitted — correct option highlighted above.'}</span>`
+      : `<button class="q-check-btn" ${q.selected ? '' : 'disabled'} onclick="submitAnswer(${active})">Check Answer</button>`;
+  } else {
+    inner += `<div class="q-blanks">${q.blanks.map((b,i) => `
+      <div class="q-blank-group"><input class="q-input" type="text" placeholder="" id="blank-${active}-${i}">${b.suffix ? `<span class="q-blank-suffix">${b.suffix}</span>` : ''}</div>`).join('')}</div>`;
+    inner += q.submitted
+      ? `<div class="q-answers-box">
+          <div class="q-answers-label">Correct Answers</div>
+          <div class="q-answers-row">${q.blanks.map((b) => `
+            <span class="q-answer-chip">
+              <span class="q-answer-num">${b.answer}</span>
+              ${b.suffix ? `<span class="q-answer-suffix">${b.suffix}</span>` : ''}
+            </span>`).join('')}</div>
+        </div>`
+      : `<button class="q-check-btn" onclick="submitAnswer(${active})">Check Answer</button>`;
+  }
+  document.getElementById('q-body').innerHTML = `<div class="q-card">${inner}</div>`;
+}
+
+function setActive(i) {
+  active = i;
+  renderNav();
+  renderQuestion();
+}
+
+// ── One-free-then-sign-in gating (test-prep pool — separate from curriculum's
+// cuemathGlobalCompletedLesson; see report for why). Landing on a worksheet
+// unconditionally claims the free slot if nobody's claimed one yet, exactly
+// like maths-grade-3-lesson.html claims cuemathGlobalCompletedLesson on load.
+// The actual locking UI lives on maths-testprep-exam.html's block links —
+// this page just records the claim.
+const TESTPREP_GLOBAL_KEY = 'cuemathGlobalCompletedTestPrepWorksheet';
+
+// Breadcrumb context — cosmetic only, page content is static regardless
+const params = new URLSearchParams(location.search);
+const examSlug = params.get('exam');
+const chapterName = params.get('chapter');
+const blockName = params.get('block');
+if (examSlug) document.getElementById('bc-exam').textContent = examSlug.toUpperCase();
+if (blockName) document.getElementById('bc-block').textContent = blockName;
+
+if (sessionStorage.getItem(TESTPREP_GLOBAL_KEY) === null && examSlug && blockName) {
+  sessionStorage.setItem(TESTPREP_GLOBAL_KEY, JSON.stringify({ exam: examSlug, chapter: chapterName, block: blockName }));
+}
+
+renderNav();
+renderQuestion();
+</script>
+</body>
+</html>

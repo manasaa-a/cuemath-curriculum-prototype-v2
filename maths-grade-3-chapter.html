@@ -116,6 +116,16 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 /* RIGHT PANEL */
 .rightpanel{background:#F5F0E8;border-left:1px solid rgba(0,0,0,.08);overflow-y:auto}
 .rp-inner{padding:14px;display:flex;flex-direction:column;gap:10px}
+.rp-stats-row{display:flex;background:#fff;border:1px solid rgba(0,0,0,.07)}
+.rp-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;border-right:1px solid rgba(0,0,0,.06)}
+.rp-stat:last-child{border-right:none}
+.rp-stat-icon{width:30px;height:30px;border-radius:50%;background:#F5F0E8;display:flex;align-items:center;justify-content:center}
+.rp-stat-icon svg{width:15px;height:15px}
+.rp-stat-points{color:#7C3AED}
+.rp-stat-streak{color:#16A34A}
+.rp-stat-sparks{color:#E89040}
+.rp-stat-label{font-size:9px;color:#97948E;text-transform:uppercase;letter-spacing:.05em}
+.rp-stat-value{font-family:'Athletics';font-size:14px;font-weight:700;color:#1C1917}
 .rp-cta-inner{background:linear-gradient(135deg,#EC9A32 0%,#F6BE7C 50%,#D994F8 100%);padding:16px}
 .rp-cta-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#7E4800;margin-bottom:5px;display:block}
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
@@ -248,6 +258,23 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
   <div class="rightpanel">
     <div class="rp-inner">
+      <div class="rp-stats-row">
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <div class="rp-stat-label">Points</div>
+          <div class="rp-stat-value">1230</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
+          <div class="rp-stat-label">Streak</div>
+          <div class="rp-stat-value">13</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <div class="rp-stat-label">Sparks</div>
+          <div class="rp-stat-value">3</div>
+        </div>
+      </div>
       <!-- Chapter navigator within grade -->
       <div class="rp-chapter-nav" id="rp-chapter-nav">
         <div class="rcn-title" id="rcn-title">Grade 3 Chapters</div>
