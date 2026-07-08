@@ -80,6 +80,9 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .q-blank-group{display:flex;align-items:center;gap:6px}
 .q-input{width:90px;height:42px;border:1.5px solid #C6C0B8;background:#fff;border-radius:4px;font-family:'UntitledSans';font-size:14px;color:#1C1917;padding:0 10px}
 .q-input:focus{outline:none;border-color:#F4AB52}
+.q-input.correct{border-color:#3B9E6B;background:#EDF7F2;color:#2D6B4F}
+.q-input.incorrect{border-color:#D94F4F;background:#FBEAEA;color:#9A2E2E}
+.q-input:disabled{cursor:default}
 .q-blank-suffix{font-size:13px;color:#78716C;font-weight:500}
 .q-answers-box{background:#fff;border:1px solid rgba(0,0,0,.08);padding:12px 14px;margin-top:14px}
 .q-answers-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#97948E;margin-bottom:8px}
@@ -104,8 +107,20 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
-@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
-@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+@media(max-width:768px){
+  html,body{height:auto;overflow:visible}
+  .shell{display:block;height:auto}
+  .leftnav{display:none}
+  .main{overflow-y:visible}
+  .rightpanel{overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
+}
+@media(max-width:480px){
+  .worksheet-wrap{padding:16px}
+  .q-nav{flex-wrap:wrap;margin:0 -16px 20px;padding-left:16px;padding-right:16px}
+  .q-card{padding:16px}
+  .q-input{width:70px}
+  .rp-inner{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -158,6 +173,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
   </div>
 </div>
 
+<!-- Points earned here (+2/correct answer, see gamification.js) but this page
+     has no .rp-stats-row to display them — it's a bare worksheet preview,
+     not one of the pages in scope for the stats sidebar. -->
+<script src="gamification.js"></script>
 <script>
 // Static sample questions — verbatim from the 5 real screenshots Manasa shared.
 const questions = [
@@ -213,11 +232,39 @@ function selectOption(qIdx, letter) {
   renderQuestion();
 }
 
+// Points (+2 per correctly-answered question, provisional — see
+// gamification.js / Open Questions §13). Guarded by q.submitted below so a
+// re-render never re-fires this; there's also no Check-Answer button left
+// to click once submitted.
 function submitAnswer(qIdx) {
   const q = questions[qIdx];
+  if (q.submitted) return;
   if (q.type === 'mcq' && !q.selected) return; // must pick one first
+
+  let allCorrect;
+  if (q.type === 'mcq') {
+    allCorrect = q.selected === q.options.find(o => o.correct).letter;
+  } else {
+    // Real validation — read each blank's typed value and compare against
+    // its answer (trimmed, case-insensitive). Previously fill-in questions
+    // just revealed the answer unconditionally with no correctness check.
+    q.userAnswers = q.blanks.map((b, i) => {
+      const el = document.getElementById(`blank-${qIdx}-${i}`);
+      return el ? el.value.trim() : '';
+    });
+    q.blankCorrect = q.blanks.map((b, i) =>
+      q.userAnswers[i].toLowerCase() === String(b.answer).trim().toLowerCase()
+    );
+    allCorrect = q.blankCorrect.every(Boolean);
+  }
+
   q.submitted = true;
   renderQuestion();
+  if (allCorrect) cmAwardPracticePoints();
+}
+
+function escapeAttr(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
 function renderQuestion() {
@@ -251,10 +298,15 @@ function renderQuestion() {
       ? `<span class="q-submitted-tag">${q.selected === questions[active].options.find(o=>o.correct).letter ? '✓ Correct!' : 'Answer submitted — correct option highlighted above.'}</span>`
       : `<button class="q-check-btn" ${q.selected ? '' : 'disabled'} onclick="submitAnswer(${active})">Check Answer</button>`;
   } else {
-    inner += `<div class="q-blanks">${q.blanks.map((b,i) => `
-      <div class="q-blank-group"><input class="q-input" type="text" placeholder="" id="blank-${active}-${i}">${b.suffix ? `<span class="q-blank-suffix">${b.suffix}</span>` : ''}</div>`).join('')}</div>`;
+    inner += `<div class="q-blanks">${q.blanks.map((b,i) => {
+      const cls = q.submitted ? (q.blankCorrect[i] ? ' correct' : ' incorrect') : '';
+      const val = q.submitted && q.userAnswers ? escapeAttr(q.userAnswers[i]) : '';
+      const disabled = q.submitted ? 'disabled' : '';
+      return `<div class="q-blank-group"><input class="q-input${cls}" type="text" placeholder="" id="blank-${active}-${i}" value="${val}" ${disabled}>${b.suffix ? `<span class="q-blank-suffix">${b.suffix}</span>` : ''}</div>`;
+    }).join('')}</div>`;
     inner += q.submitted
-      ? `<div class="q-answers-box">
+      ? `<span class="q-submitted-tag">${q.blankCorrect.every(Boolean) ? '✓ Correct!' : 'Some answers need review — correct values shown below.'}</span>
+        <div class="q-answers-box">
           <div class="q-answers-label">Correct Answers</div>
           <div class="q-answers-row">${q.blanks.map((b) => `
             <span class="q-answer-chip">

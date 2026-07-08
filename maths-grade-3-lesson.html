@@ -179,6 +179,9 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
+.rp-cta-appbtns{display:flex;flex-direction:column;gap:6px}
+.rp-cta-appbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
+.rp-cta-appbtn:hover{background:#333;color:#fff}
 
 /* Practice tab */
 .practice-wrap{flex:1;overflow-y:auto;background:#F5F0E8;padding:24px}
@@ -284,8 +287,58 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .feature-modal-btn{display:block;width:100%;background:#1C1917;color:#fff;border:none;padding:12px;font-family:'UntitledSans';font-size:13px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none}
 .feature-modal-btn:hover{background:#333;color:#fff}
 
-@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
-@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+/* SIGN-IN MODAL — ported from maths-grade-3-chapter.html. Needed here so the
+   "out of sparks" block (see Open Questions §13) can offer sign-in for
+   unlimited practice, tying the cap back into the funnel. */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
+.auth-overlay.open{display:flex}
+.auth-box{background:#fff;width:420px;max-width:92vw;padding:32px 32px 28px;position:relative}
+.auth-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#97948E}
+.auth-close:hover{color:#1C1917}
+.auth-logo{font-family:'Athletics';font-size:16px;font-weight:700;letter-spacing:.06em;color:#1C1917;margin-bottom:20px}
+.auth-logo span{color:#F4AB52}
+.auth-tabs{display:flex;border-bottom:2px solid #F5F0E8;margin-bottom:24px}
+.auth-tab{flex:1;background:none;border:none;padding:10px 0;font-family:'UntitledSans';font-size:13px;font-weight:500;color:#97948E;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.auth-tab.active{color:#1C1917;border-bottom-color:#F4AB52;font-weight:600}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+.auth-field{margin-bottom:14px}
+.auth-label{font-size:11px;font-weight:600;color:#97948E;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
+.auth-input{width:100%;border:1.5px solid #E5DDD4;padding:10px 12px;font-family:'UntitledSans';font-size:14px;color:#1C1917;outline:none;background:#fff}
+.auth-input:focus{border-color:#F4AB52}
+.auth-btn{width:100%;background:#F4AB52;color:#1C1917;border:none;padding:13px;font-family:'UntitledSans';font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.04em}
+.auth-btn:hover{background:#CE7E12}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#C6C0B8;font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#F5F0E8}
+.auth-google{width:100%;background:#fff;border:1.5px solid #E5DDD4;padding:11px;font-family:'UntitledSans';font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#1C1917}
+.auth-google:hover{border-color:#1C1917;background:#FAFAF8}
+.auth-google svg{width:18px;height:18px;flex-shrink:0}
+.auth-forgot{font-size:12px;color:#97948E;text-align:right;display:block;margin-top:6px;cursor:pointer}
+.auth-forgot:hover{color:#1C1917}
+.auth-success{text-align:center;padding:20px 0}
+.auth-success-icon{font-size:44px;margin-bottom:12px}
+.auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
+.auth-success p{font-size:13px;color:#97948E;line-height:1.5}
+
+/* MOBILE — reflow the sidebar below the main content instead of hiding it.
+   The Learn/Practice/Resources viewer keeps its own bounded-height app-shell
+   behaviour (it's a slide viewer with absolutely-positioned slides that
+   needs a definite height to work at all) — so on mobile it still fills the
+   first screen, and the sidebar becomes reachable by scrolling the page
+   past it, rather than disappearing. */
+@media(max-width:768px){
+  html,body{height:auto;overflow:visible}
+  .shell{display:block;height:auto}
+  .leftnav{display:none}
+  .rightpanel{height:auto;overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
+  .res-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .res-grid{grid-template-columns:1fr}
+  .page-tabs{padding:0 12px}
+  .page-tab{padding:12px 14px}
+  .rp-inner{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -570,7 +623,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       <div class="resources-wrap">
         <div class="resources-inner">
           <div class="res-section" data-section="worksheets" onmouseenter="openResSectionExclusive('worksheets')">
-          <button class="res-section-title" id="restitle-worksheets">
+          <button class="res-section-title" id="restitle-worksheets" onclick="openResSectionExclusive('worksheets')">
             <span>Worksheets</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-worksheets"><div class="res-section-body-inner">
@@ -592,7 +645,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
           </div>
 
           <div class="res-section" data-section="games" onmouseenter="openResSectionExclusive('games')">
-          <button class="res-section-title" id="restitle-games">
+          <button class="res-section-title" id="restitle-games" onclick="openResSectionExclusive('games')">
             <span>Games</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-games"><div class="res-section-body-inner">
@@ -614,7 +667,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
           </div>
 
           <div class="res-section" data-section="videos" onmouseenter="openResSectionExclusive('videos')">
-          <button class="res-section-title" id="restitle-videos">
+          <button class="res-section-title" id="restitle-videos" onclick="openResSectionExclusive('videos')">
             <span>Videos</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-videos"><div class="res-section-body-inner">
@@ -630,7 +683,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
           </div>
 
           <div class="res-section" data-section="puzzles" onmouseenter="openResSectionExclusive('puzzles')">
-          <button class="res-section-title" id="restitle-puzzles">
+          <button class="res-section-title" id="restitle-puzzles" onclick="openResSectionExclusive('puzzles')">
             <span>Puzzles</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-puzzles"><div class="res-section-body-inner">
@@ -646,7 +699,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
           </div>
 
           <div class="res-section" data-section="calculators" onmouseenter="openResSectionExclusive('calculators')">
-          <button class="res-section-title" id="restitle-calculators">
+          <button class="res-section-title" id="restitle-calculators" onclick="openResSectionExclusive('calculators')">
             <span>Calculators</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-calculators"><div class="res-section-body-inner">
@@ -662,7 +715,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
           </div>
 
           <div class="res-section" data-section="formulas" onmouseenter="openResSectionExclusive('formulas')">
-          <button class="res-section-title" id="restitle-formulas">
+          <button class="res-section-title" id="restitle-formulas" onclick="openResSectionExclusive('formulas')">
             <span>Formulas</span><span class="res-section-chevron">⌄</span>
           </button>
           <div class="res-section-body" id="ressec-formulas"><div class="res-section-body-inner">
@@ -675,27 +728,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
             </a>
           </div>
           </div></div>
-          </div>
-
-          <!-- App download banner — below all resources -->
-          <div class="app-banner">
-            <div class="app-banner-left">
-              <div class="app-banner-emoji">📱</div>
-              <div>
-                <div class="app-banner-title">Get more on the Cuemath App</div>
-                <div class="app-banner-sub">Games, puzzles, and more practice, all in one place.</div>
-                <div class="app-banner-btns">
-                  <a class="app-store-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    App Store
-                  </a>
-                  <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.36.6 1.24 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
-                    Google Play
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -710,17 +742,17 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
           <div class="rp-stat-label">Points</div>
-          <div class="rp-stat-value">1230</div>
+          <div class="rp-stat-value" id="rp-points-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
           <div class="rp-stat-label">Streak</div>
-          <div class="rp-stat-value">13</div>
+          <div class="rp-stat-value" id="rp-streak-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">3</div>
         </div>
       </div>
       <div class="rp-lesson-info">
@@ -740,10 +772,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       </div>
       <div class="rp-divider"></div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">1:1 live tutoring</span>
-        <div class="rp-cta-title">Learn faster with a personal tutor</div>
-        <div class="rp-cta-sub">Live sessions, personalised to your grade.</div>
-        <button class="rp-cta-btn">Book a free class</button>
+        <span class="rp-cta-tag">Cuemath App</span>
+        <div class="rp-cta-title">Unlock More Math Tools</div>
+        <div class="rp-cta-sub">Use built-in math tools such as hints and annotations on the Cuemath app.</div>
+        <div class="rp-cta-appbtns">
+          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+        </div>
       </div>
     </div>
   </div>
@@ -807,9 +842,88 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
   </div>
 </div>
 
+<!-- Sparks-exhausted modal — proposed mechanic, see Open Questions §13.
+     Sparks are a limiting cap (not a reward): once spent, practice is
+     blocked until they refill or the user signs in for unlimited practice. -->
+<div class="modal-overlay" id="sparks-modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSparksModal()">×</button>
+    <div class="feature-modal-body">
+      <div class="feature-lock-icon">⚡</div>
+      <div class="feature-modal-title">You're out of sparks</div>
+      <div class="feature-modal-sub" id="sparks-modal-sub">Refills in --. Sign in for unlimited practice.</div>
+      <button class="feature-modal-btn" onclick="handleSparksSignIn()">Sign in for unlimited practice</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN-IN MODAL — ported from maths-grade-3-chapter.html -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">×</button>
+    <div class="auth-logo">Cue<span>math</span></div>
+
+    <div id="auth-success" class="auth-success" style="display:none">
+      <div class="auth-success-icon">🎉</div>
+      <h3>You're in!</h3>
+      <p>Unlimited practice unlocked.<br>Keep going!</p>
+    </div>
+
+    <div id="auth-form-wrap">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign in</button>
+        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign up free</button>
+      </div>
+
+      <div class="auth-panel active" id="auth-signin">
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" type="email" placeholder="you@email.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" placeholder="••••••••">
+          <span class="auth-forgot">Forgot password?</span>
+        </div>
+        <button class="auth-btn" onclick="handleAuth()">Sign in</button>
+        <div class="auth-divider">or</div>
+        <button class="auth-google" onclick="handleAuth()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <div class="auth-panel" id="auth-signup">
+        <div class="auth-field">
+          <label class="auth-label">Full name</label>
+          <input class="auth-input" type="text" placeholder="Your name">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" type="email" placeholder="you@email.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" placeholder="Create a password">
+        </div>
+        <button class="auth-btn" onclick="handleAuth()">Create free account</button>
+        <div class="auth-divider">or</div>
+        <button class="auth-google" onclick="handleAuth()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="gamification.js"></script>
 <script src="curriculum-data.js"></script>
 <script>
 // csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data).
+// gamification.js (Points/Streaks/Sparks — provisional, see Open Questions
+// §13) is also loaded here: markPracticeDone() and selectOpt() below award
+// points, and switchTab() gates entry into the Practice tab behind sparks.
 // This fixes a real bug: this file previously only had K-3 embedded, so any
 // grade 4/5/6 lesson link silently rendered Grade 3's lesson content while
 // still labeling the breadcrumb/header as "Grade 4/5/6."
@@ -827,12 +941,14 @@ const lessonName = ch.lessons[Math.min(lessonIdx, ch.lessons.length - 1)];
 const gradeLabel = grade === 'K' ? 'Kindergarten' : 'Grade ' + grade;
 
 // Starting ANY lesson (anywhere — any grade, any chapter) uses up the one free
-// lesson: it becomes the site-wide Review lesson, and every other lesson locks
+// lesson: it becomes the site-wide claimed lesson, and every other lesson locks
 // behind sign-in. Only the first-ever lesson started sets this — visiting more
-// lessons afterward doesn't change which one is "the" reviewed lesson.
+// lessons afterward doesn't change which one is "the" claimed lesson. It shows
+// as "Resume" on the chapter page until practiceDone flips true (see
+// markPracticeDone below), then "Review".
 const GLOBAL_COMPLETE_KEY = 'cuemathGlobalCompletedLesson';
 if (sessionStorage.getItem(GLOBAL_COMPLETE_KEY) === null) {
-  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: grade, ch: chIdx, lesson: lessonIdx}));
+  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: grade, ch: chIdx, lesson: lessonIdx, practiceDone: false, manuallyCompleted: false}));
 }
 
 // Update breadcrumbs + header
@@ -923,7 +1039,24 @@ function openResSectionExclusive(id){
 let cameFromLearn = true; // tracks whether the last tab was Learn, for the CW→HW transition below
 let currentTab = 'learn'; // the idle CTA below is suppressed while this is 'resources'
 
+// ── Sparks gating on Practice entry (proposed — see Open Questions §13) ──
+// Signed in = unlimited practice, no spark cost at all. Otherwise: consumes
+// one spark the first time Practice is opened THIS page load (not on every
+// re-switch back to the tab) — if none are left, block entry and show the
+// real computed refill time instead of switching tabs.
+let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
+let sparkConsumedThisPageLoad = false;
+let pendingPracticeEntry = false; // true while the sign-in modal was opened specifically to get into Practice
+
 function switchTab(tab){
+  if (tab === 'practice' && !sparkConsumedThisPageLoad) {
+    if (!isSignedIn && !cmConsumeSpark()) {
+      pendingPracticeEntry = true;
+      openSparksModal();
+      return; // stay on the current tab — don't switch, don't init practice
+    }
+    sparkConsumedThisPageLoad = true;
+  }
   document.querySelectorAll('.page-tab').forEach((t,i) => {
     t.classList.toggle('active', ['learn','practice','resources'][i] === tab);
   });
@@ -937,6 +1070,54 @@ function switchTab(tab){
   cameFromLearn = (tab === 'learn');
   currentTab = tab;
 }
+
+function openSparksModal(){
+  const ms = cmMsUntilNextSpark();
+  document.getElementById('sparks-modal-sub').textContent =
+    `Refills in ${cmFormatRefillTime(ms)}. Sign in for unlimited practice.`;
+  document.getElementById('sparks-modal-overlay').classList.add('open');
+}
+function closeSparksModal(){
+  document.getElementById('sparks-modal-overlay').classList.remove('open');
+}
+document.getElementById('sparks-modal-overlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeSparksModal();
+});
+function handleSparksSignIn(){
+  closeSparksModal();
+  openSignInPrompt();
+}
+
+// ── Sign-in modal (ported from maths-grade-3-chapter.html) ──
+function openSignInPrompt(){
+  document.getElementById('auth-overlay').classList.add('open');
+}
+function closeAuth(){
+  document.getElementById('auth-overlay').classList.remove('open');
+}
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
+  document.getElementById('auth-signin').classList.toggle('active', tab==='signin');
+  document.getElementById('auth-signup').classList.toggle('active', tab==='signup');
+}
+function handleAuth(){
+  document.getElementById('auth-form-wrap').style.display = 'none';
+  document.getElementById('auth-success').style.display = 'block';
+  isSignedIn = true;
+  sessionStorage.setItem('cuemathSignedIn', '1');
+  setTimeout(() => {
+    closeAuth();
+    document.getElementById('auth-form-wrap').style.display = 'block';
+    document.getElementById('auth-success').style.display = 'none';
+    if (pendingPracticeEntry) {
+      pendingPracticeEntry = false;
+      switchTab('practice'); // unlocked now — actually take them into Practice
+    }
+  }, 1500);
+}
+document.getElementById('auth-overlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeAuth();
+});
 
 // ── CW → HW interstitial (proposed — see Open Questions §7a) ──
 let cwHwModalShown = false;
@@ -1054,6 +1235,21 @@ function initPractice(){
   renderQuestion();
 }
 
+// A lesson only counts as fully "done" (Review, on the chapter page) once its
+// practice questions are finished — until then the chapter page shows
+// "Resume". Only flips the flag if this lesson is the one actually claiming
+// the global free slot (see maths-grade-3-chapter.html's getGlobalCompleted).
+function markPracticeDone(){
+  const raw = sessionStorage.getItem('cuemathGlobalCompletedLesson');
+  if (!raw) return;
+  const claim = JSON.parse(raw);
+  if (claim.grade === grade && claim.ch === chIdx && claim.lesson === lessonIdx) {
+    claim.practiceDone = true;
+    sessionStorage.setItem('cuemathGlobalCompletedLesson', JSON.stringify(claim));
+    cmAwardLessonPoints(`${grade}-${chIdx}-${lessonIdx}`); // +10, deduped — see gamification.js
+  }
+}
+
 function renderQuestion(){
   const container = document.getElementById('practice-questions');
   const ctaEl = document.getElementById('practice-cta');
@@ -1063,6 +1259,7 @@ function renderQuestion(){
     ctaEl.style.display = 'block';
     document.getElementById('prac-fill').style.width = '80%';
     document.getElementById('prac-count').textContent = 'Question ' + (currentQ+1) + ' of ' + questions.length;
+    markPracticeDone();
     return;
   }
 
@@ -1091,6 +1288,7 @@ function selectOpt(i){
   if(answered) return;
   answered = true;
   const q = questions[currentQ];
+  if (i === q.ans) cmAwardPracticePoints(); // +2, once per question — guarded by `answered` above
   document.querySelectorAll('.q-opt').forEach((el, idx) => {
     if(idx === q.ans) el.classList.add('correct');
     else if(idx === i && i !== q.ans) el.classList.add('wrong');

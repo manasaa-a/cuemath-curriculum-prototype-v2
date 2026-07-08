@@ -195,8 +195,22 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
 .auth-success p{font-size:13px;color:#97948E;line-height:1.5}
 
-@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
-@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+/* MOBILE — reflow the sidebar below the main content instead of hiding it. */
+@media(max-width:768px){
+  html,body{height:auto;overflow:visible}
+  .shell{display:block;height:auto}
+  .leftnav{display:none}
+  .main{overflow-y:visible}
+  .chapter-wrap{flex:none}
+  .lesson-scroll{overflow-y:visible}
+  .rightpanel{overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
+}
+@media(max-width:480px){
+  .ch-header{padding:16px 16px 0}
+  .lesson-row{flex-wrap:wrap;padding:14px 16px}
+  .lr-actions{margin-left:50px}
+  .rp-inner{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -262,17 +276,17 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
           <div class="rp-stat-label">Points</div>
-          <div class="rp-stat-value">1230</div>
+          <div class="rp-stat-value" id="rp-points-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
           <div class="rp-stat-label">Streak</div>
-          <div class="rp-stat-value">13</div>
+          <div class="rp-stat-value" id="rp-streak-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">3</div>
         </div>
       </div>
       <!-- Chapter navigator within grade -->
@@ -376,9 +390,14 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
   </div>
 </div>
 
+<script src="gamification.js"></script>
 <script src="curriculum-data.js"></script>
 <script>
 // csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data)
+// gamification.js (Points/Streaks/Sparks — provisional, see Open Questions
+// §13) is also loaded here: markComplete() below awards +10 points the same
+// way the lesson page's markPracticeDone() does, for the "Mark as Complete"
+// manual-override path.
 
 const params = new URLSearchParams(location.search);
 const gradeParam = params.get('grade') || '3';
@@ -423,19 +442,31 @@ function getGlobalCompleted(){
   const raw = sessionStorage.getItem(GLOBAL_COMPLETE_KEY);
   return raw ? JSON.parse(raw) : null;
 }
+// practiceDone starts false — the lesson page flips it to true once all
+// available practice questions are answered. Until then, the claimed lesson
+// shows as "Resume", not "Review". markComplete() (the manual 3-dot override)
+// sets manuallyCompleted instead, which also counts as done immediately.
 function setGlobalCompleted(g, c, l){
-  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: g, ch: c, lesson: l}));
+  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: g, ch: c, lesson: l, practiceDone: false, manuallyCompleted: false}));
+}
+function setGlobalManuallyCompleted(g, c, l){
+  sessionStorage.setItem(GLOBAL_COMPLETE_KEY, JSON.stringify({grade: g, ch: c, lesson: l, practiceDone: true, manuallyCompleted: true}));
 }
 
 const globalCompleted = getGlobalCompleted();
+const isClaimedLesson = i => globalCompleted && globalCompleted.grade === grade && globalCompleted.ch === chIdx && globalCompleted.lesson === i;
 let completedLessons = new Array(ch.lessons.length).fill(false);
-if (globalCompleted && globalCompleted.grade === grade && globalCompleted.ch === chIdx) {
-  completedLessons[globalCompleted.lesson] = true;
-}
+let resumeLessons = new Array(ch.lessons.length).fill(false);
+ch.lessons.forEach((_, i) => {
+  if (!isClaimedLesson(i)) return;
+  if (globalCompleted.practiceDone || globalCompleted.manuallyCompleted) completedLessons[i] = true;
+  else resumeLessons[i] = true;
+});
 let inProgressLesson = 1;
 
 function getState(i){
   if(completedLessons[i]) return 'done';
+  if(resumeLessons[i]) return 'resume';
   if(isSignedIn) return 'start';
   if(globalCompleted === null) return 'start'; // nobody's started a lesson anywhere yet — all open
   return 'locked'; // the one free lesson's been used, here or elsewhere — lock the rest
@@ -444,7 +475,9 @@ function getState(i){
 function markComplete(i, e){
   if(e) e.stopPropagation();
   completedLessons[i] = true;
-  setGlobalCompleted(grade, chIdx, i);
+  resumeLessons[i] = false;
+  setGlobalManuallyCompleted(grade, chIdx, i);
+  cmAwardLessonPoints(`${grade}-${chIdx}-${i}`); // +10, deduped — see gamification.js
   if(inProgressLesson === i) inProgressLesson = i + 1;
   buildList();
   updateHeaderProgress();
@@ -469,13 +502,16 @@ function buildList(){
     // Circle
     let circleClass = 'lr-num-wrap';
     if(state === 'done') circleClass += ' done';
+    else if(state === 'resume') circleClass += ' resume-circle';
     else if(isLocked) circleClass += ' locked';
 
     // Eyebrow label + sub info
-    const eyebrow = state === 'done' ? `<span class="lr-eyebrow">REVIEW</span>` : '';
+    const eyebrow = state === 'done' ? `<span class="lr-eyebrow">REVIEW</span>`
+      : state === 'resume' ? `<span class="lr-eyebrow" style="color:#CE7E12">IN PROGRESS</span>` : '';
 
     let mastery = '';
     if(state === 'done') mastery = `<div class="lr-mastery"><div class="lr-mastery-dot"></div>100% Mastered</div>`;
+    else if(state === 'resume') mastery = `<div class="lr-mastery" style="opacity:.7"><div class="lr-mastery-dot" style="background:#F4AB52"></div>Practice not finished yet</div>`;
     else if(state === 'start') mastery = `<div class="lr-mastery" style="opacity:.4"><div class="lr-mastery-dot" style="background:#B0AAA5"></div>0% Mastered</div>`;
 
     const readUrl = readLinks[i];
@@ -486,6 +522,8 @@ function buildList(){
     let btnHtml = '';
     if(state === 'done'){
       btnHtml = `<button class="lr-btn review" onclick="goToReview(${num},event)">REVIEW</button>`;
+    } else if(state === 'resume'){
+      btnHtml = `<button class="lr-btn resume" onclick="goToResume(${num},event)">RESUME</button>`;
     } else if(state === 'start'){
       btnHtml = `<button class="lr-btn" onclick="openModal(${num},'${safeN}',event)">START</button>`;
     } else {
@@ -512,6 +550,13 @@ function buildList(){
 
 function goToReview(num, e){
   if(e) e.stopPropagation();
+  location.href = 'maths-grade-3-lesson.html?grade=' + grade + '&ch=' + (chIdx + 1) + '&lesson=' + num + '&tab=practice';
+}
+
+function goToResume(num, e){
+  if(e) e.stopPropagation();
+  // Picks back up on Practice — this mockup doesn't persist which question
+  // they were on, so it restarts the practice set rather than the exact spot.
   location.href = 'maths-grade-3-lesson.html?grade=' + grade + '&ch=' + (chIdx + 1) + '&lesson=' + num + '&tab=practice';
 }
 

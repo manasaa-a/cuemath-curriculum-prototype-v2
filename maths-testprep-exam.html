@@ -143,8 +143,24 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
-@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
-@media(max-width:480px){.shell{grid-template-columns:1fr}.leftnav{display:none}}
+.rp-cta-appbtns{display:flex;flex-direction:column;gap:6px}
+.rp-cta-appbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
+.rp-cta-appbtn:hover{background:#333;color:#fff}
+@media(max-width:768px){
+  html,body{height:auto;overflow:visible}
+  .shell{display:block;height:auto}
+  .leftnav{display:none}
+  .main{overflow-y:visible}
+  .rightpanel{overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
+}
+@media(max-width:480px){
+  .grade-wrap{padding:14px}
+  .grade-section-header{flex-wrap:wrap;gap:6px}
+  .ch-row-header{flex-wrap:wrap;gap:8px 10px}
+  .ch-row-meta{order:3;width:100%;padding-left:52px}
+  .ch-row-lessons{padding-left:16px}
+  .rp-inner{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -185,21 +201,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
       </div>
       <div class="mastery-track"><div class="mastery-fill"></div></div>
       <div class="chapter-list" id="chapter-list"></div>
-
-      <!-- App download CTA — same component as maths.html / maths-grade-3.html -->
-      <div class="app-download-strip">
-        <div class="app-dl-left">
-          <span class="app-dl-icon">📱</span>
-          <div>
-            <div class="app-dl-title">Take learning further with the Cuemath app</div>
-            <div class="app-dl-sub">Practice, games &amp; progress tracking, all in one place.</div>
-          </div>
-        </div>
-        <div class="app-dl-btns">
-          <a class="app-dl-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="app-dl-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -209,30 +210,33 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
           <div class="rp-stat-label">Points</div>
-          <div class="rp-stat-value">1230</div>
+          <div class="rp-stat-value" id="rp-points-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
           <div class="rp-stat-label">Streak</div>
-          <div class="rp-stat-value">13</div>
+          <div class="rp-stat-value" id="rp-streak-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">3</div>
+        </div>
+      </div>
+      <div class="rp-divider"></div>
+      <div class="rp-cta-inner">
+        <span class="rp-cta-tag">Cuemath App</span>
+        <div class="rp-cta-title">Get exam-ready with the Cuemath App</div>
+        <div class="rp-cta-sub">Practice, mock tests, and progress tracking for your exam prep.</div>
+        <div class="rp-cta-appbtns">
+          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
         </div>
       </div>
       <div class="rp-divider"></div>
       <div class="rp-exam-nav" id="rp-exam-nav">
         <div class="ren-title">Other Exams</div>
         <!-- populated by JS -->
-      </div>
-      <div class="rp-divider"></div>
-      <div class="rp-cta-inner">
-        <span class="rp-cta-tag">1:1 live tutoring</span>
-        <div class="rp-cta-title">Get exam-ready with a personal tutor</div>
-        <div class="rp-cta-sub" id="rp-cta-sub">Live sessions, personalised to your exam prep. Expert-led.</div>
-        <button class="rp-cta-btn">Book a free class</button>
       </div>
     </div>
   </div>
@@ -298,6 +302,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
   </div>
 </div>
 
+<!-- Points/Streaks/Sparks — see gamification.js. Read-only display on this
+     page (no lesson/practice actions happen here); shares cuemathSignedIn
+     with this page's own auth-overlay below but doesn't touch its logic. -->
+<script src="gamification.js"></script>
 <script src="testprep-data.js"></script>
 <script>
 // testPrepData comes from testprep-data.js (proposal — see the DRAFT sheet linked there)
@@ -352,6 +360,45 @@ function getBlockState(chapterName, blockName) {
   return 'locked';
 }
 
+// "About {Exam}" unit — DK's proposal, modeled on Khan Academy's SAT Math page
+// (khanacademy.org/test-prep/v2-sat-math), whose actual Unit 1 is "About the
+// SAT suite of assessments and how to use this course" — an informational
+// unit embedded in the same course page, not a separate article section. The
+// idea: fold SEO/informational content about the exam into Unit 1 of this
+// same page so it inherits the practice page's authority instead of living
+// on a weaker standalone page.
+// PLACEHOLDER ONLY — Manasa is researching real topics/copy per exam. Titles
+// below are generic question shapes, not asserted facts about any exam, and
+// links are inert (#) until real articles exist.
+function renderAboutUnit(examName) {
+  const topics = [
+    `What is ${examName}?`,
+    `${examName} format and scoring`,
+    `How to prepare for ${examName}`,
+    `${examName} FAQs`
+  ];
+  const links = topics.map(t =>
+    `<div class="block-locked" style="color:#B0AAA5" title="Placeholder — pending SEO research">${t}<span class="block-tag">TBD</span></div>`
+  ).join('');
+  return `
+    <div class="ch-row" id="ch-about">
+      <div class="ch-row-header">
+        <span class="ch-row-num">1</span>
+        <span class="ch-row-icon">📰</span>
+        <span class="ch-row-name">About ${examName} <span style="font-weight:400;color:#B0AAA5;font-size:11px;text-transform:none">— placeholder, pending research</span></span>
+        <span class="ch-row-meta">
+          <span class="ch-row-count">${topics.length} articles</span>
+        </span>
+        <span class="ch-row-chevron">⌄</span>
+      </div>
+      <div class="ch-row-body">
+        <div class="ch-row-body-inner">
+          <div class="ch-row-lessons">${links}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function loadBand(idx) {
   currentBandIdx = idx;
   const band = exam.bands[idx];
@@ -362,7 +409,7 @@ function loadBand(idx) {
   document.getElementById('exam-count').textContent = `${chapters.length} chapters · ${totalBlocks} practice goals`;
 
   const list = document.getElementById('chapter-list');
-  list.innerHTML = chapters.map((ch, i) => {
+  list.innerHTML = renderAboutUnit(exam.name) + chapters.map((ch, i) => {
     const blockLinks = ch.blocks.map(block => {
       const wsCount = block.worksheets.length;
       const tag = block.type === 'TESTS' ? 'Mock test' : (wsCount > 1 ? wsCount + ' parts' : 'Practice');
@@ -375,9 +422,9 @@ function loadBand(idx) {
       return `<a href="${href}" onclick="event.stopPropagation()">${block.name}<span class="block-tag">${doneTag}</span></a>`;
     }).join('');
     return `
-    <div class="ch-row" id="ch-${i+1}">
+    <div class="ch-row" id="ch-${i+2}">
       <div class="ch-row-header">
-        <span class="ch-row-num">${i+1}</span>
+        <span class="ch-row-num">${i+2}</span>
         <span class="ch-row-icon">${chapterIcon(ch)}</span>
         <span class="ch-row-name">${ch.name}</span>
         <span class="ch-row-meta">
@@ -432,7 +479,6 @@ function init() {
   document.getElementById('bc-exam-label').textContent = exam.name;
   document.getElementById('exam-title').textContent = exam.name;
   document.title = exam.name + ' Test Prep — Cuemath';
-  document.getElementById('rp-cta-sub').textContent = `Live sessions, personalised to your ${exam.name} prep. Expert-led.`;
 
   const switcher = document.getElementById('band-switcher');
   if (exam.hasBands && exam.bands.length > 1) {

@@ -116,6 +116,9 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
+.rp-cta-appbtns{display:flex;flex-direction:column;gap:6px}
+.rp-cta-appbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
+.rp-cta-appbtn:hover{background:#333;color:#fff}
 .rp-cta-btn:hover{background:#333}
 
 /* Related topics */
@@ -128,7 +131,20 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .rt-name{font-size:13px;font-weight:500;color:#1C1917;transition:color .12s}
 .rt-meta{font-size:11px;color:#78716C;margin-left:auto}
 
-@media(max-width:768px){.shell{grid-template-columns:64px 1fr}.rightpanel{display:none}}
+@media(max-width:768px){
+  html,body{height:auto;overflow:visible}
+  .shell{display:block;height:auto}
+  .leftnav{display:none}
+  .main{overflow-y:visible}
+  .rightpanel{overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
+}
+@media(max-width:480px){
+  .topic-hero{padding:20px 16px}
+  .topic-title{font-size:26px}
+  .grade-section-header{flex-wrap:wrap;padding:14px 16px}
+  .grade-section-actions{order:3;width:100%;margin-left:50px}
+  .rp-inner{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -385,24 +401,27 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
           <div class="rp-stat-label">Points</div>
-          <div class="rp-stat-value">1230</div>
+          <div class="rp-stat-value" id="rp-points-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-streak"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1 3-4 5-4 9a4 4 0 008 0c0-1.3-.5-2.3-1-3 .3 1 .2 2-.5 2.5C15 9 13 7 12 2z"/></svg></div>
           <div class="rp-stat-label">Streak</div>
-          <div class="rp-stat-value">13</div>
+          <div class="rp-stat-value" id="rp-streak-value">0</div>
         </div>
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">3</div>
         </div>
       </div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">1:1 live tutoring</span>
-        <div class="rp-cta-title">Learn Number System with a personal tutor</div>
-        <div class="rp-cta-sub">Live sessions, personalised to your grade and gaps. Same curriculum, expert-led.</div>
-        <button class="rp-cta-btn">Book a free class</button>
+        <span class="rp-cta-tag">Cuemath App</span>
+        <div class="rp-cta-title">Master Any Topic with the Cuemath App</div>
+        <div class="rp-cta-sub">Practice across every grade and track your progress on the go.</div>
+        <div class="rp-cta-appbtns">
+          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+        </div>
       </div>
 
       <div class="rp-section">
@@ -454,6 +473,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
 </div>
 
+<!-- Points/Streaks/Sparks — read-only display here, self-renders on load.
+     See gamification.js. No lesson/practice actions happen on this page, so
+     nothing else to wire. -->
+<script src="gamification.js"></script>
 <script>
 function toggleSection(id){
   const el = document.getElementById(id);

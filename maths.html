@@ -68,28 +68,23 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 /* Main content */
 .main-content{padding:24px;flex:1}
 
-/* Grade grid — By Grade view */
+/* Grade rows — By Grade view (full-width row per grade/course, replaces the
+   old squarish card grid — every chapter listed as a hyperlink, no
+   truncation, no "See all" link) */
 #view-grade{scroll-margin-top:52px}
 #main-content{scroll-margin-top:52px}
-.grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:1000px){.grade-grid{grid-template-columns:repeat(2,1fr)}}
-
-.grade-card{background:#fff;border:1px solid #E8E4DD;display:block;text-decoration:none;color:inherit;transition:border-color .12s,box-shadow .12s}
-.grade-card:hover{border-color:#F4AB52;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-
-.gc-inner{padding:20px 16px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
-.gc-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.gc-num{font-family:'Athletics';font-size:26px;font-weight:700;color:#fff;line-height:1}
-.gc-label{font-family:'Athletics';font-size:15px;font-weight:700;color:#1C1917}
-.gc-head{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:inherit}
-.gc-topics{font-size:12px;color:#78716C;line-height:1.5;margin-top:2px}
-.gc-chapters{font-size:12px;color:#78716C;line-height:1.7;margin-top:2px}
-.gc-chapters a{color:#1C1917;text-decoration:none;border-bottom:1px dotted #C6C0B8}
-.gc-chapters a:hover{color:#CE7E12;border-bottom-color:#CE7E12}
-.gc-sep{color:#D6D1C9;margin:0 4px}
-.gc-seeall{display:inline-block;margin-top:2px;font-size:11px;font-weight:600;color:#CE7E12;text-decoration:none}
-.gc-seeall:hover{color:#1C1917;text-decoration:underline}
-.gc-meta{font-size:11px;color:#B0AAA5;margin-top:4px}
+.grade-row-list{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.grade-row{background:#fff;border:1px solid #E8E4DD;border-left:4px solid var(--accent,#E8E4DD);border-radius:10px;padding:16px 20px;transition:border-color .12s,box-shadow .12s,transform .12s}
+.grade-row:hover{border-color:#E8E4DD;box-shadow:0 6px 18px rgba(0,0,0,.07);transform:translateY(-1px)}
+.grade-row:hover{border-left-color:var(--accent,#F4AB52)}
+.grade-row-head{display:flex;align-items:center;gap:11px;margin-bottom:12px;flex-wrap:wrap}
+.grade-row-badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-family:'Athletics';font-size:13px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(0,0,0,.03)}
+.grade-row-label{font-family:'Athletics';font-size:16px;font-weight:700;color:#1C1917;text-decoration:none}
+.grade-row-label:hover{color:#CE7E12}
+.grade-row-meta{font-size:11px;font-weight:500;color:#97948E;margin-left:auto;white-space:nowrap;background:#F5F3EF;padding:4px 11px;border-radius:12px}
+.grade-row-chapters{display:flex;flex-wrap:wrap;gap:7px}
+.grade-row-chapters a{font-size:11.5px;color:#57534E;text-decoration:none;background:#F9F7F3;border:1px solid #EFEBE3;padding:5px 12px;border-radius:14px;transition:background .12s,border-color .12s,color .12s;white-space:nowrap}
+.grade-row-chapters a:hover{background:#FCEEDB;border-color:#F4AB52;color:#CE7E12}
 
 /* Band labels */
 .band-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#78716C;margin:20px 0 10px;display:flex;align-items:center;gap:10px}
@@ -116,6 +111,11 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .app-dl-btns{display:flex;gap:8px;flex-shrink:0}
 .app-dl-btn{display:flex;align-items:center;gap:5px;background:#F4AB52;color:#1C1917;padding:7px 14px;font-family:'UntitledSans';font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
 .app-dl-btn:hover{background:#CE7E12;color:#fff}
+.tutor-cta-card{margin-top:12px;background:#fff;border:2px solid #1C1917;box-shadow:8px 8px 0 #1C1917;padding:28px 32px}
+.tutor-cta-eyebrow{font-family:'Athletics';font-size:16px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:#1C1917;margin-bottom:10px}
+.tutor-cta-body{font-size:14px;color:#1C1917;line-height:1.5;margin-bottom:22px;max-width:480px}
+.tutor-cta-btn{background:#1C1917;color:#fff;border:none;padding:14px 36px;font-family:'UntitledSans';font-size:14px;font-weight:700;cursor:pointer}
+.tutor-cta-btn:hover{background:#333}
 .res-tile{background:#fff;border:1px solid #E8E4DD;padding:12px 14px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:10px}
 .res-tile:hover{border-color:#F4AB52;text-decoration:none}
 .res-icon{font-size:20px;flex-shrink:0}
@@ -183,9 +183,44 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .modal-video{width:720px;max-width:92vw;padding:0;overflow:hidden}
 .modal-video video{width:100%;display:block;background:#000}
 .modal-video-footer{padding:20px 28px 24px}
+.modal-video-note{text-align:center;font-size:12px;color:#97948E;margin-top:10px}
 .modal-video-footer .modal-continue{margin-top:0}
 .modal-video .modal-close{background:rgba(0,0,0,.55);color:#fff;width:28px;height:28px;border-radius:50%;top:12px;right:12px;display:flex;align-items:center;justify-content:center;font-size:16px}
 .modal-video .modal-close:hover{background:rgba(0,0,0,.75);color:#fff}
+
+/* MOBILE — this page has no sidebar to reflow (removed earlier in the
+   project), but its multi-column grids and hero need to collapse instead
+   of overflowing/clipping on a phone-width screen. */
+@media(max-width:860px){
+  .social-proof-inner{grid-template-columns:repeat(2,1fr);gap:20px 0}
+  .sp-cell{border-right:none;padding:0 16px;margin-bottom:16px}
+  .sp-cell:nth-child(odd){padding-left:0}
+  .exam-grid{grid-template-columns:repeat(2,1fr)}
+  .topic-grid{grid-template-columns:repeat(2,1fr) !important}
+  .resources-strip{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .topbar{padding:0 14px}
+  .tb-search{min-width:0;flex:1}
+  .tb-search svg{display:none}
+  .page-hero{padding:36px 20px 32px}
+  .page-hero h1{font-size:28px}
+  .page-hero-sub{font-size:15px}
+  .page-hero-btn{padding:14px 32px;width:100%}
+  .social-proof{padding:28px 20px}
+  .social-proof-inner{grid-template-columns:1fr;gap:20px}
+  .sp-cell{padding:0}
+  .exam-grid,.topic-grid,.resources-strip{grid-template-columns:1fr !important}
+  .selector-bar{padding:10px 14px}
+  .view-toggle{margin-left:0;width:100%}
+  .vt{flex:1;justify-content:center}
+  .main-content{padding:16px}
+  .grade-row-head{gap:6px}
+  .grade-row-meta{margin-left:0;width:100%;order:3}
+  .app-download-strip{flex-direction:column;align-items:flex-start}
+  .app-dl-btns{width:100%}
+  .app-dl-btn{flex:1;justify-content:center}
+}
 
 </style>
 </head>
@@ -305,174 +340,19 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
     <!-- Content -->
     <div class="main-content" id="main-content">
 
-      <!-- BY GRADE VIEW -->
+      <!-- BY GRADE VIEW — full-width rows, every chapter listed as a hyperlink,
+           rendered from curriculum-data.js (K-7) + highschool-data.js (5 HS
+           courses). See renderGradeView() below. -->
       <div id="view-grade">
 
         <div class="band-label">Elementary</div>
-        <div class="grade-grid">
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=K">
-                <div class="gc-circle" style="background:#9CA3AF">
-                  <span class="gc-num">K</span>
-                </div>
-                <div class="gc-label">Kindergarten</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=K&ch=1">What is Same? What is Different?</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=K&ch=2">Fun with Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=K&ch=3">Numbers to 20</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=K&ch=4">Addition and Subtraction up to 10</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=K&ch=5">Time</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=K">See all 7 chapters &rarr;</a>
-              <div class="gc-meta">7 chapters &middot; 18 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=1">
-                <div class="gc-circle" style="background:#F97279">
-                  <span class="gc-num">1</span>
-                </div>
-                <div class="gc-label">Grade 1</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=1&ch=1">Joy of Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=1&ch=2">Together and Apart - 1</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=1&ch=3">Together and Apart - II</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=1&ch=4">Mental Math</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=1&ch=5">Addition and Subtraction are Related</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=1">See all 16 chapters &rarr;</a>
-              <div class="gc-meta">16 chapters &middot; 65 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=2">
-                <div class="gc-circle" style="background:#F4AB52">
-                  <span class="gc-num">2</span>
-                </div>
-                <div class="gc-label">Grade 2</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=2&ch=1">Magic with Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=2&ch=2">Playing with Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=2&ch=3">Together and Apart</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=2&ch=5">How Long Is It?</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=2&ch=6">Weigh it Out</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=2">See all 15 chapters &rarr;</a>
-              <div class="gc-meta">15 chapters &middot; 52 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card" style="border-color:#F4AB52">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html">
-                <div class="gc-circle" style="background:#D994F8">
-                  <span class="gc-num">3</span>
-                </div>
-                <div class="gc-label">Grade 3</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=3&ch=1">Number System</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=3&ch=2">Addition and Subtraction of Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=3&ch=5">An Introduction to Fractions</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=3&ch=3">Multiplication</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=3&ch=7">Geometry</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html">See all 12 chapters &rarr;</a>
-              <div class="gc-meta">12 chapters &middot; 67 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=4">
-                <div class="gc-circle" style="background:#74ACFC">
-                  <span class="gc-num">4</span>
-                </div>
-                <div class="gc-label">Grade 4</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=4&ch=1">Number Systems</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=4&ch=2">Addition and Subtraction</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=4&ch=3">Division</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=4&ch=4">Factors, Multiples, and Primes</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=4&ch=5">Understanding Fractions</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=4">See all 15 chapters &rarr;</a>
-              <div class="gc-meta">15 chapters &middot; 93 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=5">
-                <div class="gc-circle" style="background:#6AC88A">
-                  <span class="gc-num">5</span>
-                </div>
-                <div class="gc-label">Grade 5</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=5&ch=1">Number System</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=5&ch=2">Number Operations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=5&ch=3">Factors, Multiples and Primes</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=5&ch=4">Fractions and their Addition and Subtraction</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=5&ch=5">Multiplication and Division of Fractions</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=5">See all 14 chapters &rarr;</a>
-              <div class="gc-meta">14 chapters &middot; 80 lessons</div>
-            </div>
-          </div>
-        </div>
+        <div class="grade-row-list" id="grid-elementary"></div>
 
         <div class="band-label">Middle School</div>
-        <div class="grade-grid">
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=6">
-                <div class="gc-circle" style="background:#F4AB52">
-                  <span class="gc-num">6</span>
-                </div>
-                <div class="gc-label">Grade 6</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=6&ch=1">Numbers and Operations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=6&ch=2">Integers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=6&ch=3">Integer Operations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=6&ch=4">Fraction Operations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=6&ch=5">Decimals</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=6">See all 17 chapters &rarr;</a>
-              <div class="gc-meta">17 chapters &middot; 96 lessons</div>
-            </div>
-          </div>
-          <div class="grade-card">
-            <div class="gc-inner">
-              <a class="gc-head" href="maths-grade-3.html?grade=7">
-                <div class="gc-circle" style="background:#F97279">
-                  <span class="gc-num">7</span>
-                </div>
-                <div class="gc-label">Grade 7</div>
-              </a>
-              <div class="gc-chapters">Includes <a href="maths-grade-3-chapter.html?grade=7&ch=1">Integer Operations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=7&ch=2">Rational Numbers</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=7&ch=3">Algebraic Expressions</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=7&ch=4">Equations</a><span class="gc-sep">&middot;</span><a href="maths-grade-3-chapter.html?grade=7&ch=5">Inequalities</a></div>
-              <a class="gc-seeall" href="maths-grade-3.html?grade=7">See all 14 chapters &rarr;</a>
-              <div class="gc-meta">14 chapters &middot; 73 lessons</div>
-            </div>
-          </div>
-          <a href="#" class="grade-card" onclick="event.preventDefault()">
-            <div class="gc-inner">
-              <div class="gc-circle" style="background:#D994F8">
-                <span class="gc-num">8</span>
-              </div>
-              <div class="gc-label">Grade 8</div>
-              <div class="gc-topics">Functions, systems of equations, geometry, statistics</div>
-              <div class="gc-meta">8 chapters &middot; 62 lessons</div>
-            </div>
-          </a>
-        </div>
+        <div class="grade-row-list" id="grid-middle"></div>
 
         <div class="band-label">High School</div>
-        <div class="grade-grid">
-          <a href="#" class="grade-card" onclick="event.preventDefault()">
-            <div class="gc-inner">
-              <div class="gc-circle" style="background:#74ACFC">
-                <span class="gc-num">9</span>
-              </div>
-              <div class="gc-label">Grade 9</div>
-              <div class="gc-topics">Algebra I — linear equations, quadratics, polynomials</div>
-              <div class="gc-meta">9 chapters &middot; 68 lessons</div>
-            </div>
-          </a>
-          <a href="#" class="grade-card" onclick="event.preventDefault()">
-            <div class="gc-inner">
-              <div class="gc-circle" style="background:#6AC88A">
-                <span class="gc-num">10</span>
-              </div>
-              <div class="gc-label">Grade 10</div>
-              <div class="gc-topics">Geometry — congruence, similarity, trigonometry, proofs</div>
-              <div class="gc-meta">9 chapters &middot; 70 lessons</div>
-            </div>
-          </a>
-          <a href="#" class="grade-card" onclick="event.preventDefault()">
-            <div class="gc-inner">
-              <div class="gc-circle" style="background:#F4AB52">
-                <span class="gc-num">11</span>
-              </div>
-              <div class="gc-label">Grade 11</div>
-              <div class="gc-topics">Algebra II — exponentials, logarithms, sequences</div>
-              <div class="gc-meta">9 chapters &middot; 72 lessons</div>
-            </div>
-          </a>
-          <a href="#" class="grade-card" onclick="event.preventDefault()">
-            <div class="gc-inner">
-              <div class="gc-circle" style="background:#F97279">
-                <span class="gc-num">12</span>
-              </div>
-              <div class="gc-label">Grade 12</div>
-              <div class="gc-topics">Pre-Calculus — trigonometry, vectors, limits intro</div>
-              <div class="gc-meta">8 chapters &middot; 66 lessons</div>
-            </div>
-          </a>
-        </div>
+        <div class="grade-row-list" id="grid-highschool"></div>
 
       </div>
 
@@ -597,19 +477,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <a href="https://www.cuemath.com/math-formulas/" target="_blank" rel="noopener" class="res-tile"><div class="res-icon">📐</div><div><span class="res-name">Formulas</span><span class="res-meta">All math formulas</span></div></a>
         <a href="https://www.cuemath.com/free-online-math-games/" target="_blank" rel="noopener" class="res-tile"><div class="res-icon">🕹️</div><div><span class="res-name">Online Games</span><span class="res-meta">Free &amp; interactive</span></div></a>
       </div>
-      <!-- App download strip -->
-      <div class="app-download-strip">
-        <div class="app-dl-left">
-          <span class="app-dl-icon">📱</span>
-          <div>
-            <div class="app-dl-title">Take learning further with the Cuemath app</div>
-            <div class="app-dl-sub">Practice, games &amp; progress tracking, all in one place.</div>
-          </div>
-        </div>
-        <div class="app-dl-btns">
-          <a class="app-dl-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="app-dl-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
+      <!-- Book a free class card (was the app-download strip — Neelima's CTA
+           pass: homepage bottom converts to tutoring, not app). Hard-shadow
+           card style per Manasa's reference image. -->
+      <div class="tutor-cta-card">
+        <div class="tutor-cta-eyebrow">Explore With a Tutor</div>
+        <div class="tutor-cta-body">Does visualising make math click for your child? A Cuemath tutor explains every concept this way, personalised to your child.</div>
+        <button class="tutor-cta-btn">Get Started</button>
       </div>
       </div>
 
@@ -628,10 +502,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
     </video>
     <div class="modal-video-footer">
       <button class="modal-continue">Book a free class</button>
+      <div class="modal-video-note">No credit card needed &middot; Cancel anytime</div>
     </div>
   </div>
 </div>
 
+<script src="curriculum-data.js"></script>
+<script src="highschool-data.js"></script>
 <script>
 // Country → curriculum mapping
 const curricula = {
@@ -712,8 +589,99 @@ document.getElementById('video-modal-overlay').addEventListener('click', functio
   if (e.target === this) closeVideoModal();
 });
 
+// ── By Grade view — full-width rows, every chapter listed as a hyperlink ──
+// K-7 pulls from curriculum-data.js (the same shared source maths-grade-3.html
+// and maths-grade-3-chapter.html already load), so every chapter here is
+// guaranteed to have a real local chapter page — no exact-name-matching pass
+// needed anymore now that all three files read the identical dataset; it's a
+// direct index lookup. High-school courses have no local chapter-page mockup
+// yet (that's a separate, larger follow-up — not built in this pass), so
+// those always use production-style /maths/{course-slug}/{chapter-slug}/ hrefs.
+
+const GRADE_META = {
+  'K': {label:'Kindergarten', badge:'K', color:'#9CA3AF'},
+  1: {label:'Grade 1', badge:'1', color:'#F97279'},
+  2: {label:'Grade 2', badge:'2', color:'#F4AB52'},
+  3: {label:'Grade 3', badge:'3', color:'#D994F8'},
+  4: {label:'Grade 4', badge:'4', color:'#74ACFC'},
+  5: {label:'Grade 5', badge:'5', color:'#6AC88A'},
+  6: {label:'Grade 6', badge:'6', color:'#F4AB52'},
+  7: {label:'Grade 7', badge:'7', color:'#F97279'},
+  8: {label:'Grade 8', badge:'8', color:'#D994F8'},
+};
+const ELEMENTARY_GRADES = ['K', 1, 2, 3, 4, 5];
+const MIDDLE_GRADES = [6, 7, 8];
+const HIGH_SCHOOL_COURSES = ['algebra-1', 'geometry', 'algebra-2', 'ap-precalculus', 'ap-calculus-ab'];
+const HS_COURSE_COLORS = {
+  'algebra-1': '#F4AB52',
+  'geometry': '#D994F8',
+  'algebra-2': '#74ACFC',
+  'ap-precalculus': '#6AC88A',
+  'ap-calculus-ab': '#F97279',
+};
+
+function slugify(s) {
+  s = s.trim().toLowerCase();
+  s = s.replace(/&/g, 'and');
+  s = s.replace(/[’']/g, '');
+  s = s.replace(/[^\w\s-]/g, '');
+  s = s.replace(/[\s_]+/g, '-');
+  s = s.replace(/-+/g, '-').replace(/^-|-$/g, '');
+  return s;
+}
+
+function renderGradeRow(headHref, badgeHtml, label, chapters, lessonCount, chapterHrefFn, accentColor) {
+  const chapterLinks = chapters.map((ch, i) =>
+    `<a href="${chapterHrefFn(ch, i)}">${ch.name}</a>`
+  ).join('');
+  return `
+    <div class="grade-row" style="--accent:${accentColor || '#E8E4DD'}">
+      <div class="grade-row-head">
+        ${badgeHtml}
+        <a class="grade-row-label" href="${headHref}">${label}</a>
+        <span class="grade-row-meta">${chapters.length} chapter${chapters.length===1?'':'s'} &middot; ${lessonCount} lesson${lessonCount===1?'':'s'}</span>
+      </div>
+      <div class="grade-row-chapters">${chapterLinks}</div>
+    </div>`;
+}
+
+function renderGradeView() {
+  const elRows = ELEMENTARY_GRADES.map(g => {
+    const chapters = csvGradeData[g];
+    const lessonCount = chapters.reduce((s, c) => s + c.lessons.length, 0);
+    const meta = GRADE_META[g];
+    const headHref = `maths-grade-3.html?grade=${g}`;
+    const badge = `<span class="grade-row-badge" style="background:${meta.color}">${meta.badge}</span>`;
+    return renderGradeRow(headHref, badge, meta.label, chapters, lessonCount,
+      (ch, i) => `maths-grade-3-chapter.html?grade=${g}&ch=${i+1}`, meta.color);
+  }).join('');
+  document.getElementById('grid-elementary').innerHTML = elRows;
+
+  const midRows = MIDDLE_GRADES.map(g => {
+    const chapters = csvGradeData[g];
+    const lessonCount = chapters.reduce((s, c) => s + c.lessons.length, 0);
+    const meta = GRADE_META[g];
+    const headHref = `maths-grade-3.html?grade=${g}`;
+    const badge = `<span class="grade-row-badge" style="background:${meta.color}">${meta.badge}</span>`;
+    return renderGradeRow(headHref, badge, meta.label, chapters, lessonCount,
+      (ch, i) => `maths-grade-3-chapter.html?grade=${g}&ch=${i+1}`, meta.color);
+  }).join('');
+  document.getElementById('grid-middle').innerHTML = midRows;
+
+  const hsRows = HIGH_SCHOOL_COURSES.map(slug => {
+    const course = highSchoolData[slug];
+    const chapters = course.chapters;
+    const lessonCount = chapters.reduce((s, c) => s + c.lessons.length, 0);
+    const headHref = `/maths/${slug}/`;
+    return renderGradeRow(headHref, '', course.name, chapters, lessonCount,
+      (ch) => `/maths/${slug}/${slugify(ch.name)}/`, HS_COURSE_COLORS[slug]);
+  }).join('');
+  document.getElementById('grid-highschool').innerHTML = hsRows;
+}
+
 // Init
 renderCurriculum('us');
+renderGradeView();
 
 // Deep-link support — e.g. maths.html?view=exam opens straight to the By Exam
 // tab. This is standing in for a real /maths/test-prep/ hub page for now.

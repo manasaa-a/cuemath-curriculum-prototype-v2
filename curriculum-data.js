@@ -129,4 +129,16 @@ const csvGradeData = {
     {name: "Surface Area and Volume", emoji: "🧊", lessons: ["Surface Area of Prisms", "Surface Area of Pyramids", "Surface Area of Cylinders", "Volume of Prisms", "Volume of Pyramids", "Cross-Sections of Three-Dimensional Figures"]},
     {name: "Constructions", emoji: "📐", lessons: ["Construct Triangle Whose Sides and Angles are Given", "Construct Quadrilaterals with Given Sides, Angles, and Diagonals", "Understand Construction of Special Quadrilaterals"]},
   ],
+  8: [
+    {name: "Equations", emoji: "\u2795", lessons: ["Solving Simple Equations", "Solving Multi-Step Equations", "Solving Equations with Variables on Both Sides", "Rewriting Equations and Formulas"]},
+    {name: "Transformations", emoji: "\ud83d\udd04", lessons: ["Translations", "Reflections", "Rotations", "Congruence", "Dilations", "Similarity Figures", "Perimeter and Areas of Similar Figures"]},
+    {name: "Angles and Triangles", emoji: "\ud83d\udcd0", lessons: ["Parallel Lines and Transversals", "Angles of Triangles", "Angles of Polygons", "Similar Triangles"]},
+    {name: "Graphing and Writing Linear Equations", emoji: "\ud83d\udcc8", lessons: ["Graphing Linear Equations", "Slope of a Line", "Graphing Proportional Relationships", "Graphing Equations in Slope-Intercept Form", "Graphing Equations in Standard Form", "Writing Equations in Slope-Intercept Form", "Writing Equations in Standard Form"]},
+    {name: "Systems of Linear Equations", emoji: "\ud83d\udd22", lessons: ["Solving Systems of Linear Equations by Graphing", "Solving Systems of Linear Equations by Algebraically", "Solving Special Systems of Linear Equations"]},
+    {name: "Statistics", emoji: "\ud83d\udcca", lessons: ["Scatter Plots", "Lines of Fit", "Two-Way Tables", "Choosing a Data Display"]},
+    {name: "Functions", emoji: "\ud83d\udd23", lessons: ["Relations and Functions", "Representations of Functions", "Linear Functions", "Comparing Linear and Nonlinear Functions", "Analysing and Sketching Graphs"]},
+    {name: "Exponents", emoji: "\ud83d\udd22", lessons: ["Basics of Exponents", "Product and Quotient of Powers Property", "Zero and Negative Exponents", "Exponential Growth and Decay", "Estimating Quantities", "Scientific Notation", "Operations in Scientific Notation"]},
+    {name: "Real Numbers and the Pythagorean Theorem", emoji: "\ud83d\udcd0", lessons: ["Square Roots", "Pythagorean Theorem", "Cube Roots", "Rational Numbers", "Irrational Numbers", "Converse of The Pythagorean Theorem"]},
+    {name: "Volume and Similar Solids", emoji: "\ud83d\udce6", lessons: ["Volumes of Cylinders", "Volumes of Cones", "Volumes of Spheres", "Surface Areas and Volumes of Similar Solids"]},
+  ],
 };
