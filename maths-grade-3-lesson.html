@@ -287,38 +287,12 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .feature-modal-btn{display:block;width:100%;background:#1C1917;color:#fff;border:none;padding:12px;font-family:'UntitledSans';font-size:13px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none}
 .feature-modal-btn:hover{background:#333;color:#fff}
 
-/* SIGN-IN MODAL — ported from maths-grade-3-chapter.html. Needed here so the
-   "out of sparks" block (see Open Questions §13) can offer sign-in for
-   unlimited practice, tying the cap back into the funnel. */
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
-.auth-overlay.open{display:flex}
-.auth-box{background:#fff;width:420px;max-width:92vw;padding:32px 32px 28px;position:relative}
-.auth-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#97948E}
-.auth-close:hover{color:#1C1917}
-.auth-logo{font-family:'Athletics';font-size:16px;font-weight:700;letter-spacing:.06em;color:#1C1917;margin-bottom:20px}
-.auth-logo span{color:#F4AB52}
-.auth-tabs{display:flex;border-bottom:2px solid #F5F0E8;margin-bottom:24px}
-.auth-tab{flex:1;background:none;border:none;padding:10px 0;font-family:'UntitledSans';font-size:13px;font-weight:500;color:#97948E;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
-.auth-tab.active{color:#1C1917;border-bottom-color:#F4AB52;font-weight:600}
-.auth-panel{display:none}
-.auth-panel.active{display:block}
-.auth-field{margin-bottom:14px}
-.auth-label{font-size:11px;font-weight:600;color:#97948E;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
-.auth-input{width:100%;border:1.5px solid #E5DDD4;padding:10px 12px;font-family:'UntitledSans';font-size:14px;color:#1C1917;outline:none;background:#fff}
-.auth-input:focus{border-color:#F4AB52}
-.auth-btn{width:100%;background:#F4AB52;color:#1C1917;border:none;padding:13px;font-family:'UntitledSans';font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.04em}
-.auth-btn:hover{background:#CE7E12}
-.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#C6C0B8;font-size:12px}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#F5F0E8}
-.auth-google{width:100%;background:#fff;border:1.5px solid #E5DDD4;padding:11px;font-family:'UntitledSans';font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#1C1917}
-.auth-google:hover{border-color:#1C1917;background:#FAFAF8}
-.auth-google svg{width:18px;height:18px;flex-shrink:0}
-.auth-forgot{font-size:12px;color:#97948E;text-align:right;display:block;margin-top:6px;cursor:pointer}
-.auth-forgot:hover{color:#1C1917}
-.auth-success{text-align:center;padding:20px 0}
-.auth-success-icon{font-size:44px;margin-bottom:12px}
-.auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
-.auth-success p{font-size:13px;color:#97948E;line-height:1.5}
+/* QR placeholder for the out-of-sparks interstitial (see Open Questions
+   §13 DECIDED). Plain visual stand-in, clearly labeled — swap for a real
+   QR image (deep-linking to the app) before this goes anywhere real. */
+.qr-placeholder{width:120px;height:120px;margin:0 auto;background:#F5F0E8;border:1.5px dashed #C6C0B8;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#C6C0B8}
+.qr-caption{font-size:11px;color:#97948E;text-align:center;margin:8px 0 16px;line-height:1.5}
+.qr-caption em{color:#C6C0B8;font-style:normal}
 
 /* MOBILE — reflow the sidebar below the main content instead of hiding it.
    The Learn/Practice/Resources viewer keeps its own bounded-height app-shell
@@ -330,6 +304,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
   html,body{height:auto;overflow:visible}
   .shell{display:block;height:auto}
   .leftnav{display:none}
+  .main{height:80vh;min-height:520px}
   .rightpanel{height:auto;overflow-y:visible;border-left:none;border-top:1px solid rgba(0,0,0,.08)}
   .res-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -609,9 +584,11 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
             <div class="practice-cta">
               <span class="pcta-eyebrow">You've had a taste!</span>
               <div class="pcta-title">Ready to go further?</div>
-              <div class="pcta-sub">Sign up free to unlock all practice questions, track your progress, and get personalised feedback.</div>
-              <button class="pcta-btn">Sign up free</button>
-              <button class="pcta-link">Book a 1:1 class instead</button>
+              <div class="pcta-sub">Get unlimited practice questions, progress tracking, and personalised feedback on the Cuemath app.</div>
+              <div class="rp-cta-appbtns">
+                <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+                <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
+              </div>
             </div>
           </div>
         </div>
@@ -622,6 +599,15 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
     <div class="tab-panel" id="tab-resources">
       <div class="resources-wrap">
         <div class="resources-inner">
+          <div class="res-section" data-section="read" id="ressec-read-wrap" onmouseenter="openResSectionExclusive('read')">
+          <button class="res-section-title" id="restitle-read" onclick="openResSectionExclusive('read')">
+            <span>Read</span><span class="res-section-chevron">⌄</span>
+          </button>
+          <div class="res-section-body" id="ressec-read"><div class="res-section-body-inner">
+          <div class="res-grid" style="grid-template-columns:1fr" id="read-grid"></div>
+          </div></div>
+          </div>
+
           <div class="res-section" data-section="worksheets" onmouseenter="openResSectionExclusive('worksheets')">
           <button class="res-section-title" id="restitle-worksheets" onclick="openResSectionExclusive('worksheets')">
             <span>Worksheets</span><span class="res-section-chevron">⌄</span>
@@ -752,7 +738,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value" id="rp-sparks-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">5</div>
         </div>
       </div>
       <div class="rp-lesson-info">
@@ -842,76 +828,27 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
   </div>
 </div>
 
-<!-- Sparks-exhausted modal — proposed mechanic, see Open Questions §13.
-     Sparks are a limiting cap (not a reward): once spent, practice is
-     blocked until they refill or the user signs in for unlimited practice. -->
+<!-- Out-of-sparks interstitial — CONFIRMED mechanic, see Open Questions §13
+     DECIDED (2026-07-10). Sparks are a hard cap for signed-out users only
+     (signed-in = unlimited, see gamification.js). Deliberately NOT a
+     sign-in modal: Manasa's explicit direction was "our goal is to annoy
+     them on the website to nudge them to use the app" — a sign-in shortcut
+     here would undercut that, so none is offered; the only ways out are the
+     app links below or closing this without gaining entry. QR code is a
+     plain placeholder, not a real one — needs a real deep-linking QR image
+     before this goes anywhere real. -->
 <div class="modal-overlay" id="sparks-modal-overlay">
   <div class="modal">
     <button class="modal-close" onclick="closeSparksModal()">×</button>
     <div class="feature-modal-body">
       <div class="feature-lock-icon">⚡</div>
       <div class="feature-modal-title">You're out of sparks</div>
-      <div class="feature-modal-sub" id="sparks-modal-sub">Refills in --. Sign in for unlimited practice.</div>
-      <button class="feature-modal-btn" onclick="handleSparksSignIn()">Sign in for unlimited practice</button>
-    </div>
-  </div>
-</div>
-
-<!-- SIGN-IN MODAL — ported from maths-grade-3-chapter.html -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-box">
-    <button class="auth-close" onclick="closeAuth()">×</button>
-    <div class="auth-logo">Cue<span>math</span></div>
-
-    <div id="auth-success" class="auth-success" style="display:none">
-      <div class="auth-success-icon">🎉</div>
-      <h3>You're in!</h3>
-      <p>Unlimited practice unlocked.<br>Keep going!</p>
-    </div>
-
-    <div id="auth-form-wrap">
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign in</button>
-        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign up free</button>
-      </div>
-
-      <div class="auth-panel active" id="auth-signin">
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="••••••••">
-          <span class="auth-forgot">Forgot password?</span>
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Sign in</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
-      </div>
-
-      <div class="auth-panel" id="auth-signup">
-        <div class="auth-field">
-          <label class="auth-label">Full name</label>
-          <input class="auth-input" type="text" placeholder="Your name">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="Create a password">
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Create free account</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
+      <div class="feature-modal-sub" id="sparks-modal-sub">Refills in --.</div>
+      <div class="qr-placeholder">▦</div>
+      <div class="qr-caption">Scan to keep going right now on the Cuemath app<br><em>(placeholder — swap for a real QR code)</em></div>
+      <div class="rp-cta-appbtns">
+        <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
+        <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
       </div>
     </div>
   </div>
@@ -919,11 +856,12 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
 <script src="gamification.js"></script>
 <script src="curriculum-data.js"></script>
+<script src="content-page-map.js"></script>
 <script>
 // csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data).
-// gamification.js (Points/Streaks/Sparks — provisional, see Open Questions
-// §13) is also loaded here: markPracticeDone() and selectOpt() below award
-// points, and switchTab() gates entry into the Practice tab behind sparks.
+// gamification.js (Points/Streaks/Sparks — CONFIRMED, see Open Questions
+// §13) is also loaded here: goToSlide() and selectOpt() below award points
+// and spend sparks on real in-lesson actions (never on opening a tab).
 // This fixes a real bug: this file previously only had K-3 embedded, so any
 // grade 4/5/6 lesson link silently rendered Grade 3's lesson content while
 // still labeling the breadcrumb/header as "Grade 4/5/6."
@@ -934,11 +872,54 @@ const grade = gradeParam === 'K' ? 'K' : (parseInt(gradeParam) || 3);
 const chIdx = (parseInt(params.get('ch')) || 1) - 1;
 const lessonIdx = (parseInt(params.get('lesson')) || 1) - 1;
 
+// ── Sparks state (CONFIRMED — Open Questions §13 DECIDED, 2026-07-10) ──
+// Declared up here (rather than down by switchTab(), where the logic that
+// uses them reads better) because goToSlide()'s per-slide gate check has to
+// run as part of page init (goToSlide(0)), before the rest of page setup —
+// see the switchTab()/goToSlide()/selectOpt() section further down for the
+// actual gating functions. Learn no longer has a single per-tab spark flag —
+// each new slide reached (from slide 1 onward) spends its own spark, tracked
+// via gamification.js's existing per-slide dedup list, not a per-page-load
+// boolean here. Practice still uses a flat per-page-load flag below, since
+// it's still a flat "1 spark per sheet" charge, just triggered by answering
+// the first question instead of by opening the tab.
+let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
+let practiceSparkConsumedThisPageLoad = false;
+
 const chapters = csvGradeData[grade] || csvGradeData[3];
 const ch = chapters[Math.min(chIdx, chapters.length - 1)];
 const lessonName = ch.lessons[Math.min(lessonIdx, ch.lessons.length - 1)];
 
 const gradeLabel = grade === 'K' ? 'Kindergarten' : 'Grade ' + grade;
+
+// ── "Read" resource section — real per-lesson concept-page links, from
+// content-page-map.js (114 real traffic-driven cuemath.com pages matched
+// against actual K-8/HS lessons by subject relevance — see that file's
+// header). Falls back to hiding the section entirely when this specific
+// lesson has no matched page, rather than showing a generic library link.
+(function renderReadSection() {
+  const matchedPages = (typeof contentPageMap === 'undefined' ? [] : contentPageMap).filter(page =>
+    page.matches.some(m => m.level === 'K8' && m.grade === grade && m.chapterName === ch.name && m.lessonName === lessonName)
+  );
+  const wrap = document.getElementById('ressec-read-wrap');
+  if (!matchedPages.length) {
+    wrap.remove();
+    return;
+  }
+  const grid = document.getElementById('read-grid');
+  grid.innerHTML = matchedPages.map(page => {
+    const title = page.keywords
+      ? page.keywords.split(';')[0].trim().replace(/\b\w/g, c => c.toUpperCase())
+      : page.url;
+    return `
+      <a class="res-card" href="${page.url}" target="_blank" rel="noopener">
+        <div class="res-card-icon">📖</div>
+        <div class="res-card-name">${title}</div>
+        <div class="res-card-meta">Cuemath · Concept explanation</div>
+        <div class="res-card-action">Read →</div>
+      </a>`;
+  }).join('');
+})();
 
 // Starting ANY lesson (anywhere — any grade, any chapter) uses up the one free
 // lesson: it becomes the site-wide claimed lesson, and every other lesson locks
@@ -992,12 +973,35 @@ for(let i = 0; i < totalSlides; i++){
 }
 
 function goToSlide(n){
+  // CORRECTED 2026-07-10 (Open Questions §13 DECIDED, corrected again same
+  // day): navigating WITHIN Learn costs sparks too, not just opening the tab
+  // once — but landing on a lesson at all (via Start/Resume/Review on the
+  // chapter page) is always free. Slide 0 is that free initial view: no
+  // spark either way, since clicking Start/Resume/Review itself must never
+  // spend one. Sparks are spent by real in-lesson navigation — reaching any
+  // slide from 1 onward for the first time ever spends 1 spark (signed-in
+  // users exempt, same as everywhere else). Points still award for slide 0
+  // same as any other slide; only the spark charge is skipped for it. Same
+  // dedup rule as before either way — going back to an already-seen slide,
+  // or reloading, never re-pays. If a genuinely new slide can't be afforded,
+  // the navigation is aborted before any DOM change — the learner stays on
+  // the current slide and the sparks interstitial (full-viewport) opens
+  // instead of revealing unpaid content.
+  const slideKey = `${grade}-${chIdx}-${lessonIdx}-slide-${n}`;
+  const isNewSlide = !cmHasAwardedLearnItem(slideKey);
+  if (isNewSlide && n !== 0 && !isSignedIn && !cmConsumeSpark()) {
+    openSparksModal();
+    return;
+  }
   document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === n));
   document.querySelectorAll('.sp').forEach((p, i) => p.classList.toggle('active', i === n));
   currentSlide = n;
   document.getElementById('slide-counter').textContent = (n + 1) + ' / ' + totalSlides;
   document.getElementById('btn-prev').disabled = n === 0;
   document.getElementById('btn-next').disabled = n === totalSlides - 1;
+  if (isNewSlide) {
+    cmAwardLearnItemPoints(slideKey);
+  }
 }
 
 function changeSlide(dir){
@@ -1017,7 +1021,12 @@ ch.lessons.forEach((ln, i) => {
   navEl.appendChild(item);
 });
 
-// Init
+// Init — Learn is the default-active tab straight from the static HTML (no
+// switchTab('learn') click happens just to show it), so opening the page
+// means reaching slide 0, and goToSlide(0) below is itself the gate check
+// (see the comment on goToSlide for the full per-slide spark rule). If
+// slide 0 can't be afforded, goToSlide aborts before touching the DOM and
+// opens the sparks interstitial — nothing else needs to run here.
 goToSlide(0);
 
 // Auto-switch tab if URL param set (e.g. ?tab=practice from REVIEW)
@@ -1039,24 +1048,29 @@ function openResSectionExclusive(id){
 let cameFromLearn = true; // tracks whether the last tab was Learn, for the CW→HW transition below
 let currentTab = 'learn'; // the idle CTA below is suppressed while this is 'resources'
 
-// ── Sparks gating on Practice entry (proposed — see Open Questions §13) ──
-// Signed in = unlimited practice, no spark cost at all. Otherwise: consumes
-// one spark the first time Practice is opened THIS page load (not on every
-// re-switch back to the tab) — if none are left, block entry and show the
-// real computed refill time instead of switching tabs.
-let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
-let sparkConsumedThisPageLoad = false;
-let pendingPracticeEntry = false; // true while the sign-in modal was opened specifically to get into Practice
+// ── Sparks on Practice (CONFIRMED — see Open Questions §13 DECIDED,
+// 2026-07-10, corrected same day). Signed in = unlimited, no spark cost at
+// all. Otherwise: solving/going through the practice sheet spends one spark
+// from the same 5-spark pool — but, same correction as Learn, landing on the
+// Practice tab is always free (arriving via Start/Resume/Review, or clicking
+// the Practice tab itself, never costs anything on its own). The charge is
+// on the real in-lesson action of actually answering the first question —
+// see the call site in selectOpt() below — the FIRST time that happens this
+// page load, not on every question. If none are left when they try to
+// answer, that answer is blocked (no selection applied, no points) and the
+// app-redirect interstitial opens instead (see sparks-modal-overlay above —
+// deliberately not the sign-in modal). Learn is gated separately and more
+// granularly, per slide — see goToSlide().
+
+function trySpendSparkForTab(tab){
+  if (practiceSparkConsumedThisPageLoad) return true;
+  if (isSignedIn) return true; // unlimited for signed-in users — no spark spent, nothing to track
+  if (!cmConsumeSpark()) return false; // out of sparks
+  practiceSparkConsumedThisPageLoad = true;
+  return true;
+}
 
 function switchTab(tab){
-  if (tab === 'practice' && !sparkConsumedThisPageLoad) {
-    if (!isSignedIn && !cmConsumeSpark()) {
-      pendingPracticeEntry = true;
-      openSparksModal();
-      return; // stay on the current tab — don't switch, don't init practice
-    }
-    sparkConsumedThisPageLoad = true;
-  }
   document.querySelectorAll('.page-tab').forEach((t,i) => {
     t.classList.toggle('active', ['learn','practice','resources'][i] === tab);
   });
@@ -1069,12 +1083,13 @@ function switchTab(tab){
   }
   cameFromLearn = (tab === 'learn');
   currentTab = tab;
+  return true;
 }
 
 function openSparksModal(){
   const ms = cmMsUntilNextSpark();
   document.getElementById('sparks-modal-sub').textContent =
-    `Refills in ${cmFormatRefillTime(ms)}. Sign in for unlimited practice.`;
+    `You've used all ${CM_SPARK_MAX} sparks. They refill in ${cmFormatRefillTime(ms)} — or keep going right now on the app.`;
   document.getElementById('sparks-modal-overlay').classList.add('open');
 }
 function closeSparksModal(){
@@ -1082,41 +1097,6 @@ function closeSparksModal(){
 }
 document.getElementById('sparks-modal-overlay').addEventListener('click', e => {
   if(e.target === e.currentTarget) closeSparksModal();
-});
-function handleSparksSignIn(){
-  closeSparksModal();
-  openSignInPrompt();
-}
-
-// ── Sign-in modal (ported from maths-grade-3-chapter.html) ──
-function openSignInPrompt(){
-  document.getElementById('auth-overlay').classList.add('open');
-}
-function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('open');
-}
-function switchAuthTab(tab){
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
-  document.getElementById('auth-signin').classList.toggle('active', tab==='signin');
-  document.getElementById('auth-signup').classList.toggle('active', tab==='signup');
-}
-function handleAuth(){
-  document.getElementById('auth-form-wrap').style.display = 'none';
-  document.getElementById('auth-success').style.display = 'block';
-  isSignedIn = true;
-  sessionStorage.setItem('cuemathSignedIn', '1');
-  setTimeout(() => {
-    closeAuth();
-    document.getElementById('auth-form-wrap').style.display = 'block';
-    document.getElementById('auth-success').style.display = 'none';
-    if (pendingPracticeEntry) {
-      pendingPracticeEntry = false;
-      switchTab('practice'); // unlocked now — actually take them into Practice
-    }
-  }, 1500);
-}
-document.getElementById('auth-overlay').addEventListener('click', e => {
-  if(e.target === e.currentTarget) closeAuth();
 });
 
 // ── CW → HW interstitial (proposed — see Open Questions §7a) ──
@@ -1239,6 +1219,12 @@ function initPractice(){
 // practice questions are finished — until then the chapter page shows
 // "Resume". Only flips the flag if this lesson is the one actually claiming
 // the global free slot (see maths-grade-3-chapter.html's getGlobalCompleted).
+// This claim/button-state logic is untouched by the sparks rebuild (Open
+// Questions §13 DECIDED) — it's a separate, still-undecided question whether
+// it should also move to spark/app-redirect logic. No extra points are
+// awarded here anymore: under the new formula every question already earns
+// its own +50 in selectOpt() below, so there's no separate "whole sheet
+// done" bonus on top of that (unlike the old flat +10-per-lesson version).
 function markPracticeDone(){
   const raw = sessionStorage.getItem('cuemathGlobalCompletedLesson');
   if (!raw) return;
@@ -1246,7 +1232,6 @@ function markPracticeDone(){
   if (claim.grade === grade && claim.ch === chIdx && claim.lesson === lessonIdx) {
     claim.practiceDone = true;
     sessionStorage.setItem('cuemathGlobalCompletedLesson', JSON.stringify(claim));
-    cmAwardLessonPoints(`${grade}-${chIdx}-${lessonIdx}`); // +10, deduped — see gamification.js
   }
 }
 
@@ -1286,9 +1271,21 @@ function renderQuestion(){
 
 function selectOpt(i){
   if(answered) return;
+  // Practice's 1-spark-per-sheet charge lands here, not on opening the tab
+  // (corrected 2026-07-10 — landing on Practice via Start/Resume/Review must
+  // always be free). This is the first real in-lesson action ("solving" the
+  // sheet), and trySpendSparkForTab already dedupes to only charge once per
+  // page load, so answering question 2, 3, 4... doesn't pay again.
+  if (!trySpendSparkForTab('practice')) {
+    openSparksModal();
+    return; // blocked — no selection applied, no points awarded
+  }
   answered = true;
   const q = questions[currentQ];
-  if (i === q.ans) cmAwardPracticePoints(); // +2, once per question — guarded by `answered` above
+  // +50 per completed practice question, regardless of correctness
+  // (CONFIRMED — Open Questions §13 DECIDED) — guarded by `answered` above
+  // so this can't double-fire on a repeat click of the same question.
+  cmAwardPracticePoints();
   document.querySelectorAll('.q-opt').forEach((el, idx) => {
     if(idx === q.ans) el.classList.add('correct');
     else if(idx === i && i !== q.ans) el.classList.add('wrong');

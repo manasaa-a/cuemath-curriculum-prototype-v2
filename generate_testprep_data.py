@@ -138,7 +138,7 @@ def _num(v):
 
 def build_exam(program, service):
     exam_slug = EXAM_SLUGS[program]
-    exam_url = f"/maths/test-prep/{exam_slug}/"
+    exam_url = f"/maths/{exam_slug}/"
     files = [c for c in list_children(service, FOLDERS[program]) if c["mimeType"] == "text/csv"]
 
     parsed_files = []

@@ -1,30 +1,49 @@
 // Points / Streaks / Sparks — real, localStorage-backed tracking shared
 // across every page that shows .rp-stats-row (grade, chapter, lesson, topic,
-// exam pages) plus the test-prep worksheet page (which awards points but
-// doesn't show the stats row itself — see maths-testprep-worksheet.html).
+// exam pages) plus the test-prep worksheet page (which awards points and
+// spends sparks but doesn't show the stats row itself — see
+// maths-testprep-worksheet.html).
 //
-// PROVISIONAL RULESET — see Open Questions & Decisions.md §13. Manasa's
-// explicit direction: implement something genuinely functional (not random)
-// to demonstrate the mechanic, but none of the numbers below (points per
-// action, spark cap, refill rate) are decided. Treat every constant in this
-// file as a placeholder pending a real product/points-formula call.
+// CONFIRMED RULESET (2026-07-10, corrected same day) — see Open Questions &
+// Decisions.md §13, "DECIDED" section. This supersedes the earlier
+// provisional version (3 sparks, practice-only gating, +10/lesson
+// +2/correct-answer). Sparks max (5), the sign-in bypass, and the two point
+// values (10, 50) are confirmed. What consumes a spark was corrected once:
+// it's not "1 spark per Learn/Practice tab opened" — reaching EACH NEW slide
+// within a Learn sheet also costs its own spark, same granularity as the
+// +10 points award ("even navigating within the learn section will cost
+// them sparks"). See goToSlide() in maths-grade-3-lesson.html for where
+// that's enforced; a test-prep worksheet still costs a flat 1 spark (that
+// hasn't been corrected to per-question). The SPARK REFILL RATE specifically
+// is still not a number Manasa gave us — CM_SPARK_REFILL_HOURS below is a
+// reasonable placeholder, clearly flagged, not a confirmed value.
 //
 // Uses localStorage on purpose — these should survive across sessions/tabs
 // closing, unlike the existing one-free-lesson / one-free-worksheet gating
-// (cuemathGlobalCompletedLesson, cuemathGlobalCompletedTestPrepWorksheet),
-// which is intentionally sessionStorage-scoped and is NOT touched by this
-// file. cuemathSignedIn (also sessionStorage, shared with that gating) is
-// only *read* here, to let a signed-in user skip the spark cap.
+// (cuemathGlobalCompletedLesson, cuemathGlobalCompletedTestPrepWorksheet).
+// That claim system still exists and still drives the chapter page's
+// Start/Resume/Review button states — that's an intentionally separate,
+// still-undecided question (see §13) — but it no longer has any part in
+// gating entry into a Learn/Practice tab or a worksheet; sparks fully own
+// that now. cuemathSignedIn (also sessionStorage) is only *read* here: per
+// the confirmed rule, sparks apply to signed-out users only — a signed-in
+// user gets unlimited access and never touches the spark count at all.
+//
+// KNOWN GAP, explicitly deferred by Manasa (not something to fix here):
+// sparks (like everything else in this file) are client-side only, so
+// clearing browser storage also wipes/refills them — a real way to cheat
+// the cap. Acknowledged, out of scope for this build.
 
 const CM_POINTS_KEY = 'cuemathPoints';
 const CM_STREAK_KEY = 'cuemathStreak'; // {lastActiveDate:'YYYY-MM-DD', currentStreak:N}
 const CM_SPARKS_KEY = 'cuemathSparks'; // {count:N, lastConsumed:epochMs|null}
-const CM_LESSON_POINTS_KEY = 'cuemathLessonPointsAwarded'; // string[] of "grade-ch-lesson" already paid out
+const CM_LEARN_ITEM_POINTS_KEY = 'cuemathLearnItemsAwarded'; // string[] of "grade-ch-lesson-slide-N" (or other per-item keys) already paid out
+const CM_MANUAL_COMPLETE_POINTS_KEY = 'cuemathLessonPointsAwarded'; // string[] of "grade-ch-lesson" already paid out via the chapter page's manual "Mark as Complete" override specifically (see cmAwardManualCompletePoints)
 
-const CM_POINTS_PER_LESSON = 10; // provisional — Open Questions §13 Q1
-const CM_POINTS_PER_CORRECT_ANSWER = 2; // provisional — Open Questions §13 Q1
-const CM_SPARK_MAX = 3; // provisional — Open Questions §13 Q2/Q3
-const CM_SPARK_REFILL_HOURS = 4; // provisional — Open Questions §13 Q2
+const CM_POINTS_PER_LEARN_ITEM = 10; // CONFIRMED 2026-07-10 — per slide/item advanced through in a Learn sheet, not once per whole sheet
+const CM_POINTS_PER_PRACTICE_QUESTION = 50; // CONFIRMED 2026-07-10 — per completed practice question, regardless of correctness (not specified as correctness-gated)
+const CM_SPARK_MAX = 5; // CONFIRMED 2026-07-10 (was 3 in the earlier provisional version)
+const CM_SPARK_REFILL_HOURS = 4; // NOT confirmed — Manasa's direction was "keep a reasonable placeholder rate," exact number still open (Open Questions §13)
 
 function cmToday() {
   return new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC date — fine for a mockup, real impl should use local calendar day)
@@ -43,28 +62,61 @@ function cmAddPoints(n) {
   return total;
 }
 
-// +10 once a specific lesson is completed (Learn practice finished, or
-// manually marked complete). lessonKey should uniquely identify the lesson,
-// e.g. `${grade}-${chIdx}-${lessonIdx}`. Persisted dedup means reloading the
-// page (or revisiting later) never double-pays the same lesson, but a
-// genuinely different lesson completed later — this session or a future one
-// — still earns its own +10.
-function cmAwardLessonPoints(lessonKey) {
-  const raw = localStorage.getItem(CM_LESSON_POINTS_KEY);
+// +10 per unique slide/item reached in a Learn sheet (CONFIRMED 2026-07-10 —
+// "awarded per slide/item advanced through, not once per whole sheet").
+// itemKey should uniquely identify that one slide within that one lesson,
+// e.g. `${grade}-${chIdx}-${lessonIdx}-slide-${slideIndex}`. Persisted dedup
+// means re-visiting a slide already reached (going back, reloading the page,
+// coming back later) never double-pays it — but reaching a genuinely new
+// slide, in this lesson or any other, still earns its own +10. Reads once
+// per unique slide reached, not once per every single navigation event —
+// see the comment at the call site in maths-grade-3-lesson.html for why.
+function cmAwardLearnItemPoints(itemKey) {
+  const raw = localStorage.getItem(CM_LEARN_ITEM_POINTS_KEY);
   const awarded = raw ? JSON.parse(raw) : [];
-  if (awarded.indexOf(lessonKey) !== -1) return false;
-  awarded.push(lessonKey);
-  localStorage.setItem(CM_LESSON_POINTS_KEY, JSON.stringify(awarded));
-  cmAddPoints(CM_POINTS_PER_LESSON);
+  if (awarded.indexOf(itemKey) !== -1) return false;
+  awarded.push(itemKey);
+  localStorage.setItem(CM_LEARN_ITEM_POINTS_KEY, JSON.stringify(awarded));
+  cmAddPoints(CM_POINTS_PER_LEARN_ITEM);
   return true;
 }
 
-// +2 for a correct practice answer. Callers are responsible for only
-// invoking this once per question — guarded by that question's own
-// answered/submitted flag (see selectOpt() in maths-grade-3-lesson.html and
-// submitAnswer() in maths-testprep-worksheet.html), not by anything in here.
+// Side-effect-free check for whether a given Learn item has already been
+// paid for (points awarded). Added 2026-07-10 so callers can decide whether
+// reaching a slide is "new" (and therefore also costs a spark — see
+// goToSlide() in maths-grade-3-lesson.html) before calling
+// cmAwardLearnItemPoints, without double-bookkeeping the dedup list.
+function cmHasAwardedLearnItem(itemKey) {
+  const raw = localStorage.getItem(CM_LEARN_ITEM_POINTS_KEY);
+  const awarded = raw ? JSON.parse(raw) : [];
+  return awarded.indexOf(itemKey) !== -1;
+}
+
+// +10, once, for the chapter page's manual "Mark as Complete" override
+// (the 3-dot menu action that flags a lesson done WITHOUT actually opening
+// its Learn/Practice sheets). GUESS, flagged: Manasa's confirmed numbers
+// cover per-slide Learn points and per-question Practice points, not this
+// bypass path, which never generates real slides/questions to attach points
+// to. Treating it as worth one Learn-item's worth of points is a reasonable
+// placeholder, not a confirmed formula for this specific action.
+function cmAwardManualCompletePoints(lessonKey) {
+  const raw = localStorage.getItem(CM_MANUAL_COMPLETE_POINTS_KEY);
+  const awarded = raw ? JSON.parse(raw) : [];
+  if (awarded.indexOf(lessonKey) !== -1) return false;
+  awarded.push(lessonKey);
+  localStorage.setItem(CM_MANUAL_COMPLETE_POINTS_KEY, JSON.stringify(awarded));
+  cmAddPoints(CM_POINTS_PER_LEARN_ITEM);
+  return true;
+}
+
+// +50 per completed practice question (CONFIRMED 2026-07-10 — "not gated by
+// correctness," awarded whether the answer given was right or wrong).
+// Callers are responsible for only invoking this once per question —
+// guarded by that question's own answered/submitted flag (see selectOpt()
+// in maths-grade-3-lesson.html and submitAnswer() in
+// maths-testprep-worksheet.html), not by anything in here.
 function cmAwardPracticePoints() {
-  cmAddPoints(CM_POINTS_PER_CORRECT_ANSWER);
+  cmAddPoints(CM_POINTS_PER_PRACTICE_QUESTION);
 }
 
 // ── Streak — calendar-day based ──

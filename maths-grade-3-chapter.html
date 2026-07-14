@@ -286,7 +286,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value" id="rp-sparks-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">5</div>
         </div>
       </div>
       <!-- Chapter navigator within grade -->
@@ -394,10 +394,12 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 <script src="curriculum-data.js"></script>
 <script>
 // csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data)
-// gamification.js (Points/Streaks/Sparks — provisional, see Open Questions
-// §13) is also loaded here: markComplete() below awards +10 points the same
-// way the lesson page's markPracticeDone() does, for the "Mark as Complete"
-// manual-override path.
+// gamification.js (Points/Streaks/Sparks — CONFIRMED 2026-07-10, see Open
+// Questions §13) is also loaded here: markComplete() below awards a flat
+// +10 (cmAwardManualCompletePoints, a guessed stand-in — see that function's
+// comment) for the "Mark as Complete" manual-override path, which bypasses
+// the real Learn/Practice sheets entirely so there's nothing to award
+// per-slide/per-question against.
 
 const params = new URLSearchParams(location.search);
 const gradeParam = params.get('grade') || '3';
@@ -477,7 +479,7 @@ function markComplete(i, e){
   completedLessons[i] = true;
   resumeLessons[i] = false;
   setGlobalManuallyCompleted(grade, chIdx, i);
-  cmAwardLessonPoints(`${grade}-${chIdx}-${i}`); // +10, deduped — see gamification.js
+  cmAwardManualCompletePoints(`${grade}-${chIdx}-${i}`); // +10 flat (guessed approximation, no real slides to award per-item) — see gamification.js
   if(inProgressLesson === i) inProgressLesson = i + 1;
   buildList();
   updateHeaderProgress();

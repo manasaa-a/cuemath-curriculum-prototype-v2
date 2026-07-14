@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  cuemath.com/maths/test-prep/{exam}/[{band}/]
+  cuemath.com/maths/{exam}/[{band}/]
   Test-prep exam landing page — chapter list (chapter -> block -> worksheet)
   Same visual pattern as maths-grade-3.html's hover-expand chapter rows.
   Data + URLs are a PROPOSAL — see testprep-data.js and the
@@ -73,6 +73,17 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .ch-row-lessons a:hover{background:#FAF1E6;color:#CE7E12}
 .ch-row-lessons a .block-tag{font-size:10px;color:#B0AAA5;flex-shrink:0;text-transform:uppercase;letter-spacing:.04em}
 .ch-row-lessons a:hover .block-tag{color:#CE7E12}
+.about-topic{border-radius:4px;cursor:pointer}
+.about-topic:hover{background:#FAF1E6}
+.about-topic-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 8px;font-size:12px;color:#1C1917;line-height:1.35}
+.about-topic-caret{font-size:9px;color:#B0AAA5;transition:transform .15s ease;flex-shrink:0}
+.about-topic.open .about-topic-caret{transform:rotate(180deg)}
+.about-topic-body{display:none;padding:2px 8px 14px 8px}
+.about-topic.open .about-topic-body{display:block}
+.about-topic-body p{font-size:12.5px;color:#57534E;line-height:1.6;margin-bottom:10px}
+.about-faq-item{margin-bottom:10px}
+.about-faq-q{font-size:12.5px;font-weight:700;color:#1C1917;margin-bottom:3px}
+.about-faq-a{font-size:12.5px;color:#57534E;line-height:1.6}
 .ch-row-lessons .block-locked{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 8px;font-size:12px;color:#B0AAA5;line-height:1.35}
 .ch-row-lessons .block-signin-btn{background:none;border:1px solid #F4AB52;color:#CE7E12;font-family:'UntitledSans';font-size:10px;font-weight:600;padding:3px 8px;cursor:pointer;flex-shrink:0;white-space:nowrap}
 .ch-row-lessons .block-signin-btn:hover{background:#F4AB52;color:#1C1917}
@@ -220,7 +231,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value" id="rp-sparks-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">5</div>
         </div>
       </div>
       <div class="rp-divider"></div>
@@ -307,6 +318,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
      with this page's own auth-overlay below but doesn't touch its logic. -->
 <script src="gamification.js"></script>
 <script src="testprep-data.js"></script>
+<script src="testprep-about-content.js"></script>
 <script>
 // testPrepData comes from testprep-data.js (proposal — see the DRAFT sheet linked there)
 
@@ -367,25 +379,63 @@ function getBlockState(chapterName, blockName) {
 // idea: fold SEO/informational content about the exam into Unit 1 of this
 // same page so it inherits the practice page's authority instead of living
 // on a weaker standalone page.
-// PLACEHOLDER ONLY — Manasa is researching real topics/copy per exam. Titles
-// below are generic question shapes, not asserted facts about any exam, and
-// links are inert (#) until real articles exist.
+// Real content, researched and verified per exam (2026-07-10) — see
+// testprep-about-content.js, keyed by the same lowercase slug as examSlug
+// (the global declared near the top of this script). Falls back to the
+// original inert TBD placeholder if a slug isn't in that file yet (shouldn't
+// happen today — all 12 current exams are covered — but keeps this page from
+// breaking if a 13th exam is added before its About content is written).
 function renderAboutUnit(examName) {
+  const content = (typeof testprepAboutContent !== 'undefined') ? testprepAboutContent[examSlug] : null;
+  if (!content) {
+    const topics = [
+      `What is ${examName}?`,
+      `${examName} format and scoring`,
+      `How to prepare for ${examName}`,
+      `${examName} FAQs`
+    ];
+    const links = topics.map(t =>
+      `<div class="block-locked" style="color:#B0AAA5" title="Placeholder — pending SEO research">${t}<span class="block-tag">TBD</span></div>`
+    ).join('');
+    return `
+      <div class="ch-row" id="ch-about">
+        <div class="ch-row-header">
+          <span class="ch-row-num">1</span>
+          <span class="ch-row-icon">📰</span>
+          <span class="ch-row-name">About ${examName} <span style="font-weight:400;color:#B0AAA5;font-size:11px;text-transform:none">— placeholder, pending research</span></span>
+          <span class="ch-row-meta">
+            <span class="ch-row-count">${topics.length} articles</span>
+          </span>
+          <span class="ch-row-chevron">⌄</span>
+        </div>
+        <div class="ch-row-body">
+          <div class="ch-row-body-inner">
+            <div class="ch-row-lessons">${links}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
   const topics = [
-    `What is ${examName}?`,
-    `${examName} format and scoring`,
-    `How to prepare for ${examName}`,
-    `${examName} FAQs`
+    {title: `What is ${examName}?`, body: `<p>${content.whatIs}</p>`},
+    {title: `${examName} format and scoring`, body: `<p>${content.formatScoring}</p>`},
+    {title: `How to prepare for ${examName}`, body: `<p>${content.howToPrepare}</p>`},
+    {title: `${examName} FAQs`, body: content.faqs.map(f =>
+      `<div class="about-faq-item"><div class="about-faq-q">${f.q}</div><div class="about-faq-a">${f.a}</div></div>`
+    ).join('')},
   ];
-  const links = topics.map(t =>
-    `<div class="block-locked" style="color:#B0AAA5" title="Placeholder — pending SEO research">${t}<span class="block-tag">TBD</span></div>`
+  const items = topics.map((t, i) => `
+    <div class="about-topic" id="about-topic-${i}" onclick="toggleAboutTopic(${i})">
+      <div class="about-topic-head">${t.title}<span class="about-topic-caret">⌄</span></div>
+      <div class="about-topic-body">${t.body}</div>
+    </div>`
   ).join('');
   return `
     <div class="ch-row" id="ch-about">
       <div class="ch-row-header">
         <span class="ch-row-num">1</span>
         <span class="ch-row-icon">📰</span>
-        <span class="ch-row-name">About ${examName} <span style="font-weight:400;color:#B0AAA5;font-size:11px;text-transform:none">— placeholder, pending research</span></span>
+        <span class="ch-row-name">About ${examName}</span>
         <span class="ch-row-meta">
           <span class="ch-row-count">${topics.length} articles</span>
         </span>
@@ -393,10 +443,14 @@ function renderAboutUnit(examName) {
       </div>
       <div class="ch-row-body">
         <div class="ch-row-body-inner">
-          <div class="ch-row-lessons">${links}</div>
+          <div class="ch-row-lessons">${items}</div>
         </div>
       </div>
     </div>`;
+}
+
+function toggleAboutTopic(i) {
+  document.getElementById('about-topic-' + i).classList.toggle('open');
 }
 
 function loadBand(idx) {

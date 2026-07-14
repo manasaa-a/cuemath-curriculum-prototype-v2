@@ -356,22 +356,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 
       </div>
 
-      <!-- BY TOPIC VIEW -->
+      <!-- BY TOPIC VIEW — real cross-grade groupings of every K-8 chapter,
+           rendered from topics-data.js. See renderTopicView() below. -->
       <div id="view-topic" style="display:none">
-        <div class="topic-grid" style="display:grid">
-          <a href="maths-topic.html?topic=number-system" class="topic-card"><div class="tc-icon">🔢</div><div class="tc-name">Number System</div><div class="tc-meta">Grades 3–6 · 98 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">➕</div><div class="tc-name">Addition &amp; Subtraction</div><div class="tc-meta">Grades K–4 · 36 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">✖️</div><div class="tc-name">Multiplication &amp; Division</div><div class="tc-meta">Grades 3–6 · 44 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">½</div><div class="tc-name">Fractions &amp; Decimals</div><div class="tc-meta">Grades 3–7 · 52 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">📐</div><div class="tc-name">Geometry</div><div class="tc-meta">Grades K–12 · 80 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">📏</div><div class="tc-name">Measurement</div><div class="tc-meta">Grades 1–6 · 34 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">📊</div><div class="tc-name">Data &amp; Graphs</div><div class="tc-meta">Grades 1–8 · 40 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">🔣</div><div class="tc-name">Algebra</div><div class="tc-meta">Grades 6–12 · 90 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">🎲</div><div class="tc-name">Probability &amp; Statistics</div><div class="tc-meta">Grades 6–12 · 48 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">〽️</div><div class="tc-name">Calculus</div><div class="tc-meta">Grades 11–12 · 36 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">🔺</div><div class="tc-name">Trigonometry</div><div class="tc-meta">Grades 10–12 · 30 lessons</div></a>
-          <a href="#" class="topic-card" onclick="event.preventDefault()"><div class="tc-icon">🔢</div><div class="tc-name">Number Theory</div><div class="tc-meta">Grades 3–8 · 24 lessons</div></a>
-        </div>
+        <div class="topic-grid" id="grid-topics" style="display:grid"></div>
       </div>
 
       <!-- BY EXAM VIEW -->
@@ -509,6 +497,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 
 <script src="curriculum-data.js"></script>
 <script src="highschool-data.js"></script>
+<script src="topics-data.js"></script>
 <script>
 // Country → curriculum mapping
 const curricula = {
@@ -679,12 +668,25 @@ function renderGradeView() {
   document.getElementById('grid-highschool').innerHTML = hsRows;
 }
 
+function renderTopicView() {
+  const cards = topicData.map(t => `
+    <a href="maths-topic.html?topic=${t.slug}" class="topic-card">
+      <div class="tc-icon">${t.emoji}</div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-meta">${t.gradeRange} &middot; ${t.chapterCount} chapter${t.chapterCount===1?'':'s'} &middot; ${t.lessonCount} lessons</div>
+    </a>`).join('');
+  document.getElementById('grid-topics').innerHTML = cards;
+}
+
 // Init
 renderCurriculum('us');
 renderGradeView();
+renderTopicView();
 
 // Deep-link support — e.g. maths.html?view=exam opens straight to the By Exam
-// tab. This is standing in for a real /maths/test-prep/ hub page for now.
+// tab. Exam URLs no longer sit under a shared /maths/test-prep/ prefix (each
+// exam is now /maths/{exam}/ directly), so this tab is the only hub for
+// browsing all exams — there's no dedicated hub URL to build anymore.
 // Scrolls straight to the content, skipping past the hero — landing here from
 // elsewhere should show the tab's content, not the top of the homepage.
 const _initView = new URLSearchParams(location.search).get('view');

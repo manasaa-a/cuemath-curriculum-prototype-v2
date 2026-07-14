@@ -90,6 +90,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 /* LESSON LIST inside grade section */
 .grade-lessons{display:none;padding:0 24px 16px}
 .grade-section.open .grade-lessons{display:block}
+/* A topic can include more than one chapter from the same grade (e.g. two
+   "Number System" chapters in Grade 4) — each gets its own mini-header with
+   its own "Go to chapter" link, reusing .grade-go-btn's existing styling. */
+.topic-chapter-block{padding-top:10px;margin-top:10px;border-top:1px solid #F0EDE8}
+.topic-chapter-block:first-child{padding-top:0;margin-top:0;border-top:none}
+.tcb-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0 8px}
+.tcb-name{font-family:'Athletics';font-size:12px;font-weight:700;color:#78716C;text-transform:uppercase;letter-spacing:.04em}
 .topic-lesson-row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid #F0EDE8}
 .topic-lesson-row:last-child{border-bottom:none}
 .tl-num{width:28px;height:28px;border-radius:50%;background:#F5F3EF;border:1px solid #E8E4DD;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#78716C;flex-shrink:0}
@@ -178,221 +185,35 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       <div class="topbar-bc">
         <a href="maths.html">Maths</a>
         <span class="sep">/</span>
-        <span class="cur">Number System</span>
+        <span class="cur" id="bc-topic">Number System</span>
       </div>
     </div>
 
-    <!-- Topic hero -->
+    <!-- Topic hero — filled by renderTopicPage() below from topics-data.js -->
     <div class="topic-hero">
       <div class="topic-eyebrow">
-        <a href="maths.html">Maths</a>
+        <a href="maths.html?view=topic">Maths</a>
         <span class="sep">/</span>
         By Topic
       </div>
       <div class="topic-hero-row">
         <div class="topic-hero-left">
-          <div class="topic-title">🔢 Number System</div>
-          <div class="topic-sub">Place value, number names, comparing and ordering — from 2-digit numbers in Grade 1 all the way to integers and rational numbers in Grade 6.</div>
-          <div class="topic-meta-pills">
-            <div class="topic-pill"><strong>6</strong> grades covered</div>
-            <div class="topic-pill"><strong>24</strong> chapters</div>
-            <div class="topic-pill"><strong>98</strong> lessons</div>
-            <div class="topic-pill">Grades <strong>1–6</strong></div>
-          </div>
+          <div class="topic-title" id="topic-title">🔢 Number System</div>
+          <div class="topic-sub" id="topic-sub"></div>
+          <div class="topic-meta-pills" id="topic-meta-pills"></div>
         </div>
       </div>
     </div>
 
-    <!-- Grade filter tabs -->
-    <div class="grade-filter-bar">
-      <div class="gf-tab gf-all active" onclick="filterGrade('all',this)">All grades</div>
-      <div class="gf-tab" onclick="filterGrade('3',this)">Grade 3</div>
-      <div class="gf-tab" onclick="filterGrade('4',this)">Grade 4</div>
-      <div class="gf-tab" onclick="filterGrade('5',this)">Grade 5</div>
-      <div class="gf-tab" onclick="filterGrade('6',this)">Grade 6</div>
-    </div>
+    <!-- Grade filter tabs — rebuilt per-topic (only the grades this topic actually covers) -->
+    <div class="grade-filter-bar" id="grade-filter-bar"></div>
 
-    <!-- Grade sections -->
-    <div class="main-content" id="grade-content">
+    <!-- Grade sections — one per grade this topic covers, each grade's chapter(s)
+         and their real lessons pulled from curriculum-data.js -->
+    <div class="main-content" id="grade-content"></div>
 
-      <!-- Grade 3 -->
-      <div class="grade-section open" data-grade="3" id="section-3">
-        <div class="grade-section-header" onclick="toggleSection('section-3')">
-          <div class="grade-badge" style="background:#D994F8">3</div>
-          <div class="grade-section-info">
-            <div class="grade-section-name">Grade 3 — Number System</div>
-            <div class="grade-section-meta">4 lessons · Place value, 4-digit numbers, comparing and ordering</div>
-          </div>
-          <div class="grade-section-actions">
-            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=3&ch=1">Go to chapter →</a>
-          </div>
-          <svg class="grade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
-        <div class="grade-lessons">
-          <div class="topic-lesson-row">
-            <div class="tl-num">1</div>
-            <div class="tl-name">Identify Places, Place Values and Face Values in 4-Digit Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=3&ch=1&lesson=1">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">2</div>
-            <div class="tl-name">Read and Write 4-Digit Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=3&ch=1&lesson=2">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">3</div>
-            <div class="tl-name">Expanded Form and Number Names of 4-Digit Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=3&ch=1&lesson=3">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">4</div>
-            <div class="tl-name">Comparing and Ordering 4-Digit Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=3&ch=1&lesson=4">Start →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grade 4 -->
-      <div class="grade-section open" data-grade="4" id="section-4">
-        <div class="grade-section-header" onclick="toggleSection('section-4')">
-          <div class="grade-badge" style="background:#74ACFC">4</div>
-          <div class="grade-section-info">
-            <div class="grade-section-name">Grade 4 — Number System</div>
-            <div class="grade-section-meta">5 lessons · 5 and 6-digit numbers, place value up to millions, rounding</div>
-          </div>
-          <div class="grade-section-actions">
-            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=4&ch=1">Go to chapter →</a>
-          </div>
-          <svg class="grade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
-        <div class="grade-lessons">
-          <div class="topic-lesson-row">
-            <div class="tl-num">1</div>
-            <div class="tl-name">5-Digit and 6-Digit Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=4&ch=1&lesson=1">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">2</div>
-            <div class="tl-name">Place Value up to Millions</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=4&ch=1&lesson=2">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">3</div>
-            <div class="tl-name">Rounding Numbers to Nearest 10, 100 and 1000</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=4&ch=1&lesson=3">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">4</div>
-            <div class="tl-name">Roman Numerals up to 100</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=4&ch=1&lesson=4">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">5</div>
-            <div class="tl-name">Successor and Predecessor of Large Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=4&ch=1&lesson=5">Start →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grade 5 -->
-      <div class="grade-section open" data-grade="5" id="section-5">
-        <div class="grade-section-header" onclick="toggleSection('section-5')">
-          <div class="grade-badge" style="background:#6AC88A">5</div>
-          <div class="grade-section-info">
-            <div class="grade-section-name">Grade 5 — Number System</div>
-            <div class="grade-section-meta">4 lessons · Large numbers, Indian and international systems, estimation</div>
-          </div>
-          <div class="grade-section-actions">
-            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=5&ch=1">Go to chapter →</a>
-          </div>
-          <svg class="grade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
-        <div class="grade-lessons">
-          <div class="topic-lesson-row">
-            <div class="tl-num">1</div>
-            <div class="tl-name">Large Numbers — up to Crores and Billions</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=5&ch=1&lesson=1">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">2</div>
-            <div class="tl-name">Indian and International Number Systems</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=5&ch=1&lesson=2">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">3</div>
-            <div class="tl-name">Estimation and Rounding Large Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=5&ch=1&lesson=3">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">4</div>
-            <div class="tl-name">Number Patterns and Sequences</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=5&ch=1&lesson=4">Start →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grade 6 -->
-      <div class="grade-section open" data-grade="6" id="section-6">
-        <div class="grade-section-header" onclick="toggleSection('section-6')">
-          <div class="grade-badge" style="background:#F4AB52">6</div>
-          <div class="grade-section-info">
-            <div class="grade-section-name">Grade 6 — Number System</div>
-            <div class="grade-section-meta">5 lessons · Integers, rational numbers, prime factorisation, LCM and HCF</div>
-          </div>
-          <div class="grade-section-actions">
-            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=6&ch=1">Go to chapter →</a>
-          </div>
-          <svg class="grade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-        </div>
-        <div class="grade-lessons">
-          <div class="topic-lesson-row">
-            <div class="tl-num">1</div>
-            <div class="tl-name">Integers — Introduction and Absolute Value</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=6&ch=1&lesson=1">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">2</div>
-            <div class="tl-name">Rational Numbers on a Number Line</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=6&ch=1&lesson=2">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">3</div>
-            <div class="tl-name">Prime and Composite Numbers</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=6&ch=1&lesson=3">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">4</div>
-            <div class="tl-name">Prime Factorisation</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=6&ch=1&lesson=4">Start →</a>
-          </div>
-          <div class="topic-lesson-row">
-            <div class="tl-num">5</div>
-            <div class="tl-name">LCM and HCF</div>
-            <div class="tl-type">Lesson</div>
-            <a class="tl-link" href="maths-grade-3-lesson.html?grade=6&ch=1&lesson=5">Start →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </div>
+
 
   <!-- RIGHT PANEL -->
   <div class="rightpanel">
@@ -411,7 +232,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         <div class="rp-stat">
           <div class="rp-stat-icon rp-stat-sparks"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
           <div class="rp-stat-label">Sparks</div>
-          <div class="rp-stat-value" id="rp-sparks-value">3</div>
+          <div class="rp-stat-value" id="rp-sparks-value">5</div>
         </div>
       </div>
       <div class="rp-cta-inner">
@@ -426,38 +247,14 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 
       <div class="rp-section">
         <div class="rp-section-title">Related topics</div>
-        <a class="related-topic" href="#">
-          <span class="rt-icon">➕</span>
-          <span class="rt-name">Addition &amp; Subtraction</span>
-          <span class="rt-meta">K–4</span>
-        </a>
-        <a class="related-topic" href="#">
-          <span class="rt-icon">✖️</span>
-          <span class="rt-name">Multiplication</span>
-          <span class="rt-meta">3–6</span>
-        </a>
-        <a class="related-topic" href="#">
-          <span class="rt-icon">½</span>
-          <span class="rt-name">Fractions</span>
-          <span class="rt-meta">3–7</span>
-        </a>
-        <a class="related-topic" href="#">
-          <span class="rt-icon">📊</span>
-          <span class="rt-name">Data &amp; Graphs</span>
-          <span class="rt-meta">1–8</span>
-        </a>
-        <a class="related-topic" href="#">
-          <span class="rt-icon">🔣</span>
-          <span class="rt-name">Algebra</span>
-          <span class="rt-meta">6–12</span>
-        </a>
+        <div id="related-topics-list"></div>
       </div>
 
       <div class="rp-section">
         <div class="rp-section-title">Resources</div>
         <a class="related-topic" href="https://www.cuemath.com/math-formulas/" target="_blank" rel="noopener">
           <span class="rt-icon">📐</span>
-          <span class="rt-name">Number formulas</span>
+          <span class="rt-name">Math formulas</span>
         </a>
         <a class="related-topic" href="https://www.cuemath.com/calculators/" target="_blank" rel="noopener">
           <span class="rt-icon">🧮</span>
@@ -465,7 +262,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         </a>
         <a class="related-topic" href="https://www.cuemath.com/math-puzzles/" target="_blank" rel="noopener">
           <span class="rt-icon">🧩</span>
-          <span class="rt-name">Number puzzles</span>
+          <span class="rt-name">Math puzzles</span>
         </a>
       </div>
     </div>
@@ -477,7 +274,130 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
      See gamification.js. No lesson/practice actions happen on this page, so
      nothing else to wire. -->
 <script src="gamification.js"></script>
+<script src="curriculum-data.js"></script>
+<script src="topics-data.js"></script>
 <script>
+// ── Data-driven topic page — reads ?topic= and renders from topics-data.js,
+// pulling real lesson names from curriculum-data.js (topicData only stores
+// chapter-level lessonCount, not the lesson list itself). K-8 only — topicData
+// doesn't cover high school, that's a separate future pass, not a gap here.
+//
+// URL correctness: this page is only an alternate browsing path. Every
+// "Go to chapter" / "Start" link below points at the exact same
+// maths-grade-3-chapter.html / maths-grade-3-lesson.html URLs those pages
+// generate for themselves (?grade=&ch=&lesson=) — never a separate /topics/
+// namespace.
+
+const params = new URLSearchParams(location.search);
+const topicSlug = params.get('topic') || 'number-system';
+const topic = topicData.find(t => t.slug === topicSlug) || topicData[0];
+
+const GRADE_LABEL = g => g === 'K' ? 'Kindergarten' : 'Grade ' + g;
+const GRADE_SHORT = g => g === 'K' ? 'K' : String(g);
+const GRADE_BADGE_COLOR = {'K':'#9CA3AF',1:'#F97279',2:'#F4AB52',3:'#D994F8',4:'#74ACFC',5:'#6AC88A',6:'#F4AB52',7:'#F97279',8:'#D994F8'};
+const gradeSortKey = g => g === 'K' ? -1 : g;
+
+// One hand-written 1-2 sentence description per topic, grounded in its real
+// chapters (topicData) — not template boilerplate. Cross-checked against the
+// actual chapter names each topic contains.
+const TOPIC_DESCRIPTIONS = {
+  'number-system': 'Counting, place value, and comparing numbers — from numbers up to 20 in Kindergarten all the way to integers, rational numbers, and real numbers in Grade 8.',
+  'addition-subtraction': 'Building addition and subtraction fluency — from joining and separating numbers up to 10 in Kindergarten to multi-digit addition and subtraction with regrouping in Grade 4.',
+  'multiplication-division': 'Multiplication and division from first principles — equal groups and sharing in Grade 2, building up to multi-digit multiplication and long division in Grade 4.',
+  'factors-multiples': 'Factors, multiples, divisibility rules, and prime numbers — from common factors in Grade 4 to greatest common factor and least common multiple in Grade 6.',
+  'fractions-decimals': 'Fractions and decimals from first principles — halves and quarters in Grade 1, through fraction and decimal operations, up to fraction-decimal conversions in Grade 6.',
+  'geometry-shapes': 'Shapes, angles, symmetry, and coordinate geometry — from sorting shapes in Kindergarten to triangle similarity and transformations in Grade 8.',
+  'measurement-mensuration': 'Measuring length, mass, capacity, area, perimeter, and volume — from visual comparisons in Kindergarten to volume of similar solids in Grade 8.',
+  'time': 'Reading clocks, calendars, and elapsed time — from day and night in Kindergarten to multi-step elapsed-time word problems in Grade 4.',
+  'money': 'Counting and using money — from identifying coins and bills in Grade 1 to multi-step word problems with dollars and cents in Grade 4.',
+  'data-graphs': 'Collecting, reading, and interpreting data — from sorting objects in Kindergarten to probability and statistics in Grades 7 and 8.',
+  'patterns-algebra': 'Patterns and early algebra — from repeating patterns in Grade 1 to linear equations, inequalities, and functions in Grade 8.',
+  'ratios-percentages': 'Ratios, rates, and percentages — from the unitary method in Grade 5 to profit, loss, and simple interest in Grade 7.',
+};
+
+const topicGrades = [...new Set(topic.chapters.map(c => c.grade))].sort((a,b) => gradeSortKey(a) - gradeSortKey(b));
+
+function renderHero(){
+  document.title = `${topic.name} — All Grades · Cuemath`;
+  document.getElementById('bc-topic').textContent = topic.name;
+  document.getElementById('topic-title').textContent = `${topic.emoji} ${topic.name}`;
+  document.getElementById('topic-sub').textContent = TOPIC_DESCRIPTIONS[topic.slug] || '';
+  document.getElementById('topic-meta-pills').innerHTML = `
+    <div class="topic-pill"><strong>${topicGrades.length}</strong> grade${topicGrades.length===1?'':'s'} covered</div>
+    <div class="topic-pill"><strong>${topic.chapterCount}</strong> chapter${topic.chapterCount===1?'':'s'}</div>
+    <div class="topic-pill"><strong>${topic.lessonCount}</strong> lessons</div>
+    <div class="topic-pill">Grades <strong>${GRADE_SHORT(topicGrades[0])}–${GRADE_SHORT(topicGrades[topicGrades.length-1])}</strong></div>`;
+}
+
+function renderGradeTabs(){
+  const tabs = ['<div class="gf-tab gf-all active" data-grade="all" onclick="filterGrade(\'all\',this)">All grades</div>']
+    .concat(topicGrades.map(g => `<div class="gf-tab" data-grade="${g}" onclick="filterGrade('${g}',this)">${GRADE_LABEL(g)}</div>`));
+  document.getElementById('grade-filter-bar').innerHTML = tabs.join('');
+}
+
+function renderGradeSections(){
+  document.getElementById('grade-content').innerHTML = topicGrades.map(g => {
+    const chaptersForGrade = topic.chapters.filter(c => c.grade === g);
+    const totalLessons = chaptersForGrade.reduce((s,c) => s + c.lessonCount, 0);
+    const meta = chaptersForGrade.length === 1
+      ? `${totalLessons} lesson${totalLessons===1?'':'s'}`
+      : `${totalLessons} lessons across ${chaptersForGrade.length} chapters`;
+
+    const chapterBlocks = chaptersForGrade.map(c => {
+      const chapterLessons = (csvGradeData[g][c.chapterIndex - 1] || {}).lessons || [];
+      const lessonRows = chapterLessons.map((lessonName, i) => `
+          <div class="topic-lesson-row">
+            <div class="tl-num">${i+1}</div>
+            <div class="tl-name">${lessonName}</div>
+            <div class="tl-type">Lesson</div>
+            <a class="tl-link" href="maths-grade-3-lesson.html?grade=${g}&ch=${c.chapterIndex}&lesson=${i+1}">Start →</a>
+          </div>`).join('');
+      return `
+        <div class="topic-chapter-block">
+          <div class="tcb-header">
+            <span class="tcb-name">${c.name}</span>
+            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=${g}&ch=${c.chapterIndex}">Go to chapter →</a>
+          </div>
+          ${lessonRows}
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="grade-section open" data-grade="${g}" id="section-${g}">
+        <div class="grade-section-header" onclick="toggleSection('section-${g}')">
+          <div class="grade-badge" style="background:${GRADE_BADGE_COLOR[g] || '#97948E'}">${GRADE_SHORT(g)}</div>
+          <div class="grade-section-info">
+            <div class="grade-section-name">${GRADE_LABEL(g)} — ${topic.name}</div>
+            <div class="grade-section-meta">${meta}</div>
+          </div>
+          <svg class="grade-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="grade-lessons">${chapterBlocks}</div>
+      </div>`;
+  }).join('');
+}
+
+// Other topics that share at least one grade with this one surface first
+// (genuinely related), then any remaining topics fill up to 5 total — real
+// links into this same page (?topic=slug), not the dead hrefs this had before.
+function renderRelatedTopics(){
+  const others = topicData.filter(t => t.slug !== topic.slug);
+  const scored = others.map(t => ({
+    t, shared: t.chapters.some(c => topicGrades.includes(c.grade))
+  }));
+  scored.sort((a,b) => (b.shared - a.shared));
+  const picks = scored.slice(0, 5).map(s => s.t);
+  document.getElementById('related-topics-list').innerHTML = picks.map(t => {
+    const grades = [...new Set(t.chapters.map(c => c.grade))].sort((a,b) => gradeSortKey(a) - gradeSortKey(b));
+    return `
+      <a class="related-topic" href="maths-topic.html?topic=${t.slug}">
+        <span class="rt-icon">${t.emoji}</span>
+        <span class="rt-name">${t.name}</span>
+        <span class="rt-meta">${GRADE_SHORT(grades[0])}–${GRADE_SHORT(grades[grades.length-1])}</span>
+      </a>`;
+  }).join('');
+}
+
 function toggleSection(id){
   const el = document.getElementById(id);
   el.classList.toggle('open');
@@ -494,6 +414,11 @@ function filterGrade(grade, tab){
     }
   });
 }
+
+renderHero();
+renderGradeTabs();
+renderGradeSections();
+renderRelatedTopics();
 </script>
 </body>
 </html>
