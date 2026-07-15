@@ -284,9 +284,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 //
 // URL correctness: this page is only an alternate browsing path. Every
 // "Go to chapter" / "Start" link below points at the exact same
-// maths-grade-3-chapter.html / maths-grade-3-lesson.html URLs those pages
-// generate for themselves (?grade=&ch=&lesson=) — never a separate /topics/
-// namespace.
+// maths-grade-3.html / maths-grade-3-lesson.html URLs those pages generate
+// for themselves (?grade=&ch=&lesson=) — never a separate /topics/
+// namespace. "Go to chapter" opens that chapter already expanded, since
+// there's no separate chapter page anymore.
 
 const params = new URLSearchParams(location.search);
 const topicSlug = params.get('topic') || 'number-system';
@@ -356,7 +357,7 @@ function renderGradeSections(){
         <div class="topic-chapter-block">
           <div class="tcb-header">
             <span class="tcb-name">${c.name}</span>
-            <a class="grade-go-btn" href="maths-grade-3-chapter.html?grade=${g}&ch=${c.chapterIndex}">Go to chapter →</a>
+            <a class="grade-go-btn" href="maths-grade-3.html?grade=${g}&ch=${c.chapterIndex}">Go to chapter →</a>
           </div>
           ${lessonRows}
         </div>`;

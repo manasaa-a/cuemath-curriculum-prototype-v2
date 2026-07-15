@@ -346,7 +346,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       <div class="topbar-bc">
         <a href="maths.html">Maths</a><span>›</span>
         <a href="maths-grade-3.html" id="bc-grade">Grade 3</a><span>›</span>
-        <a href="maths-grade-3-chapter.html" id="bc-chapter">Number System</a><span>›</span>
+        <a href="maths-grade-3.html" id="bc-chapter">Number System</a><span>›</span>
         <span class="cur" id="bc-lesson">Read and Write 4-Digit Numbers</span>
       </div>
     </div>
@@ -936,7 +936,7 @@ if (sessionStorage.getItem(GLOBAL_COMPLETE_KEY) === null) {
 document.getElementById('bc-grade').textContent = gradeLabel;
 document.getElementById('bc-grade').href = 'maths-grade-3.html?grade=' + grade;
 document.getElementById('bc-chapter').textContent = ch.name;
-document.getElementById('bc-chapter').href = 'maths-grade-3-chapter.html?grade=' + grade + '&ch=' + (chIdx + 1);
+document.getElementById('bc-chapter').href = 'maths-grade-3.html?grade=' + grade + '&ch=' + (chIdx + 1);
 document.getElementById('bc-lesson').textContent = lessonName;
 document.getElementById('rp-chapter-label').textContent = 'CHAPTER ' + (chIdx + 1) + ' · LESSON ' + (lessonIdx + 1);
 document.getElementById('rp-lesson-name').textContent = lessonName;

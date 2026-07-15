@@ -122,6 +122,20 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .res-name{font-size:13px;font-weight:500;color:#1C1917;display:block}
 .res-meta{font-size:11px;color:#78716C}
 
+/* FAQ section — accordion, multiple items can be open at once */
+.faq-section{margin-top:32px;padding-top:28px;border-top:1px solid #E8E4DD}
+.faq-heading{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:4px}
+.faq-sub{font-size:13px;color:#78716C;margin-bottom:16px}
+.faq-list{max-width:760px;border-top:1px solid #E8E4DD}
+.faq-item{border-bottom:1px solid #E8E4DD}
+.faq-q{width:100%;background:none;border:none;padding:16px 4px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;text-align:left;font-family:'UntitledSans';font-size:14px;font-weight:600;color:#1C1917}
+.faq-caret{font-size:11px;color:#78716C;transition:transform .15s ease;flex-shrink:0}
+.faq-item.open .faq-caret{transform:rotate(180deg);color:#1C1917}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a-inner{overflow:hidden}
+.faq-a-inner p{padding:0 4px 18px;font-size:13px;color:#5B5854;line-height:1.6;max-width:680px}
+
 /* PAGE HERO */
 .page-hero{position:relative;background:linear-gradient(160deg,#0d0a1a 0%,#1a1210 45%,#0a1528 100%);padding:52px 40px 44px;text-align:center;flex-shrink:0;overflow:hidden}
 .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 30%,rgba(217,148,248,.15) 0%,transparent 55%),radial-gradient(ellipse at 20% 80%,rgba(116,172,252,.12) 0%,transparent 50%);pointer-events:none}
@@ -475,6 +489,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
       </div>
       </div>
 
+      <!-- FAQ section -->
+      <div class="faq-section">
+        <div class="faq-heading">Frequently asked questions</div>
+        <div class="faq-sub">Everything parents ask before getting started.</div>
+        <div class="faq-list" id="faq-list"></div>
+      </div>
+
     </div>
   </div>
 
@@ -580,10 +601,10 @@ document.getElementById('video-modal-overlay').addEventListener('click', functio
 
 // ── By Grade view — full-width rows, every chapter listed as a hyperlink ──
 // K-7 pulls from curriculum-data.js (the same shared source maths-grade-3.html
-// and maths-grade-3-chapter.html already load), so every chapter here is
-// guaranteed to have a real local chapter page — no exact-name-matching pass
-// needed anymore now that all three files read the identical dataset; it's a
-// direct index lookup. High-school courses have no local chapter-page mockup
+// loads), so every chapter here is guaranteed to land on a real chapter —
+// chapter links go straight to maths-grade-3.html?grade=X&ch=N, which opens
+// that chapter already expanded (there's no separate chapter page anymore).
+// High-school courses have no local chapter-page mockup
 // yet (that's a separate, larger follow-up — not built in this pass), so
 // those always use production-style /maths/{course-slug}/{chapter-slug}/ hrefs.
 
@@ -642,7 +663,7 @@ function renderGradeView() {
     const headHref = `maths-grade-3.html?grade=${g}`;
     const badge = `<span class="grade-row-badge" style="background:${meta.color}">${meta.badge}</span>`;
     return renderGradeRow(headHref, badge, meta.label, chapters, lessonCount,
-      (ch, i) => `maths-grade-3-chapter.html?grade=${g}&ch=${i+1}`, meta.color);
+      (ch, i) => `maths-grade-3.html?grade=${g}&ch=${i+1}`, meta.color);
   }).join('');
   document.getElementById('grid-elementary').innerHTML = elRows;
 
@@ -653,7 +674,7 @@ function renderGradeView() {
     const headHref = `maths-grade-3.html?grade=${g}`;
     const badge = `<span class="grade-row-badge" style="background:${meta.color}">${meta.badge}</span>`;
     return renderGradeRow(headHref, badge, meta.label, chapters, lessonCount,
-      (ch, i) => `maths-grade-3-chapter.html?grade=${g}&ch=${i+1}`, meta.color);
+      (ch, i) => `maths-grade-3.html?grade=${g}&ch=${i+1}`, meta.color);
   }).join('');
   document.getElementById('grid-middle').innerHTML = midRows;
 
@@ -678,10 +699,50 @@ function renderTopicView() {
   document.getElementById('grid-topics').innerHTML = cards;
 }
 
+// FAQ section
+const FAQ_ITEMS = [
+  {q: 'Is this math curriculum really free to use?', a: 'Yes. Every lesson, chapter, and grade on this page is free to browse and learn from — no payment is required to access the curriculum.'},
+  {q: 'What curriculum standard does this follow?', a: 'Grades K through 8 follow the US Common Core standards. High school courses (Algebra 1, Geometry, Algebra 2, AP Precalculus, AP Calculus AB) follow the corresponding US high school math standards.'},
+  {q: 'Do I need to create an account to use it?', a: 'No sign-in is needed to explore the curriculum, chapters, and lesson content. Creating a free account unlocks unlimited practice and saves your progress across lessons.'},
+  {q: 'How is this different from the Cuemath app?', a: 'This is the same curriculum Cuemath tutors use, made freely browsable on the web. The Cuemath app adds live 1:1 tutoring, structured progress tracking, and additional practice built around your child’s pace.'},
+  {q: 'Which grades and topics are covered?', a: 'Kindergarten through Grade 8, plus high school courses including Algebra 1, Geometry, Algebra 2, AP Precalculus, and AP Calculus AB — organized by grade or by topic, whichever is easier to browse.'},
+  {q: 'Can this be used alongside classroom learning or tutoring?', a: 'Yes. Many parents use it to preview upcoming topics, reinforce what’s taught in school, or get extra practice on a specific skill their child is struggling with.'},
+];
+
+function renderFaqs() {
+  document.getElementById('faq-list').innerHTML = FAQ_ITEMS.map((item, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-q" onclick="toggleFaq(${i})">
+        <span>${item.q}</span>
+        <span class="faq-caret">⌄</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner"><p>${item.a}</p></div></div>
+    </div>`).join('');
+
+  const ldJson = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map(item => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {'@type': 'Answer', text: item.a},
+    })),
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(ldJson);
+  document.head.appendChild(script);
+}
+
+function toggleFaq(i) {
+  document.getElementById('faq-' + i).classList.toggle('open');
+}
+
 // Init
 renderCurriculum('us');
 renderGradeView();
 renderTopicView();
+renderFaqs();
 
 // Deep-link support — e.g. maths.html?view=exam opens straight to the By Exam
 // tab. Exam URLs no longer sit under a shared /maths/test-prep/ prefix (each
