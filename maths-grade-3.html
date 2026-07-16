@@ -137,36 +137,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .modal-continue{display:block;width:100%;margin-top:20px;background:#1C1917;color:#fff;border:none;padding:14px;font-family:'UntitledSans';font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.06em}
 .modal-continue:hover{background:#333}
 
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
-.auth-overlay.open{display:flex}
-.auth-box{background:#fff;width:420px;max-width:92vw;padding:32px 32px 28px;position:relative}
-.auth-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#97948E}
-.auth-close:hover{color:#1C1917}
-.auth-logo{font-family:'Athletics';font-size:16px;font-weight:700;letter-spacing:.06em;color:#1C1917;margin-bottom:20px}
-.auth-logo span{color:#F4AB52}
-.auth-tabs{display:flex;border-bottom:2px solid #F5F0E8;margin-bottom:24px}
-.auth-tab{flex:1;background:none;border:none;padding:10px 0;font-family:'UntitledSans';font-size:13px;font-weight:500;color:#97948E;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
-.auth-tab.active{color:#1C1917;border-bottom-color:#F4AB52;font-weight:600}
-.auth-panel{display:none}
-.auth-panel.active{display:block}
-.auth-field{margin-bottom:14px}
-.auth-label{font-size:11px;font-weight:600;color:#97948E;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
-.auth-input{width:100%;border:1.5px solid #E5DDD4;padding:10px 12px;font-family:'UntitledSans';font-size:14px;color:#1C1917;outline:none;background:#fff}
-.auth-input:focus{border-color:#F4AB52}
-.auth-btn{width:100%;background:#F4AB52;color:#1C1917;border:none;padding:13px;font-family:'UntitledSans';font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.04em}
-.auth-btn:hover{background:#CE7E12}
-.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#C6C0B8;font-size:12px}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#F5F0E8}
-.auth-google{width:100%;background:#fff;border:1.5px solid #E5DDD4;padding:11px;font-family:'UntitledSans';font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#1C1917}
-.auth-google:hover{border-color:#1C1917;background:#FAFAF8}
-.auth-google svg{width:18px;height:18px;flex-shrink:0}
-.auth-forgot{font-size:12px;color:#97948E;text-align:right;display:block;margin-top:6px;cursor:pointer}
-.auth-forgot:hover{color:#1C1917}
-.auth-success{text-align:center;padding:20px 0}
-.auth-success-icon{font-size:44px;margin-bottom:12px}
-.auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
-.auth-success p{font-size:13px;color:#97948E;line-height:1.5}
-
 /* App download CTA — ported from maths.html, same component/colors */
 .app-download-strip{background:#1C1917;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
 .app-dl-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
@@ -195,7 +165,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .rp-cta-title{font-family:'Athletics';font-size:15px;font-weight:700;color:#292827;margin-bottom:4px;line-height:1.3}
 .rp-cta-sub{font-size:11px;color:#5B4100;margin-bottom:12px;line-height:1.5}
 .rp-cta-btn{background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;width:100%}
-.rp-cta-appbtns{display:flex;flex-direction:column;gap:6px}
 .rp-cta-appbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:#1C1917;color:#fff;border:none;padding:9px;font-family:'UntitledSans';font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
 .rp-cta-appbtn:hover{background:#333;color:#fff}
 .rp-divider{height:1px;background:rgba(0,0,0,.07)}
@@ -265,10 +234,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <button class="gs-pill" data-grade="6" onclick="loadGrade(6)">Grade 6</button>
         <button class="gs-pill" data-grade="7" onclick="loadGrade(7)">Grade 7</button>
         <button class="gs-pill" data-grade="8" onclick="loadGrade(8)">Grade 8</button>
-        <button class="gs-pill" data-grade="9" onclick="void(0)">Grade 9</button>
-        <button class="gs-pill" data-grade="10" onclick="void(0)">Grade 10</button>
-        <button class="gs-pill" data-grade="11" onclick="void(0)">Grade 11</button>
-        <button class="gs-pill" data-grade="12" onclick="void(0)">Grade 12</button>
       </div>
       <div class="grade-section-header">
         <span style="font-size:18px">📓</span>
@@ -301,13 +266,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         </div>
       </div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">Cuemath App</span>
-        <div class="rp-cta-title">Master Math with the Cuemath App</div>
-        <div class="rp-cta-sub">Practice, track progress, and keep learning on the go.</div>
-        <div class="rp-cta-appbtns">
-          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
+        <span class="rp-cta-tag">Cuemath</span>
+        <div class="rp-cta-title">Unlock unlimited practice</div>
+        <div class="rp-cta-sub">Sign up free to save your progress and keep learning.</div>
+        <a class="rp-cta-appbtn" href="https://student.cuemath.com/">Sign Up</a>
       </div>
       <div class="rp-divider"></div>
       <div class="rp-resources-nav">
@@ -317,66 +279,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <a href="https://www.cuemath.com/math-puzzles/" target="_blank" rel="noopener" class="rrn-item"><span class="rrn-icon">🧩</span>Puzzles</a>
         <a href="https://www.cuemath.com/calculators/" target="_blank" rel="noopener" class="rrn-item"><span class="rrn-icon">🧮</span>Calculators</a>
         <a href="https://www.cuemath.com/math-formulas/" target="_blank" rel="noopener" class="rrn-item"><span class="rrn-icon">📐</span>Formulas</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SIGN-IN MODAL — ported from the retired chapter page -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-box">
-    <button class="auth-close" onclick="closeAuth()">×</button>
-    <div class="auth-logo">Cue<span>math</span></div>
-
-    <div id="auth-success" class="auth-success" style="display:none">
-      <div class="auth-success-icon">🎉</div>
-      <h3>You're in!</h3>
-      <p>All lessons are now unlocked.<br>Keep learning!</p>
-    </div>
-
-    <div id="auth-form-wrap">
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign in</button>
-        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign up free</button>
-      </div>
-
-      <div class="auth-panel active" id="auth-signin">
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="••••••••">
-          <span class="auth-forgot">Forgot password?</span>
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Sign in</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
-      </div>
-
-      <div class="auth-panel" id="auth-signup">
-        <div class="auth-field">
-          <label class="auth-label">Full name</label>
-          <input class="auth-input" type="text" placeholder="Your name">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="Create a password">
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Create free account</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
       </div>
     </div>
   </div>
@@ -474,7 +376,7 @@ function buildLessonRows(chIdx, lessons){
     } else if(state === 'start'){
       btnHtml = `<button class="lr-btn" onclick="openLessonModal(${chIdx},${num},'${safeN}',event)">START</button>`;
     } else {
-      btnHtml = isSignedIn ? '' : `<button class="lr-btn signin" onclick="openSignInPrompt()">Sign in free</button>`;
+      btnHtml = isSignedIn ? '' : `<a class="lr-btn signin" href="https://student.cuemath.com/">Sign Up</a>`;
     }
 
     const menuHtml = (state === 'start' || state === 'resume')
@@ -544,33 +446,6 @@ function goToLesson(){
 }
 document.getElementById('modal-overlay').addEventListener('click', function(e){
   if(e.target === this) closeModal();
-});
-
-function openSignInPrompt(){
-  document.getElementById('auth-overlay').classList.add('open');
-}
-function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('open');
-}
-function switchAuthTab(tab){
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
-  document.getElementById('auth-signin').classList.toggle('active', tab==='signin');
-  document.getElementById('auth-signup').classList.toggle('active', tab==='signup');
-}
-function handleAuth(){
-  document.getElementById('auth-form-wrap').style.display = 'none';
-  document.getElementById('auth-success').style.display = 'block';
-  isSignedIn = true;
-  sessionStorage.setItem('cuemathSignedIn', '1');
-  setTimeout(() => {
-    closeAuth();
-    document.getElementById('auth-form-wrap').style.display = 'block';
-    document.getElementById('auth-success').style.display = 'none';
-    loadGrade(currentGrade); // full re-render — every chapter unlocks
-  }, 1500);
-}
-document.getElementById('auth-overlay').addEventListener('click', function(e){
-  if(e.target === this) closeAuth();
 });
 
 let openChapterIdx = null;

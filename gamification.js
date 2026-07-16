@@ -39,6 +39,7 @@ const CM_STREAK_KEY = 'cuemathStreak'; // {lastActiveDate:'YYYY-MM-DD', currentS
 const CM_SPARKS_KEY = 'cuemathSparks'; // {count:N, lastConsumed:epochMs|null}
 const CM_LEARN_ITEM_POINTS_KEY = 'cuemathLearnItemsAwarded'; // string[] of "grade-ch-lesson-slide-N" (or other per-item keys) already paid out
 const CM_MANUAL_COMPLETE_POINTS_KEY = 'cuemathLessonPointsAwarded'; // string[] of "grade-ch-lesson" already paid out via the chapter page's manual "Mark as Complete" override specifically (see cmAwardManualCompletePoints)
+const CM_SPARK_CHARGED_ITEMS_KEY = 'cuemathSparkChargedItems'; // string[] of arbitrary per-item keys already charged a spark for — separate from CM_LEARN_ITEM_POINTS_KEY since points and sparks are deduped independently (e.g. typing on a Learn slide costs a spark but reaching that slide by scrolling doesn't, see maths-grade-3-lesson.html)
 
 const CM_POINTS_PER_LEARN_ITEM = 10; // CONFIRMED 2026-07-10 — per slide/item advanced through in a Learn sheet, not once per whole sheet
 const CM_POINTS_PER_PRACTICE_QUESTION = 50; // CONFIRMED 2026-07-10 — per completed practice question, regardless of correctness (not specified as correctness-gated)
@@ -186,6 +187,25 @@ function cmConsumeSpark() {
   localStorage.setItem(CM_SPARKS_KEY, JSON.stringify({ count: current - 1, lastConsumed: Date.now() }));
   cmRenderStats();
   return true;
+}
+
+// Dedup for spark charges keyed by an arbitrary item id (e.g. a specific
+// Learn slide a user typed on) — separate list from the points dedup above,
+// since a given action can cost a spark without earning points or vice
+// versa. Persisted (localStorage), so once a spark's been paid for a given
+// item, revisiting it later never charges again.
+function cmHasChargedSpark(itemKey) {
+  const raw = localStorage.getItem(CM_SPARK_CHARGED_ITEMS_KEY);
+  const charged = raw ? JSON.parse(raw) : [];
+  return charged.indexOf(itemKey) !== -1;
+}
+function cmMarkSparkCharged(itemKey) {
+  const raw = localStorage.getItem(CM_SPARK_CHARGED_ITEMS_KEY);
+  const charged = raw ? JSON.parse(raw) : [];
+  if (charged.indexOf(itemKey) === -1) {
+    charged.push(itemKey);
+    localStorage.setItem(CM_SPARK_CHARGED_ITEMS_KEY, JSON.stringify(charged));
+  }
 }
 
 // ── Rendering ──

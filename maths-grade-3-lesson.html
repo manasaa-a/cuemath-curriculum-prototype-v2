@@ -68,13 +68,16 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .snb-act-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 .snb-act-count{font-weight:600;color:#1C1917}
 
-/* Slide viewer */
-.slide-viewer{flex:1;overflow:hidden;position:relative}
-.slides-wrap{height:100%;position:relative}
+/* Slide viewer — scrollable, all slides stacked and always in the DOM
+   (2026-07-15, replacing the old one-slide-visible-at-a-time + prev/next
+   button system). Each .slide's height is set to match the viewer's via JS
+   (sizeSlides()) so it still reads as one "page" per scroll, not a
+   continuous unbroken page. */
+.slide-viewer{flex:1;overflow-y:auto;position:relative;scroll-behavior:smooth}
+.slides-wrap{display:flex;flex-direction:column}
 
 /* Individual slides */
-.slide{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
-.slide.active{display:flex}
+.slide{display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
 
 /* Blue diamond background */
 .bg-blue{
@@ -149,11 +152,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .tool-btn.tool-locked{color:#C6C0B8}
 .tool-lock-badge{position:absolute;bottom:2px;right:2px;font-size:8px;line-height:1}
 .toolbar-counter{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;color:#97948E}
-.toolbar-nav{margin-left:auto;display:flex;gap:4px}
-.nav-btn{width:38px;height:38px;border:1px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1C1917}
-.nav-btn:hover{background:#F5F0E8}
-.nav-btn:disabled{opacity:.3;cursor:default}
-.nav-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
 
 /* RIGHT PANEL */
 .rightpanel{background:#F5F0E8;border-left:1px solid rgba(0,0,0,.08);overflow-y:auto}
@@ -267,12 +265,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 .modal-cta-body{padding:20px}
 .modal-cta-body .rp-cta-inner{margin:-20px -20px 0;padding:24px 20px 20px}
 .modal-cta-note{padding:14px 20px;font-size:11px;color:#97948E;text-align:center;border-top:1px solid #F5F0E8}
-.idle-modal .rp-cta-inner{background:linear-gradient(135deg,#1C1917 0%,#3D3A37 100%)}
-.idle-modal .rp-cta-tag{color:rgba(255,255,255,.55)}
-.idle-modal .rp-cta-title{color:#fff}
-.idle-modal .rp-cta-sub{color:rgba(255,255,255,.7)}
-.idle-modal .rp-cta-btn{background:#F4AB52;color:#1C1917}
-.idle-modal .rp-cta-btn:hover{background:#CE7E12}
 
 /* Annotate/Hint feature-lock modal — proposed, see Open Questions doc.
    The gif box below is a stand-in for a real capture, clearly labeled as
@@ -389,7 +381,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       <div class="slides-wrap" id="slides-wrap">
 
         <!-- SLIDE 0: Intro / Objectives -->
-        <div class="slide active" id="slide-0">
+        <div class="slide" id="slide-0">
           <div class="bg-blue">
             <div class="intro-card">
               <div class="intro-heading">By the end of this lesson, I will be able to:</div>
@@ -559,14 +551,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
         </button>
       </div>
       <span class="toolbar-counter" id="slide-counter">1 / 7</span>
-      <div class="toolbar-nav">
-        <button class="nav-btn" id="btn-prev" onclick="changeSlide(-1)" disabled>
-          <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
-        </button>
-        <button class="nav-btn" id="btn-next" onclick="changeSlide(1)">
-          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-      </div>
     </div>
 
     </div><!-- /tab-learn -->
@@ -584,11 +568,8 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
             <div class="practice-cta">
               <span class="pcta-eyebrow">You've had a taste!</span>
               <div class="pcta-title">Ready to go further?</div>
-              <div class="pcta-sub">Get unlimited practice questions, progress tracking, and personalised feedback on the Cuemath app.</div>
-              <div class="rp-cta-appbtns">
-                <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-                <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-              </div>
+              <div class="pcta-sub">Sign up free for unlimited practice questions, progress tracking, and personalised feedback.</div>
+              <a class="rp-cta-appbtn" href="https://student.cuemath.com/">Sign Up</a>
             </div>
           </div>
         </div>
@@ -758,13 +739,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
       </div>
       <div class="rp-divider"></div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">Cuemath App</span>
-        <div class="rp-cta-title">Unlock More Math Tools</div>
-        <div class="rp-cta-sub">Use built-in math tools such as hints and annotations on the Cuemath app.</div>
-        <div class="rp-cta-appbtns">
-          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
+        <span class="rp-cta-tag">Cuemath</span>
+        <div class="rp-cta-title">Unlock unlimited practice</div>
+        <div class="rp-cta-sub">Sign up free to save your progress and keep learning.</div>
+        <a class="rp-cta-appbtn" href="https://student.cuemath.com/">Sign Up</a>
       </div>
     </div>
   </div>
@@ -779,33 +757,13 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
     <button class="modal-close" onclick="closeCwHwModal()">×</button>
     <div class="modal-cta-body">
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">Cuemath App</span>
+        <span class="rp-cta-tag">Cuemath</span>
         <div class="rp-cta-title">Nice work on the lesson. Take practice further.</div>
-        <div class="rp-cta-sub">Download the Cuemath app to practice on the go and track your progress alongside this lesson.</div>
-        <div class="app-banner-btns">
-          <a class="app-store-btn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
+        <div class="rp-cta-sub">Sign up free to practice on the go and track your progress alongside this lesson.</div>
+        <a class="app-store-btn" href="https://student.cuemath.com/">Sign Up</a>
       </div>
     </div>
     <div class="modal-cta-note" style="cursor:pointer" onclick="closeCwHwModal()">Continue to Practice →</div>
-  </div>
-</div>
-
-<!-- Idle-timeout CTA: fires if a user sits idle on a sheet past a threshold.
-     5s here is a placeholder for demoing the idea, not a proposed real value —
-     see Open Questions §7a, needs a feasibility + product call. -->
-<div class="modal-overlay idle-modal" id="idle-modal-overlay">
-  <div class="modal">
-    <button class="modal-close" onclick="closeIdleModal()">×</button>
-    <div class="modal-cta-body">
-      <div class="rp-cta-inner">
-        <span class="rp-cta-tag">1:1 live tutoring</span>
-        <div class="rp-cta-title">Stuck on this one?</div>
-        <div class="rp-cta-sub">A live tutor can walk through it with you, free.</div>
-        <button class="rp-cta-btn" onclick="closeIdleModal()">Book a free class</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -859,9 +817,9 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-size:15p
 <script src="content-page-map.js"></script>
 <script>
 // csvGradeData now comes from curriculum-data.js (shared, real K-7 xlsx data).
-// gamification.js (Points/Streaks/Sparks — CONFIRMED, see Open Questions
-// §13) is also loaded here: goToSlide() and selectOpt() below award points
-// and spend sparks on real in-lesson actions (never on opening a tab).
+// gamification.js (Points/Streaks/Sparks — see Open Questions §13) is also
+// loaded here: the slide-observer/typing-gate and selectOpt() below award
+// points and spend sparks on real in-lesson actions (never on opening a tab).
 // This fixes a real bug: this file previously only had K-3 embedded, so any
 // grade 4/5/6 lesson link silently rendered Grade 3's lesson content while
 // still labeling the breadcrumb/header as "Grade 4/5/6."
@@ -872,17 +830,11 @@ const grade = gradeParam === 'K' ? 'K' : (parseInt(gradeParam) || 3);
 const chIdx = (parseInt(params.get('ch')) || 1) - 1;
 const lessonIdx = (parseInt(params.get('lesson')) || 1) - 1;
 
-// ── Sparks state (CONFIRMED — Open Questions §13 DECIDED, 2026-07-10) ──
-// Declared up here (rather than down by switchTab(), where the logic that
-// uses them reads better) because goToSlide()'s per-slide gate check has to
-// run as part of page init (goToSlide(0)), before the rest of page setup —
-// see the switchTab()/goToSlide()/selectOpt() section further down for the
-// actual gating functions. Learn no longer has a single per-tab spark flag —
-// each new slide reached (from slide 1 onward) spends its own spark, tracked
-// via gamification.js's existing per-slide dedup list, not a per-page-load
-// boolean here. Practice still uses a flat per-page-load flag below, since
-// it's still a flat "1 spark per sheet" charge, just triggered by answering
-// the first question instead of by opening the tab.
+// ── Sparks state ── Learn now spends sparks only when the learner types on
+// a slide (see the typing gate further down), not for scrolling/reaching a
+// slide at all — see Open Questions doc, 2026-07-15. Practice still uses a
+// flat per-page-load flag below: a flat "1 spark per sheet" charge,
+// triggered by answering the first question rather than opening the tab.
 let isSignedIn = sessionStorage.getItem('cuemathSignedIn') === '1';
 let practiceSparkConsumedThisPageLoad = false;
 
@@ -958,56 +910,69 @@ if (params.get('via') === 'chapterskip') {
   });
 }
 
-// Slide navigation
+// Slide navigation — SCROLL-BASED (2026-07-15, replacing the old prev/next-
+// button single-slide-visible system). All slides render at once, stacked
+// vertically in slides-wrap; scrolling through them replaces clicking
+// through them. Reaching a slide by scrolling no longer spends a spark or
+// blocks anything — there's no discrete "advance" action left to gate on.
+// Points (+10/slide, CONFIRMED — Open Questions §13) still award once per
+// unique slide reached, now via IntersectionObserver instead of goToSlide().
+// Sparks move to a different trigger entirely — see the typing gate below.
 const totalSlides = document.querySelectorAll('.slide').length;
 let currentSlide = 0;
 
-// Build slide pills
+function sizeSlides(){
+  const h = document.querySelector('.slide-viewer').clientHeight;
+  document.querySelectorAll('.slide').forEach(s => { s.style.minHeight = h + 'px'; });
+}
+sizeSlides();
+window.addEventListener('resize', sizeSlides);
+
+// Build slide pills — clicking one scrolls to it instead of swapping an
+// "active" slide (there's no such toggle anymore).
 const pillsEl = document.getElementById('slide-pills');
 for(let i = 0; i < totalSlides; i++){
   const btn = document.createElement('button');
   btn.className = 'sp' + (i === 0 ? ' active' : '');
   btn.textContent = i + 1;
-  btn.onclick = () => goToSlide(i);
+  btn.onclick = () => document.getElementById('slide-' + i).scrollIntoView({behavior: 'smooth', block: 'start'});
   pillsEl.appendChild(btn);
 }
 
-function goToSlide(n){
-  // CORRECTED 2026-07-10 (Open Questions §13 DECIDED, corrected again same
-  // day): navigating WITHIN Learn costs sparks too, not just opening the tab
-  // once — but landing on a lesson at all (via Start/Resume/Review on the
-  // chapter page) is always free. Slide 0 is that free initial view: no
-  // spark either way, since clicking Start/Resume/Review itself must never
-  // spend one. Sparks are spent by real in-lesson navigation — reaching any
-  // slide from 1 onward for the first time ever spends 1 spark (signed-in
-  // users exempt, same as everywhere else). Points still award for slide 0
-  // same as any other slide; only the spark charge is skipped for it. Same
-  // dedup rule as before either way — going back to an already-seen slide,
-  // or reloading, never re-pays. If a genuinely new slide can't be afforded,
-  // the navigation is aborted before any DOM change — the learner stays on
-  // the current slide and the sparks interstitial (full-viewport) opens
-  // instead of revealing unpaid content.
-  const slideKey = `${grade}-${chIdx}-${lessonIdx}-slide-${n}`;
-  const isNewSlide = !cmHasAwardedLearnItem(slideKey);
-  if (isNewSlide && n !== 0 && !isSignedIn && !cmConsumeSpark()) {
-    openSparksModal();
-    return;
-  }
-  document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === n));
-  document.querySelectorAll('.sp').forEach((p, i) => p.classList.toggle('active', i === n));
-  currentSlide = n;
-  document.getElementById('slide-counter').textContent = (n + 1) + ' / ' + totalSlides;
-  document.getElementById('btn-prev').disabled = n === 0;
-  document.getElementById('btn-next').disabled = n === totalSlides - 1;
-  if (isNewSlide) {
-    cmAwardLearnItemPoints(slideKey);
-  }
-}
+const slideObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const n = parseInt(entry.target.id.replace('slide-', ''), 10);
+    currentSlide = n;
+    document.getElementById('slide-counter').textContent = (n + 1) + ' / ' + totalSlides;
+    document.querySelectorAll('.sp').forEach((p, i) => p.classList.toggle('active', i === n));
+    const slideKey = `${grade}-${chIdx}-${lessonIdx}-slide-${n}`;
+    if (!cmHasAwardedLearnItem(slideKey)) cmAwardLearnItemPoints(slideKey);
+  });
+}, {root: document.querySelector('.slide-viewer'), threshold: 0.5});
+document.querySelectorAll('.slide').forEach(s => slideObserver.observe(s));
 
-function changeSlide(dir){
-  const next = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
-  goToSlide(next);
-}
+// ── Typing on the learning sheet spends a spark (2026-07-15) ── one spark
+// per PAGE the learner writes on, not per keystroke or per input box: the
+// first time they focus ANY blank on a given slide is the charge point for
+// that whole slide (dedup via cmHasChargedSpark/cmMarkSparkCharged, separate
+// from the points dedup above — reaching a slide and writing on it are two
+// different things now, not one combined charge). Signed-in users are exempt,
+// same as everywhere else. Out of sparks: the field is blurred immediately
+// (nothing typed is kept) and the sparks interstitial opens.
+document.querySelectorAll('.slide .blank-input').forEach(input => {
+  input.addEventListener('focus', function(){
+    const n = parseInt(this.closest('.slide').id.replace('slide-', ''), 10);
+    const typeKey = `${grade}-${chIdx}-${lessonIdx}-slide-${n}-typed`;
+    if (cmHasChargedSpark(typeKey)) return;
+    if (!isSignedIn && !cmConsumeSpark()) {
+      this.blur();
+      openSparksModal();
+      return;
+    }
+    cmMarkSparkCharged(typeKey);
+  });
+});
 
 // Build lesson navigator in right panel
 const navEl = document.getElementById('rp-lesson-nav');
@@ -1020,14 +985,6 @@ ch.lessons.forEach((ln, i) => {
   };
   navEl.appendChild(item);
 });
-
-// Init — Learn is the default-active tab straight from the static HTML (no
-// switchTab('learn') click happens just to show it), so opening the page
-// means reaching slide 0, and goToSlide(0) below is itself the gate check
-// (see the comment on goToSlide for the full per-slide spark rule). If
-// slide 0 can't be afforded, goToSlide aborts before touching the DOM and
-// opens the sparks interstitial — nothing else needs to run here.
-goToSlide(0);
 
 // Auto-switch tab if URL param set (e.g. ?tab=practice from REVIEW)
 const tabParam = params.get('tab');
@@ -1046,7 +1003,7 @@ function openResSectionExclusive(id){
 
 // ── Tab switching ──
 let cameFromLearn = true; // tracks whether the last tab was Learn, for the CW→HW transition below
-let currentTab = 'learn'; // the idle CTA below is suppressed while this is 'resources'
+let currentTab = 'learn';
 
 // ── Sparks on Practice (CONFIRMED — see Open Questions §13 DECIDED,
 // 2026-07-10, corrected same day). Signed in = unlimited, no spark cost at
@@ -1059,8 +1016,8 @@ let currentTab = 'learn'; // the idle CTA below is suppressed while this is 'res
 // page load, not on every question. If none are left when they try to
 // answer, that answer is blocked (no selection applied, no points) and the
 // app-redirect interstitial opens instead (see sparks-modal-overlay above —
-// deliberately not the sign-in modal). Learn is gated separately and more
-// granularly, per slide — see goToSlide().
+// deliberately not the sign-in modal). Learn is gated separately, on typing
+// rather than navigation — see the typing gate further up.
 
 function trySpendSparkForTab(tab){
   if (practiceSparkConsumedThisPageLoad) return true;
@@ -1099,6 +1056,10 @@ document.getElementById('sparks-modal-overlay').addEventListener('click', e => {
   if(e.target === e.currentTarget) closeSparksModal();
 });
 
+function anyModalOpen(){
+  return !!document.querySelector('.modal-overlay.open');
+}
+
 // ── CW → HW interstitial (proposed — see Open Questions §7a) ──
 let cwHwModalShown = false;
 function openCwHwModal(){
@@ -1112,34 +1073,6 @@ function closeCwHwModal(){
 document.getElementById('cwhw-modal-overlay').addEventListener('click', e => {
   if(e.target === e.currentTarget) closeCwHwModal();
 });
-
-// ── Idle-timeout CTA (proposed — see Open Questions §7a) ──
-// 5s is a placeholder to demo the idea, not a proposed real threshold.
-// Re-arms every time — any activity (including closing the modal) resets the
-// clock, so going idle again later (on this tab or any other) nudges again.
-const IDLE_TIMEOUT_MS = 5000;
-let idleTimer = null;
-function anyModalOpen(){
-  return !!document.querySelector('.modal-overlay.open');
-}
-function openIdleModal(){
-  if(anyModalOpen() || currentTab !== 'practice') return; // idle CTA only applies on Practice now
-  document.getElementById('idle-modal-overlay').classList.add('open');
-}
-function closeIdleModal(){
-  document.getElementById('idle-modal-overlay').classList.remove('open');
-}
-document.getElementById('idle-modal-overlay').addEventListener('click', e => {
-  if(e.target === e.currentTarget) closeIdleModal();
-});
-function resetIdleTimer(){
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(openIdleModal, IDLE_TIMEOUT_MS);
-}
-['mousemove','keydown','scroll','click','touchstart'].forEach(evt =>
-  document.addEventListener(evt, resetIdleTimer, {passive: true})
-);
-resetIdleTimer();
 
 // ── Annotate / Hint gating (proposed — see Open Questions doc) ──
 // Annotate works once for free (persisted so it stays "used" across

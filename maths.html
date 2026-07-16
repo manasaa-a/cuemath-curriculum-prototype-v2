@@ -16,7 +16,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:400;font-size:15px;line-height:1.5;color:#1C1917;background:#F5F3EF}
+body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:400;font-size:15px;line-height:1.5;color:#1C1917;background:#FAF8F5}
 
 /* SHELL */
 .shell{display:grid;grid-template-columns:1fr;height:100vh;overflow:hidden}
@@ -65,8 +65,11 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .vt:hover:not(.active){background:#E8E4DD;color:#1C1917}
 .vt svg{width:13px;height:13px}
 
-/* Main content */
-.main-content{padding:24px;flex:1}
+/* Main content — framed with a generous margin from the viewport edge
+   (2026-07-15, per Manasa's reference), not edge-to-edge. Page canvas is
+   bg0 (neutral-100, set on body above); each card within it is bg1 (white),
+   per design-system.html's semantic tokens. */
+.main-content{max-width:1400px;margin:0 auto;padding:48px 64px 64px;flex:1}
 
 /* Grade rows — By Grade view (full-width row per grade/course, replaces the
    old squarish card grid — every chapter listed as a hyperlink, no
@@ -137,24 +140,53 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .faq-a-inner p{padding:0 4px 18px;font-size:13px;color:#5B5854;line-height:1.6;max-width:680px}
 
 /* PAGE HERO */
-.page-hero{position:relative;background:linear-gradient(160deg,#0d0a1a 0%,#1a1210 45%,#0a1528 100%);padding:52px 40px 44px;text-align:center;flex-shrink:0;overflow:hidden}
-.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 30%,rgba(217,148,248,.15) 0%,transparent 55%),radial-gradient(ellipse at 20% 80%,rgba(116,172,252,.12) 0%,transparent 50%);pointer-events:none}
-.page-hero-content{position:relative;z-index:1}
-.page-hero-pill{display:inline-block;background:rgba(255,255,255,.12);color:#fff;font-family:'Athletics';font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:10px 18px;margin:0 0 18px}
-.page-hero h1{font-family:'Athletics';font-size:40px;font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.01em;margin:0 0 18px}
-.page-hero-sub{font-family:'UntitledSans';font-size:17px;color:rgba(255,255,255,.7);max-width:540px;margin:0 auto 28px;line-height:1.55}
-.hero-cta-row{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;margin-bottom:36px}
-.page-hero-btn{display:inline-block;background:#fff;color:#1C1917;font-family:'Athletics';font-size:15px;font-weight:700;padding:16px 48px;text-decoration:none;cursor:pointer;border:none}
-.page-hero-btn:hover{background:#F5F3EF}
-.hero-watch-link{display:inline-flex;align-items:center;gap:10px;color:rgba(255,255,255,.85);font-family:'UntitledSans';font-size:14px;font-weight:500;text-decoration:none;background:none;border:none;cursor:pointer;padding:0}
-.hero-watch-link:hover{color:#fff}
-.hero-watch-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#F4AB52;font-size:11px;transition:background .12s}
-.hero-watch-icon svg{width:11px;height:11px;margin-left:1px}
-.hero-watch-link:hover .hero-watch-icon{background:rgba(244,171,82,.2);border-color:#F4AB52}
-.hero-watch-text{text-decoration:underline;text-underline-offset:3px}
-.hero-formula{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.hero-formula-item{font-family:'Athletics';font-size:13px;font-weight:700;color:#fff;line-height:1.3;text-align:center}
-.hero-formula-op{font-family:'Athletics';font-size:22px;font-weight:700;color:#F4AB52}
+/* HERO — matches the real cuemath.com hero (2026-07-15, per Manasa's
+   reference screenshots + design-system.html tokens: gold-300 bg, Athletics
+   display type, dotted texture, framed dark video card inset with margin
+   rather than full-bleed). Verbatim copy from the reference, not rewritten
+   for the curriculum pitch — this is the same hero already used elsewhere
+   on cuemath.com, reused here as the top of /maths/ too. */
+.hero2{position:relative;background:#FAD6AC;background-image:radial-gradient(circle,rgba(41,40,39,.12) 1px,transparent 1px);background-size:18px 18px;padding:var(--space-96,96px) var(--space-24,24px) 0;text-align:center;flex-shrink:0}
+.hero2 h1{font-family:'Athletics';font-size:56px;font-weight:700;color:#292827;line-height:1.05;letter-spacing:-.01em;margin:0 0 20px}
+.hero2-sub{font-family:'UntitledSans';font-size:19px;color:rgba(41,40,39,.7);max-width:600px;margin:0 auto 32px;line-height:1.55}
+.hero2-btn{display:inline-block;background:#F4AB52;color:#292827;font-family:'UntitledSans';font-size:15px;font-weight:600;padding:14px 40px;border-radius:4px;text-decoration:none;cursor:pointer;border:none}
+.hero2-btn:hover{background:#EC9A32}
+.hero2-proof{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:40px;padding-bottom:40px;font-size:14px;color:#292827}
+.hero2-avatars{display:flex}
+.hero2-avatar{width:32px;height:32px;border-radius:50%;border:2px solid #FAD6AC;display:flex;align-items:center;justify-content:center;color:#fff;margin-left:-10px}
+.hero2-avatar:first-child{margin-left:0}
+.hero2-avatar svg{width:16px;height:16px}
+.hero2-proof-divider{width:1px;height:18px;background:rgba(41,40,39,.25)}
+.hero2-trustpilot{display:inline-flex;align-items:center;gap:6px}
+.hero2-tp-star{width:18px;height:18px;background:#00B259;display:flex;align-items:center;justify-content:center;border-radius:2px;flex-shrink:0}
+.hero2-tp-star svg{width:11px;height:11px}
+
+/* Dark video CTA band — inset within the hero (framed with margin on the
+   sides, not edge-to-edge), rounded top corners. Plays inline (2026-07-15,
+   replacing the earlier modal-popup version) — the "Learn How Cuemath
+   Works"/Get Started overlay sits on top of the video while paused and
+   disappears once playback starts, matching Manasa's reference. */
+.hero2-video-band{max-width:1280px;margin:0 auto;background:#292827;border-radius:20px 20px 0 0;position:relative;overflow:hidden}
+.hero2-video-el{width:100%;aspect-ratio:16/9;display:block;background:#000}
+.hero2-video-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;background:rgba(0,0,0,.15);cursor:pointer}
+.hero2-play-row{display:inline-flex;align-items:center;gap:14px}
+.hero2-play-circle{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#292827}
+.hero2-play-circle svg{width:16px;height:16px;margin-left:2px}
+.hero2-play-label{font-family:'Athletics';font-size:26px;font-weight:700;color:#fff}
+
+/* IMPACT STATS — "Over a Decade of Impact" (replaces the old social-proof
+   bar with the exact stats/copy from the reference screenshot) */
+.impact-section{background:#fff;padding:64px 32px;flex-shrink:0}
+.impact-heading{font-family:'Athletics';font-size:34px;font-weight:700;color:#292827;text-align:center;margin-bottom:32px}
+.impact-rule{max-width:1280px;margin:0 auto;border-top:1px solid #EBE7E0}
+.impact-row{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding-top:36px}
+.impact-cell{padding:0 32px;border-right:1px solid #EBE7E0}
+.impact-cell:first-child{padding-left:0}
+.impact-cell:last-child{border-right:none;padding-right:0}
+.impact-stat{font-family:'Athletics';font-size:32px;font-weight:800;line-height:1;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.impact-stat .hero2-tp-star{width:16px;height:16px}
+.impact-label{font-size:15px;color:#292827;line-height:1.4}
+
 
 /* EXAM VIEW */
 .exam-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#78716C;margin:0 0 10px;display:flex;align-items:center;gap:10px}
@@ -169,46 +201,15 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .exam-desc{font-size:12px;color:#78716C;margin-bottom:8px;line-height:1.4}
 .exam-meta{font-size:11px;color:#B0AAA5}
 
-/* SOCIAL PROOF BAR — matches video-library.html exactly */
-.social-proof{background:#F6F3ED;border-bottom:1px solid #E8E4DD;padding:40px 32px;flex-shrink:0}
-.social-proof-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.sp-cell{padding:0 32px;border-right:1px solid #C6C0B8}
-.sp-cell:first-child{padding-left:0}
-.sp-cell:last-child{border-right:none;padding-right:0}
-.sp-stat{font-family:'Athletics';font-size:40px;font-weight:800;line-height:1;margin-bottom:8px}
-.sp-trustpilot{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.tp-stars{display:flex;gap:2px}
-.tp-star{width:24px;height:24px;background:#00B259;display:flex;align-items:center;justify-content:center}
-.tp-star svg{width:14px;height:14px}
-.tp-logo{font-family:'UntitledSans';font-size:13px;font-weight:600;color:#292827}
-.sp-label{font-family:'UntitledSans';font-size:16px;font-weight:600;color:#292827;margin-bottom:8px;line-height:1.3}
-.sp-sublabel{font-size:14px;color:#5B5854;line-height:1.5}
 
 /* MODAL — pattern reused from maths-grade-3-chapter.html */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;width:400px;max-width:90vw;padding:28px 28px 24px;position:relative}
-.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#97948E;line-height:1;z-index:2}
-.modal-close:hover{color:#1C1917}
-.modal-continue{display:block;width:100%;margin-top:20px;background:#1C1917;color:#fff;border:none;padding:14px;font-family:'UntitledSans';font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.06em}
-.modal-continue:hover{background:#333}
-
-/* Video modal — widened, flush video, close btn on dark scrim */
-.modal-video{width:720px;max-width:92vw;padding:0;overflow:hidden}
-.modal-video video{width:100%;display:block;background:#000}
-.modal-video-footer{padding:20px 28px 24px}
-.modal-video-note{text-align:center;font-size:12px;color:#97948E;margin-top:10px}
-.modal-video-footer .modal-continue{margin-top:0}
-.modal-video .modal-close{background:rgba(0,0,0,.55);color:#fff;width:28px;height:28px;border-radius:50%;top:12px;right:12px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.modal-video .modal-close:hover{background:rgba(0,0,0,.75);color:#fff}
-
 /* MOBILE — this page has no sidebar to reflow (removed earlier in the
    project), but its multi-column grids and hero need to collapse instead
    of overflowing/clipping on a phone-width screen. */
 @media(max-width:860px){
-  .social-proof-inner{grid-template-columns:repeat(2,1fr);gap:20px 0}
-  .sp-cell{border-right:none;padding:0 16px;margin-bottom:16px}
-  .sp-cell:nth-child(odd){padding-left:0}
+  .impact-row{grid-template-columns:repeat(2,1fr);row-gap:24px}
+  .impact-cell{border-right:none;padding:0 16px}
+  .impact-cell:nth-child(odd){padding-left:0}
   .exam-grid{grid-template-columns:repeat(2,1fr)}
   .topic-grid{grid-template-columns:repeat(2,1fr) !important}
   .resources-strip{grid-template-columns:repeat(2,1fr)}
@@ -217,13 +218,17 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
   .topbar{padding:0 14px}
   .tb-search{min-width:0;flex:1}
   .tb-search svg{display:none}
-  .page-hero{padding:36px 20px 32px}
-  .page-hero h1{font-size:28px}
-  .page-hero-sub{font-size:15px}
-  .page-hero-btn{padding:14px 32px;width:100%}
-  .social-proof{padding:28px 20px}
-  .social-proof-inner{grid-template-columns:1fr;gap:20px}
-  .sp-cell{padding:0}
+  .hero2{padding:56px 16px 0}
+  .hero2 h1{font-size:34px}
+  .hero2-sub{font-size:16px}
+  .hero2-btn{width:100%}
+  .hero2-video-band{border-radius:14px 14px 0 0}
+  .hero2-video-overlay{gap:16px;padding:0 20px}
+  .hero2-play-label{font-size:20px}
+  .impact-section{padding:40px 20px}
+  .impact-heading{font-size:24px}
+  .impact-row{grid-template-columns:1fr;row-gap:20px}
+  .impact-cell{padding:0}
   .exam-grid,.topic-grid,.resources-strip{grid-template-columns:1fr !important}
   .selector-bar{padding:10px 14px}
   .view-toggle{margin-left:0;width:100%}
@@ -251,54 +256,63 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
       </div>
       <div class="topbar-right">
         <div class="tb-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <svg viewBox="0 0 24 24" fill="#78716C"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.1884 6.12511C8.41776 6.12511 6.17168 8.37119 6.17168 11.1419C6.17168 13.9126 8.41776 16.1586 11.1884 16.1586C12.5527 16.1586 13.7887 15.6149 14.6936 14.731C15.6269 13.8194 16.2052 12.5487 16.2052 11.1419C16.2052 8.37119 13.9591 6.12511 11.1884 6.12511ZM4.97168 11.1419C4.97168 7.70845 7.75502 4.92511 11.1884 4.92511C14.6219 4.92511 17.4052 7.70845 17.4052 11.1419C17.4052 12.6663 16.8559 14.0633 15.9455 15.1444L18.8519 18.0506L18.0034 18.8992L15.0879 15.9838C14.0217 16.8434 12.6648 17.3586 11.1884 17.3586C7.75502 17.3586 4.97168 14.5753 4.97168 11.1419Z"/></svg>
           Search topics, chapters, lessons…
         </div>
         <button class="tb-btn">Get Started</button>
       </div>
     </div>
 
-    <!-- Page hero -->
-    <div class="page-hero">
-      <div class="page-hero-content">
-        <div class="page-hero-pill">The same curriculum Cuemath tutors use. Now free for every child.</div>
-        <h1>Math Curriculum for K-12</h1>
-        <p class="page-hero-sub">500,000+ students learn from this curriculum every week. The same lessons, problems, and practice — now free, K to 12.</p>
-        <div class="hero-cta-row">
-          <button class="page-hero-btn" onclick="scrollToGrades()">Explore Curriculum</button>
-          <button class="hero-watch-link" onclick="openVideoModal()">
-            <span class="hero-watch-icon"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg></span>
-            <span class="hero-watch-text">See how Cuemath works</span>
-          </button>
+    <!-- Hero — matches the real cuemath.com hero verbatim (2026-07-15) -->
+    <div class="hero2">
+      <h1>We Make Your Child MathFit<sup style="font-size:.5em">™</sup></h1>
+      <p class="hero2-sub">1:1 personalized online math tutoring for strong foundations, designed to help your child succeed in school and beyond.</p>
+      <button class="hero2-btn">Get Started</button>
+      <div class="hero2-proof">
+        <div class="hero2-avatars">
+          <div class="hero2-avatar" style="background:#74ACFC"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.0003 6.34999C10.6056 6.34999 9.47485 7.48081 9.47485 8.87598C9.47485 10.2424 10.5594 11.3552 11.9143 11.4005C11.9431 11.4002 11.9719 11.4 12.0007 11.4C12.0294 11.4 12.0579 11.4002 12.0865 11.4005C13.4412 11.355 14.5257 10.2423 14.5257 8.87598C14.5257 7.48081 13.3949 6.34999 12.0003 6.34999ZM14.3088 11.8005C15.1719 11.1181 15.7257 10.0617 15.7257 8.87598C15.7257 6.81828 14.0579 5.14999 12.0003 5.14999C9.94267 5.14999 8.27485 6.81828 8.27485 8.87598C8.27485 10.0618 8.82878 11.1184 9.69202 11.8008C8.7474 12.139 7.87943 12.6838 7.15643 13.4069C5.87166 14.6919 5.1499 16.4347 5.1499 18.2519L6.3499 18.2519C6.3499 16.7529 6.94528 15.3153 8.00503 14.2554C9.04232 13.2179 10.4413 12.6254 11.9055 12.6008C11.937 12.6016 11.9686 12.602 12.0003 12.602C12.0321 12.602 12.0638 12.6016 12.0954 12.6008C13.5598 12.6253 14.959 13.2178 15.9965 14.2554C17.0562 15.3153 17.6516 16.7529 17.6516 18.2519H18.8516C18.8516 16.4347 18.1298 14.6919 16.8451 13.4069C16.1219 12.6836 15.2537 12.1387 14.3088 11.8005Z"/></svg></div>
+          <div class="hero2-avatar" style="background:#F4AB52"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.0003 6.34999C10.6056 6.34999 9.47485 7.48081 9.47485 8.87598C9.47485 10.2424 10.5594 11.3552 11.9143 11.4005C11.9431 11.4002 11.9719 11.4 12.0007 11.4C12.0294 11.4 12.0579 11.4002 12.0865 11.4005C13.4412 11.355 14.5257 10.2423 14.5257 8.87598C14.5257 7.48081 13.3949 6.34999 12.0003 6.34999ZM14.3088 11.8005C15.1719 11.1181 15.7257 10.0617 15.7257 8.87598C15.7257 6.81828 14.0579 5.14999 12.0003 5.14999C9.94267 5.14999 8.27485 6.81828 8.27485 8.87598C8.27485 10.0618 8.82878 11.1184 9.69202 11.8008C8.7474 12.139 7.87943 12.6838 7.15643 13.4069C5.87166 14.6919 5.1499 16.4347 5.1499 18.2519L6.3499 18.2519C6.3499 16.7529 6.94528 15.3153 8.00503 14.2554C9.04232 13.2179 10.4413 12.6254 11.9055 12.6008C11.937 12.6016 11.9686 12.602 12.0003 12.602C12.0321 12.602 12.0638 12.6016 12.0954 12.6008C13.5598 12.6253 14.959 13.2178 15.9965 14.2554C17.0562 15.3153 17.6516 16.7529 17.6516 18.2519H18.8516C18.8516 16.4347 18.1298 14.6919 16.8451 13.4069C16.1219 12.6836 15.2537 12.1387 14.3088 11.8005Z"/></svg></div>
+          <div class="hero2-avatar" style="background:#D386F7"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.0003 6.34999C10.6056 6.34999 9.47485 7.48081 9.47485 8.87598C9.47485 10.2424 10.5594 11.3552 11.9143 11.4005C11.9431 11.4002 11.9719 11.4 12.0007 11.4C12.0294 11.4 12.0579 11.4002 12.0865 11.4005C13.4412 11.355 14.5257 10.2423 14.5257 8.87598C14.5257 7.48081 13.3949 6.34999 12.0003 6.34999ZM14.3088 11.8005C15.1719 11.1181 15.7257 10.0617 15.7257 8.87598C15.7257 6.81828 14.0579 5.14999 12.0003 5.14999C9.94267 5.14999 8.27485 6.81828 8.27485 8.87598C8.27485 10.0618 8.82878 11.1184 9.69202 11.8008C8.7474 12.139 7.87943 12.6838 7.15643 13.4069C5.87166 14.6919 5.1499 16.4347 5.1499 18.2519L6.3499 18.2519C6.3499 16.7529 6.94528 15.3153 8.00503 14.2554C9.04232 13.2179 10.4413 12.6254 11.9055 12.6008C11.937 12.6016 11.9686 12.602 12.0003 12.602C12.0321 12.602 12.0638 12.6016 12.0954 12.6008C13.5598 12.6253 14.959 13.2178 15.9965 14.2554C17.0562 15.3153 17.6516 16.7529 17.6516 18.2519H18.8516C18.8516 16.4347 18.1298 14.6919 16.8451 13.4069C16.1219 12.6836 15.2537 12.1387 14.3088 11.8005Z"/></svg></div>
+          <div class="hero2-avatar" style="background:#28995A"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.0003 6.34999C10.6056 6.34999 9.47485 7.48081 9.47485 8.87598C9.47485 10.2424 10.5594 11.3552 11.9143 11.4005C11.9431 11.4002 11.9719 11.4 12.0007 11.4C12.0294 11.4 12.0579 11.4002 12.0865 11.4005C13.4412 11.355 14.5257 10.2423 14.5257 8.87598C14.5257 7.48081 13.3949 6.34999 12.0003 6.34999ZM14.3088 11.8005C15.1719 11.1181 15.7257 10.0617 15.7257 8.87598C15.7257 6.81828 14.0579 5.14999 12.0003 5.14999C9.94267 5.14999 8.27485 6.81828 8.27485 8.87598C8.27485 10.0618 8.82878 11.1184 9.69202 11.8008C8.7474 12.139 7.87943 12.6838 7.15643 13.4069C5.87166 14.6919 5.1499 16.4347 5.1499 18.2519L6.3499 18.2519C6.3499 16.7529 6.94528 15.3153 8.00503 14.2554C9.04232 13.2179 10.4413 12.6254 11.9055 12.6008C11.937 12.6016 11.9686 12.602 12.0003 12.602C12.0321 12.602 12.0638 12.6016 12.0954 12.6008C13.5598 12.6253 14.959 13.2178 15.9965 14.2554C17.0562 15.3153 17.6516 16.7529 17.6516 18.2519H18.8516C18.8516 16.4347 18.1298 14.6919 16.8451 13.4069C16.1219 12.6836 15.2537 12.1387 14.3088 11.8005Z"/></svg></div>
+        </div>
+        <span>200,000+ Happy parents across 80+ countries</span>
+        <div class="hero2-proof-divider"></div>
+        <span class="hero2-trustpilot">Rated 4.9+ on <span class="hero2-tp-star"><svg viewBox="0 0 24 24" fill="#fff"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 7.15378L10.7835 10.8978H6.84674L10.0316 13.2118L8.8151 16.9558L12 14.6419L15.1848 16.9558L13.9683 13.2118L17.1532 10.8978H13.2165L12 7.15378ZM11.4293 5.02673L12.5706 5.02673L14.0883 9.69782H18.9998L19.3525 10.7832L15.379 13.6701L16.8967 18.3412L15.9734 19.012L12 16.1251L8.0265 19.012L7.1032 18.3412L8.62092 13.6701L4.64746 10.7832L5.00013 9.69782H9.9116L11.4293 5.02673Z"/></svg></span> Trustpilot</span>
+      </div>
+      <div class="hero2-video-band">
+        <video class="hero2-video-el" id="hero-video" controls playsinline>
+          <source src="videos/how-cuemath-works.mp4" type="video/mp4">
+        </video>
+        <div class="hero2-video-overlay" id="hero-video-overlay" onclick="playHeroVideo()">
+          <div class="hero2-play-row">
+            <span class="hero2-play-circle"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.8999 6L8.8086 5.4855L18.8086 11.4855V12.5145L8.8086 18.5145L7.8999 18V6ZM9.0999 7.05971V16.9403L17.3337 12L9.0999 7.05971Z"/></svg></span>
+            <span class="hero2-play-label">Learn How Cuemath Works</span>
+          </div>
+          <button class="hero2-btn" onclick="event.stopPropagation();playHeroVideo()">Get Started</button>
         </div>
       </div>
     </div>
 
-    <!-- Social proof bar — exact video-library.html implementation -->
-    <div class="social-proof">
-      <div class="social-proof-inner">
-        <div class="sp-cell">
-          <div class="sp-stat" style="color:#00B259">4.9★</div>
-          <div class="sp-trustpilot">
-            <div class="tp-stars"><div class="tp-star"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/></svg></div><div class="tp-star"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/></svg></div><div class="tp-star"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/></svg></div><div class="tp-star"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/></svg></div><div class="tp-star"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/></svg></div></div>
-            <span class="tp-logo">Trustpilot</span>
-          </div>
-          <div class="sp-sublabel">Across 10,000+ verified parent reviews from 80+ countries</div>
+    <!-- Impact stats — "Over a Decade of Impact" (verbatim from the reference) -->
+    <div class="impact-section">
+      <div class="impact-heading">Over a Decade of Impact, and Counting.</div>
+      <div class="impact-rule"></div>
+      <div class="impact-row">
+        <div class="impact-cell">
+          <div class="impact-stat" style="color:#28995A">#1 <span class="hero2-tp-star"><svg viewBox="0 0 24 24" fill="#fff"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 7.15378L10.7835 10.8978H6.84674L10.0316 13.2118L8.8151 16.9558L12 14.6419L15.1848 16.9558L13.9683 13.2118L17.1532 10.8978H13.2165L12 7.15378ZM11.4293 5.02673L12.5706 5.02673L14.0883 9.69782H18.9998L19.3525 10.7832L15.379 13.6701L16.8967 18.3412L15.9734 19.012L12 16.1251L8.0265 19.012L7.1032 18.3412L8.62092 13.6701L4.64746 10.7832L5.00013 9.69782H9.9116L11.4293 5.02673Z"/></svg></span></div>
+          <div class="impact-label">Tutoring service on Trustpilot</div>
         </div>
-        <div class="sp-cell">
-          <div class="sp-stat" style="color:#EC5B13">97%</div>
-          <div class="sp-label">Report a positive experience</div>
-          <div class="sp-sublabel">Citing the right tutor, real understanding, or growing confidence</div>
+        <div class="impact-cell">
+          <div class="impact-stat" style="color:#EC9A32">97.2%</div>
+          <div class="impact-label">of parents say their child improved</div>
         </div>
-        <div class="sp-cell">
-          <div class="sp-stat" style="color:#0086E5">1,000+</div>
-          <div class="sp-label">Math competition wins</div>
-          <div class="sp-sublabel">Cuemath students placed in major math contests worldwide</div>
+        <div class="impact-cell">
+          <div class="impact-stat" style="color:#407BD6">2,500+</div>
+          <div class="impact-label">Student wins. AMC 8, SAT, &amp; more.</div>
         </div>
-        <div class="sp-cell">
-          <div class="sp-stat" style="color:#D926CA">200K+</div>
-          <div class="sp-label">Students taught worldwide</div>
-          <div class="sp-sublabel">Through logic and reasoning, not rote memorization</div>
+        <div class="impact-cell">
+          <div class="impact-stat" style="color:#A055BE">200,000+</div>
+          <div class="impact-label">Happy parents across 80+ countries</div>
         </div>
       </div>
     </div>
@@ -312,7 +326,7 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
         <div class="country-dropdown" id="countryDropdown">
           <div class="country-select" onclick="toggleCountry()">
             <span id="country-label">🇺🇸 United States</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </div>
           <div class="country-menu" id="countryMenu">
             <div class="country-option active" onclick="selectCountry(this,'🇺🇸 United States','us')">🇺🇸 United States</div>
@@ -501,21 +515,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 
 </div>
 
-<!-- "SEE HOW CUEMATH WORKS" VIDEO MODAL -->
-<div class="modal-overlay" id="video-modal-overlay">
-  <div class="modal modal-video" id="video-modal">
-    <button class="modal-close" onclick="closeVideoModal()">×</button>
-    <video id="how-it-works-video" controls>
-      <source src="videos/how-cuemath-works.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <div class="modal-video-footer">
-      <button class="modal-continue">Book a free class</button>
-      <div class="modal-video-note">No credit card needed &middot; Cancel anytime</div>
-    </div>
-  </div>
-</div>
-
 <script src="curriculum-data.js"></script>
 <script src="highschool-data.js"></script>
 <script src="topics-data.js"></script>
@@ -578,26 +577,17 @@ function setView(v) {
   document.getElementById('view-exam').style.display = v==='exam' ? 'block' : 'none';
 }
 
-// Scroll hero "Explore Curriculum" button down to the grade grid — forces the
-// By Grade tab active first, so this works even if a different view (e.g. By
-// Exam, via ?view=exam) was showing when the button was clicked.
-function scrollToGrades() {
-  setView('grade');
-  document.getElementById('main-content').scrollIntoView({behavior:'smooth', block:'start'});
+// "Learn How Cuemath Works" hero video — plays inline (2026-07-15, replacing
+// the earlier modal-popup version). The overlay (play icon/heading/Get
+// Started) shows whenever the video is paused and hides once it's playing.
+const heroVideo = document.getElementById('hero-video');
+const heroVideoOverlay = document.getElementById('hero-video-overlay');
+function playHeroVideo() {
+  heroVideo.play();
 }
-
-// "See how Cuemath works" video modal
-function openVideoModal() {
-  document.getElementById('video-modal-overlay').classList.add('open');
-}
-function closeVideoModal() {
-  document.getElementById('video-modal-overlay').classList.remove('open');
-  const video = document.getElementById('how-it-works-video');
-  video.pause();
-}
-document.getElementById('video-modal-overlay').addEventListener('click', function(e){
-  if (e.target === this) closeVideoModal();
-});
+heroVideo.addEventListener('play', () => heroVideoOverlay.style.display = 'none');
+heroVideo.addEventListener('pause', () => heroVideoOverlay.style.display = 'flex');
+heroVideo.addEventListener('ended', () => heroVideoOverlay.style.display = 'flex');
 
 // ── By Grade view — full-width rows, every chapter listed as a hyperlink ──
 // K-7 pulls from curriculum-data.js (the same shared source maths-grade-3.html
@@ -714,7 +704,7 @@ function renderFaqs() {
     <div class="faq-item" id="faq-${i}">
       <button class="faq-q" onclick="toggleFaq(${i})">
         <span>${item.q}</span>
-        <span class="faq-caret">⌄</span>
+        <span class="faq-caret"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
       </button>
       <div class="faq-a"><div class="faq-a-inner"><p>${item.a}</p></div></div>
     </div>`).join('');

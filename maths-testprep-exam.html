@@ -88,37 +88,6 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
 .ch-row-lessons .block-signin-btn{background:none;border:1px solid #F4AB52;color:#CE7E12;font-family:'UntitledSans';font-size:10px;font-weight:600;padding:3px 8px;cursor:pointer;flex-shrink:0;white-space:nowrap}
 .ch-row-lessons .block-signin-btn:hover{background:#F4AB52;color:#1C1917}
 
-/* SIGN-IN MODAL — ported from maths-grade-3-chapter.html for consistency */
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
-.auth-overlay.open{display:flex}
-.auth-box{background:#fff;width:420px;max-width:92vw;padding:32px 32px 28px;position:relative}
-.auth-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#97948E}
-.auth-close:hover{color:#1C1917}
-.auth-logo{font-family:'Athletics';font-size:16px;font-weight:700;letter-spacing:.06em;color:#1C1917;margin-bottom:20px}
-.auth-logo span{color:#F4AB52}
-.auth-tabs{display:flex;border-bottom:2px solid #F5F0E8;margin-bottom:24px}
-.auth-tab{flex:1;background:none;border:none;padding:10px 0;font-family:'UntitledSans';font-size:13px;font-weight:500;color:#97948E;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
-.auth-tab.active{color:#1C1917;border-bottom-color:#F4AB52;font-weight:600}
-.auth-panel{display:none}
-.auth-panel.active{display:block}
-.auth-field{margin-bottom:14px}
-.auth-label{font-size:11px;font-weight:600;color:#97948E;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
-.auth-input{width:100%;border:1.5px solid #E5DDD4;padding:10px 12px;font-family:'UntitledSans';font-size:14px;color:#1C1917;outline:none;background:#fff}
-.auth-input:focus{border-color:#F4AB52}
-.auth-btn{width:100%;background:#F4AB52;color:#1C1917;border:none;padding:13px;font-family:'UntitledSans';font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.04em}
-.auth-btn:hover{background:#CE7E12}
-.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#C6C0B8;font-size:12px}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#F5F0E8}
-.auth-google{width:100%;background:#fff;border:1.5px solid #E5DDD4;padding:11px;font-family:'UntitledSans';font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#1C1917}
-.auth-google:hover{border-color:#1C1917;background:#FAFAF8}
-.auth-google svg{width:18px;height:18px;flex-shrink:0}
-.auth-forgot{font-size:12px;color:#97948E;text-align:right;display:block;margin-top:6px;cursor:pointer}
-.auth-forgot:hover{color:#1C1917}
-.auth-success{text-align:center;padding:20px 0}
-.auth-success-icon{font-size:44px;margin-bottom:12px}
-.auth-success h3{font-family:'Athletics';font-size:20px;font-weight:700;color:#1C1917;margin-bottom:6px}
-.auth-success p{font-size:13px;color:#97948E;line-height:1.5}
-
 /* App download CTA — same component as maths.html */
 .app-download-strip{background:#1C1917;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
 .app-dl-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
@@ -236,13 +205,10 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
       </div>
       <div class="rp-divider"></div>
       <div class="rp-cta-inner">
-        <span class="rp-cta-tag">Cuemath App</span>
-        <div class="rp-cta-title">Get exam-ready with the Cuemath App</div>
-        <div class="rp-cta-sub">Practice, mock tests, and progress tracking for your exam prep.</div>
-        <div class="rp-cta-appbtns">
-          <a class="rp-cta-appbtn" href="https://apps.apple.com/app/cuemath/id1437567098" target="_blank" rel="noopener">📱 App Store</a>
-          <a class="rp-cta-appbtn" href="https://play.google.com/store/apps/details?id=com.cuemath" target="_blank" rel="noopener">▶ Google Play</a>
-        </div>
+        <span class="rp-cta-tag">Cuemath</span>
+        <div class="rp-cta-title">Get exam-ready</div>
+        <div class="rp-cta-sub">Sign up free for practice, mock tests, and progress tracking.</div>
+        <a class="rp-cta-appbtn" href="https://student.cuemath.com/">Sign Up</a>
       </div>
       <div class="rp-divider"></div>
       <div class="rp-exam-nav" id="rp-exam-nav">
@@ -253,69 +219,8 @@ body{font-family:'UntitledSans',-apple-system,system-ui,sans-serif;font-weight:4
   </div>
 </div>
 
-<!-- SIGN-IN MODAL — ported from maths-grade-3-chapter.html -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-box">
-    <button class="auth-close" onclick="closeAuth()">×</button>
-    <div class="auth-logo">Cue<span>math</span></div>
-
-    <div id="auth-success" class="auth-success" style="display:none">
-      <div class="auth-success-icon">🎉</div>
-      <h3>You're in!</h3>
-      <p>All worksheets are now unlocked.<br>Keep practicing!</p>
-    </div>
-
-    <div id="auth-form-wrap">
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign in</button>
-        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign up free</button>
-      </div>
-
-      <div class="auth-panel active" id="auth-signin">
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="••••••••">
-          <span class="auth-forgot">Forgot password?</span>
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Sign in</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
-      </div>
-
-      <div class="auth-panel" id="auth-signup">
-        <div class="auth-field">
-          <label class="auth-label">Full name</label>
-          <input class="auth-input" type="text" placeholder="Your name">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Email</label>
-          <input class="auth-input" type="email" placeholder="you@email.com">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" placeholder="Create a password">
-        </div>
-        <button class="auth-btn" onclick="handleAuth()">Create free account</button>
-        <div class="auth-divider">or</div>
-        <button class="auth-google" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continue with Google
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Points/Streaks/Sparks — see gamification.js. Read-only display on this
-     page (no lesson/practice actions happen here); shares cuemathSignedIn
-     with this page's own auth-overlay below but doesn't touch its logic. -->
+     page (no lesson/practice actions happen here). -->
 <script src="gamification.js"></script>
 <script src="testprep-data.js"></script>
 <script src="testprep-about-content.js"></script>
@@ -469,7 +374,7 @@ function loadBand(idx) {
       const tag = block.type === 'TESTS' ? 'Mock test' : (wsCount > 1 ? wsCount + ' parts' : 'Practice');
       const state = getBlockState(ch.name, block.name);
       if (state === 'locked') {
-        return `<div class="block-locked">${block.name}<button class="block-signin-btn" onclick="event.stopPropagation();openSignInPrompt()">Sign in free</button></div>`;
+        return `<div class="block-locked">${block.name}<a class="block-signin-btn" href="https://student.cuemath.com/" onclick="event.stopPropagation()">Sign Up</a></div>`;
       }
       const doneTag = state === 'done' ? 'Reviewed' : tag;
       const href = `maths-testprep-worksheet.html?exam=${examSlug}&chapter=${encodeURIComponent(ch.name)}&block=${encodeURIComponent(block.name)}`;
@@ -494,35 +399,6 @@ function loadBand(idx) {
     </div>`;
   }).join('');
 }
-
-function openSignInPrompt(){
-  document.getElementById('auth-overlay').classList.add('open');
-}
-function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('open');
-}
-function switchAuthTab(tab){
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
-  document.getElementById('auth-signin').classList.toggle('active', tab==='signin');
-  document.getElementById('auth-signup').classList.toggle('active', tab==='signup');
-}
-function handleAuth(){
-  document.getElementById('auth-form-wrap').style.display = 'none';
-  document.getElementById('auth-success').style.display = 'block';
-  isSignedIn = true;
-  sessionStorage.setItem('cuemathSignedIn', '1');
-  // After 1.5s close modal and rebuild the list with everything unlocked —
-  // same timing/behaviour as maths-grade-3-chapter.html.
-  setTimeout(() => {
-    closeAuth();
-    document.getElementById('auth-form-wrap').style.display = 'block';
-    document.getElementById('auth-success').style.display = 'none';
-    loadBand(currentBandIdx);
-  }, 1500);
-}
-document.getElementById('auth-overlay').addEventListener('click', function(e){
-  if(e.target === this) closeAuth();
-});
 
 function init() {
   if (!exam) {
